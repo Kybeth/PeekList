@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:peeklist/todo.dart';
+import 'package:peeklist/models/todo.dart';
 
 class NewTodoDialog extends StatelessWidget {
   final controller = new TextEditingController();

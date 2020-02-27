@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:peeklist/todo.dart';
+import 'package:peeklist/models/todo.dart';
 
 typedef ToggleTodoCallback = void Function(Todo, bool);
 
