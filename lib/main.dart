@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:peeklist/pages/tab_bar.dart';
+// import 'package:peeklist/pages/home.dart';
 
-import 'package:peeklist/todo_list_screen.dart';
+
 
 void main() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
   runApp(MyApp());
 }
 
@@ -13,7 +14,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Peek List',
-      home: TodoListScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.red,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.indigo,
+      ),
+      home: TabBarExample(),
     );
   }
 }
