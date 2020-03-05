@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peeklist/pages/create_account.dart';
+import 'package:peeklist/pages/create_task.dart';
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -46,7 +48,12 @@ class _TaskPageState extends State<TaskPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTask()),
+          );
+        },
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
