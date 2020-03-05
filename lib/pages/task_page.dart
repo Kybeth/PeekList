@@ -34,7 +34,7 @@ class _TaskPageState extends State<TaskPage> {
               children: <Widget>[
               Icon(
                 Icons.inbox,
-                color: Colors.green,
+                color: Colors.blue,
                 size: 30.0,
               ),
               RaisedButton(
