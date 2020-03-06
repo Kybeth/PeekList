@@ -41,7 +41,7 @@ class _TaskPageState extends State<TaskPage> {
                   child: Text('Inbox'),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SecondRoute()));
+                        MaterialPageRoute(builder: (context) => InboxNavigate()));
                   }),
             ]),  ],)
           ),
@@ -61,7 +61,7 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
-class SecondRoute extends StatelessWidget {
+class InboxNavigate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
