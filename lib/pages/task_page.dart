@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/pages/create_account.dart';
 import 'package:peeklist/pages/create_task.dart';
-import 'package:peeklist/data/tasks.dart';
+import 'package:peeklist/pages/inbox.dart';
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -42,7 +42,7 @@ class _TaskPageState extends State<TaskPage> {
                   child: Text('Inbox'),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SecondRoute()));
+                        MaterialPageRoute(builder: (context) => BuildInbox()));
                   }),
             ]),  ],)
           ),
@@ -62,17 +62,7 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
-class SecondRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("inbox"),
-      ),
-      body:Showlist().build(context),
-    );
-  }
-}
+
 
 //Widget _buildBody(BuildContext context){
 //  return StreamBuilder<QuerySnapshot>(
