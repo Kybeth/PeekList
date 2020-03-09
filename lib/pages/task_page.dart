@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/pages/create_account.dart';
 import 'package:peeklist/pages/create_task.dart';
-import 'package:peeklist/data/tasks.dart';
+import 'package:peeklist/pages/inbox.dart';
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -42,7 +42,11 @@ class _TaskPageState extends State<TaskPage> {
                   child: Text('Inbox'),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SecondRoute()));
+<<<<<<< HEAD
+                        MaterialPageRoute(builder: (context) => InboxNavigate()));
+=======
+                        MaterialPageRoute(builder: (context) => BuildInbox()));
+>>>>>>> 083fe9fbe587ac417e099aed069ac64d4bd7a101
                   }),
             ]),  ],)
           ),
@@ -62,17 +66,27 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
-class SecondRoute extends StatelessWidget {
+<<<<<<< HEAD
+class InboxNavigate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("inbox"),
       ),
-      body:Showlist().build(context),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
     );
   }
 }
+=======
+
 
 //Widget _buildBody(BuildContext context){
 //  return StreamBuilder<QuerySnapshot>(
@@ -96,3 +110,4 @@ class SecondRoute extends StatelessWidget {
 //      }
 //  );
 //}
+>>>>>>> 083fe9fbe587ac417e099aed069ac64d4bd7a101
