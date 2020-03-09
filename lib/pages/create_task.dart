@@ -32,7 +32,7 @@ class CreateTask extends StatelessWidget {
           ),
           RaisedButton(
             onPressed: (){
-              _addtask(_taskname.text,_tasknote.text);
+              _addtask(_taskname.text,_tasknote.text,"inbox");
               Navigator.of(context).pop();
             },
             child: Text('add'),
@@ -43,11 +43,17 @@ class CreateTask extends StatelessWidget {
   }
 }
 
-Future _addtask(String taskname,String tasknote)async {
+Future _addtask(String taskname,String tasknote,String list)async {
+  var mylist="inbox";
+  if(list==null || list.length==0){
+    mylist=list;
+  }
   await Firestore.instance
   .collection('tasks')
     .add(<String, dynamic>{
     'name': taskname,
     'comment': tasknote,
+    'list' : mylist,
+    'time': Timestamp.now(),
     });
 }

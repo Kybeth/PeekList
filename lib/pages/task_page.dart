@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/pages/create_account.dart';
 import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/pages/inbox.dart';
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -41,7 +42,11 @@ class _TaskPageState extends State<TaskPage> {
                   child: Text('Inbox'),
                   onPressed: () {
                     Navigator.push(context,
+<<<<<<< HEAD
                         MaterialPageRoute(builder: (context) => InboxNavigate()));
+=======
+                        MaterialPageRoute(builder: (context) => BuildInbox()));
+>>>>>>> 083fe9fbe587ac417e099aed069ac64d4bd7a101
                   }),
             ]),  ],)
           ),
@@ -61,6 +66,7 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
+<<<<<<< HEAD
 class InboxNavigate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -79,3 +85,29 @@ class InboxNavigate extends StatelessWidget {
     );
   }
 }
+=======
+
+
+//Widget _buildBody(BuildContext context){
+//  return StreamBuilder<QuerySnapshot>(
+//    stream: Firestore.instance.collection('tasks').where('list',isEqualTo: 'inbox').snapshots(),
+//     builder: (context, snapshot) {
+//      if(!snapshot.hasData) return Container();
+//      return _buildList(context,snapshot.data.documents);
+//     },
+//  );
+//}
+//
+//Widget _buildList(BuildContext context,List<DocumentSnapshot> list){
+//  return ListView.builder(
+//      itemCount: list.length,
+//      itemBuilder: (context,idx){
+//        DocumentSnapshot doc =list[idx];
+//        return ListTile(
+//          title: Text(doc['name']),
+//          subtitle: Text(doc['comment']),
+//        );
+//      }
+//  );
+//}
+>>>>>>> 083fe9fbe587ac417e099aed069ac64d4bd7a101
