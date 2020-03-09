@@ -19,15 +19,15 @@ class Showlist extends StatelessWidget{
         itemBuilder: (context,idx){
           DocumentSnapshot doc =list[idx];
           return ListTile(
-              trailing:
+              leading:
               IconButton(
-                  icon:Icon(Icons.check_box_outline_blank),
+                  icon:changeicon(doc['iscompleted']),
                   onPressed: () => completed(doc),
                       //doc.reference.updateData({"iscompleted":true}),
               ),
 
-              title: Text(doc['name']),
-              subtitle: Text(doc['comment']),
+              title: Text(doc['name'],style: returnstyle(doc['iscompleted']),),
+              subtitle: Text(doc['comment'],style: returnstyle(doc['iscompleted'])),
 
           );
 
@@ -45,4 +45,16 @@ class Showlist extends StatelessWidget{
 //      final DocumentReference taskRef=document.reference;
 //      Firestore.instance.runTransaction((transaction) async=>{await transaction.update(taskRef,{'iscompleted':true})});
   }
+
+  returnstyle(bool completed){
+    if(completed){
+      return TextStyle(fontWeight: FontWeight.w200 );
+    }
+    else{
+      return TextStyle(fontWeight: FontWeight.normal);
+    }
+  }
 }
+ changeicon(bool completed){
+  return completed? Icon(Icons.check_box):Icon(Icons.check_box_outline_blank);
+ }
