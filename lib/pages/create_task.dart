@@ -55,5 +55,6 @@ Future _addtask(String taskname,String tasknote,String list)async {
     'comment': tasknote,
     'list' : mylist,
     'time': Timestamp.now(),
+    'iscompleted':false,
     });
 }
