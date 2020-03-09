@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:peeklist/pages/create_account.dart';
 import 'package:peeklist/pages/create_task.dart';
 import 'package:peeklist/pages/inbox.dart';
+import 'package:peeklist/models/tasklist.dart';
+import 'package:peeklist/pages/tasklistpage.dart';
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -13,13 +15,29 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+  final List<Tasklist> tasklist = [
+    Tasklist(listname: 'schooltask'),
+    //Tasklist(listname: 'groceries')
+  ];
+
+  final newtasklistinputController = TextEditingController();
+
+  void _addtomylist(String lstname) {
+    final newlst = Tasklist(listname: lstname);
+
+    setState(() {
+      tasklist.add(newlst);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: <Widget>[
           Container(
-            child: Column(children: <Widget>[
+              child: Column(
+            children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 25.0),
                 child: Center(
@@ -31,25 +49,68 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
               ),
-              Row(
-              children: <Widget>[
-              Icon(
-                Icons.inbox,
-                color: Colors.green,
-                size: 30.0,
+              Row(children: <Widget>[
+                Icon(
+                  Icons.inbox,
+                  color: Colors.green,
+                  size: 30.0,
+                ),
+                RaisedButton(
+                    child: Text('Inbox'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BuildInbox()));
+                    }),
+              ]),
+              Padding(
+                padding: EdgeInsets.only(top: 25.0),
+                child: Center(
+                  child: Text(
+                    "My Lists",
+                    style: TextStyle(
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ),
               ),
-              RaisedButton(
-                  child: Text('Inbox'),
-                  onPressed: () {
-                    Navigator.push(context,
-<<<<<<< HEAD
-                        MaterialPageRoute(builder: (context) => InboxNavigate()));
-=======
-                        MaterialPageRoute(builder: (context) => BuildInbox()));
->>>>>>> 083fe9fbe587ac417e099aed069ac64d4bd7a101
-                  }),
-            ]),  ],)
-          ),
+              Card(
+                  elevation: 5,
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextField(
+                            decoration:
+                                InputDecoration(labelText: 'new list name'),
+                            controller: newtasklistinputController,
+                          ),
+                          RaisedButton(
+                            child: Text('create list'),
+                            textColor: Colors.blue,
+                            onPressed: () {
+                              //print(newtasklistinputController.text);
+                              _addtomylist(newtasklistinputController.text);
+                            },
+                          )
+                        ],
+                      ))),
+              Column(
+                children: tasklist.map((lst) {
+                  return FlatButton(
+                      child: Text(lst.listname),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => tasklistpage()));
+                      });
+                }).toList(),
+              ),
+            ],
+          )),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -61,32 +122,10 @@ class _TaskPageState extends State<TaskPage> {
         },
         child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
-
-<<<<<<< HEAD
-class InboxNavigate extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("inbox"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
-=======
-
 
 //Widget _buildBody(BuildContext context){
 //  return StreamBuilder<QuerySnapshot>(
@@ -110,4 +149,3 @@ class InboxNavigate extends StatelessWidget {
 //      }
 //  );
 //}
->>>>>>> 083fe9fbe587ac417e099aed069ac64d4bd7a101
