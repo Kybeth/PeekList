@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:peeklist/pages/create_account.dart';
 import 'package:peeklist/pages/create_task.dart';
 import 'package:peeklist/pages/inbox.dart';
 import 'package:peeklist/models/tasklist.dart';
