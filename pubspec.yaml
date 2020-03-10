@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   path_provider: ^0.5.0+1
   timeago: 2.0.17
+  flutter_cupertino_date_picker: ^1.0.12
   cached_network_image:
   flutter_svg:
 

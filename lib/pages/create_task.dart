@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/widgets/header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:peeklist/models/user.dart';
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class CreateTask extends StatelessWidget {
   final _taskname=TextEditingController();
@@ -30,6 +32,7 @@ class CreateTask extends StatelessWidget {
                 prefixIcon: Icon(Icons.note)
             ),
           ),
+
           RaisedButton(
             onPressed: (){
               _addtask(_taskname.text,_tasknote.text,"inbox");
