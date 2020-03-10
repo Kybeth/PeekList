@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:peeklist/pages/social_home.dart';
 import 'package:peeklist/pages/task_page.dart';
 
-class TabBarExample extends StatefulWidget {
+class Root extends StatefulWidget {
   final String title;
 
-  TabBarExample({Key key, this.title}) : super(key: key);
+  Root({Key key, this.title}) : super(key: key);
 
   @override
-  _TabBarExampleState createState() => _TabBarExampleState();
+  _RootState createState() => _RootState();
 }
 
-class _TabBarExampleState extends State<TabBarExample>
+class _RootState extends State<Root>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -34,9 +34,6 @@ class _TabBarExampleState extends State<TabBarExample>
             Tab(
               text: "Social",
             ),
-            Tab(
-              text: "Settings",
-            ),
           ],
           controller: _tabController,
         ),
@@ -45,15 +42,6 @@ class _TabBarExampleState extends State<TabBarExample>
         children: <Widget>[
           TaskPage(),
           SocialHome(),
-          // Container(
-          //   color: Colors.orangeAccent,
-          // ),
-          // Container(
-          //   color: Colors.redAccent,
-          // ),
-          Container(
-            color: Colors.blueAccent,
-          ),
         ],
         controller: _tabController,
       ),

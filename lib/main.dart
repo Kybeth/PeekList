@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:peeklist/pages/tab_bar.dart';
-// import 'package:peeklist/pages/home.dart';
-
+import 'package:peeklist/pages/root.dart';
 
 
 void main() {
@@ -17,14 +15,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.red,
+        primarySwatch: Colors.red,
+        accentColor: Colors.grey,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.grey,
+        accentColor: Colors.black,
       ),
-      home: TabBarExample(),
+      home: new Root(),
     );
   }
 }

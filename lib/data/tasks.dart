@@ -28,7 +28,6 @@ class Showlist extends StatelessWidget{
 
               title: Text(doc['name'],style: returnstyle(doc['iscompleted']),),
               subtitle: Text(doc['comment'],style: returnstyle(doc['iscompleted'])),
-
           );
 
         }
