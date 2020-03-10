@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/pages/create_account.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/pages/create_task.dart';
 import 'package:peeklist/pages/inbox.dart';
 import 'package:peeklist/models/tasklist.dart';
 import 'package:peeklist/pages/tasklistpage.dart';
+
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -15,19 +17,36 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  final List<Tasklist> tasklist = [
+   final List<Tasklist> tasklist = [
     Tasklist(listname: 'schooltask'),
     //Tasklist(listname: 'groceries')
   ];
+  //[
+//    Tasklist(listname: 'schooltask'),
+//    //Tasklist(listname: 'groceries')
 
-  final newtasklistinputController = TextEditingController();
 
-  void _addtomylist(String lstname) {
-    final newlst = Tasklist(listname: lstname);
+  final newlist = TextEditingController();
 
-    setState(() {
-      tasklist.add(newlst);
+
+  Future _addtomylist(String Listname)async {
+
+    await Firestore.instance
+        .collection('lists')
+        .add(<String, dynamic>{
+      'list':Listname,
     });
+    Stream<QuerySnapshot> sp=await Firestore.instance.collection('lists').snapshots();
+    sp.forEach((ds){
+      List<DocumentSnapshot> ds1=ds.documents;
+      ds1.forEach((element) {
+       var newlist=Tasklist(listname: element['list']);
+       setState(() {
+         tasklist.add(newlist);
+       });
+    });
+    });
+
   }
 
   @override
@@ -38,10 +57,10 @@ class _TaskPageState extends State<TaskPage> {
           Container(
               child: Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 25.0),
-                child: Center(
-                  child: Text(
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Center(
+                    child: Text(
                     "Task Page",
                     style: TextStyle(
                       fontSize: 25.0,
@@ -49,13 +68,13 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
               ),
-              Row(children: <Widget>[
-                Icon(
+                Row(children: <Widget>[
+                  Icon(
                   Icons.inbox,
                   color: Colors.green,
                   size: 30.0,
                 ),
-                RaisedButton(
+                   RaisedButton(
                     child: Text('Inbox'),
                     onPressed: () {
                       Navigator.push(
@@ -64,10 +83,10 @@ class _TaskPageState extends State<TaskPage> {
                               builder: (context) => BuildInbox()));
                     }),
               ]),
-              Padding(
-                padding: EdgeInsets.only(top: 25.0),
-                child: Center(
-                  child: Text(
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                   child: Center(
+                     child: Text(
                     "My Lists",
                     style: TextStyle(
                       fontSize: 25.0,
@@ -75,7 +94,7 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
               ),
-              Card(
+                Card(
                   elevation: 5,
                   child: Container(
                       padding: EdgeInsets.all(10),
@@ -85,19 +104,19 @@ class _TaskPageState extends State<TaskPage> {
                           TextField(
                             decoration:
                                 InputDecoration(labelText: 'new list name'),
-                            controller: newtasklistinputController,
+                            controller: newlist,
                           ),
                           RaisedButton(
                             child: Text('create list'),
                             textColor: Colors.blue,
                             onPressed: () {
                               //print(newtasklistinputController.text);
-                              _addtomylist(newtasklistinputController.text);
+                              _addtomylist(newlist.text);
                             },
                           )
                         ],
                       ))),
-              Column(
+                Column(
                 children: tasklist.map((lst) {
                   return FlatButton(
                       child: Text(lst.listname),
@@ -109,7 +128,7 @@ class _TaskPageState extends State<TaskPage> {
                       });
                 }).toList(),
               ),
-            ],
+            ]
           )),
         ],
       ),
@@ -149,3 +168,4 @@ class _TaskPageState extends State<TaskPage> {
 //      }
 //  );
 //}
+
