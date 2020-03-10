@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:peeklist/pages/create_account.dart';
+//import 'package:peeklist/pages/create_account.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/pages/create_task.dart';
 import 'package:peeklist/pages/inbox.dart';
+import 'package:peeklist/models/tasklist.dart';
+import 'package:peeklist/pages/tasklistpage.dart';
+
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -13,17 +17,46 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+   final List<Tasklist> tasklist=[];
+
+
+  final newlist = TextEditingController();
+
+
+  Future _addtomylist(String Listname)async {
+
+    await Firestore.instance
+        .collection('lists')
+        .add(<String, dynamic>{
+      'list':Listname,
+    });
+    tasklist.clear();
+    Stream<QuerySnapshot> sp=await Firestore.instance.collection('lists').snapshots();
+    sp.forEach((ds){
+      List<DocumentSnapshot> ds1=ds.documents;
+      ds1.forEach((element) {
+       var newlist=Tasklist(listname: element['list']);
+       setState(() {
+         tasklist.add(newlist);
+       });
+    });
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: <Widget>[
           Container(
-            child: Column(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 25.0),
-                child: Center(
-                  child: Text(
+
+              child: Column(
+            children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Center(
+                    child: Text(
                     "Task Page",
                     style: TextStyle(
                       fontSize: 25.0,
@@ -31,21 +64,68 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
               ),
-              Row(
-              children: <Widget>[
-              Icon(
-                Icons.inbox,
-                color: Colors.green,
-                size: 30.0,
+                Row(children: <Widget>[
+                  Icon(
+                  Icons.inbox,
+                  color: Colors.green,
+                  size: 30.0,
+                ),
+                   RaisedButton(
+                    child: Text('Inbox'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BuildInbox()));
+                    }),
+              ]),
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                   child: Center(
+                     child: Text(
+                    "My Lists",
+                    style: TextStyle(
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ),
               ),
-              RaisedButton(
-                  child: Text('Inbox'),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BuildInbox()));
-                  }),
-            ]),  ],)
-          ),
+                Card(
+                  elevation: 5,
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextField(
+                            decoration:
+                                InputDecoration(labelText: 'new list name'),
+                            controller: newlist,
+                          ),
+                          RaisedButton(
+                            child: Text('create list'),
+                            textColor: Colors.blue,
+                            onPressed: () {
+                              //print(newtasklistinputController.text);
+                              _addtomylist(newlist.text);
+                            },
+                          )
+                        ],
+                      ))),
+                Column(
+                children: tasklist.map((lst) {
+                  return FlatButton(
+                      child: Text(lst.listname),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => tasklistpage()));
+                      });
+                }).toList(),
+              ),
+            ]
+          )),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -57,12 +137,10 @@ class _TaskPageState extends State<TaskPage> {
         },
         child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
-
-
 
 //Widget _buildBody(BuildContext context){
 //  return StreamBuilder<QuerySnapshot>(
@@ -86,3 +164,4 @@ class _TaskPageState extends State<TaskPage> {
 //      }
 //  );
 //}
+
