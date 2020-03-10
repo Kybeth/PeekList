@@ -17,13 +17,7 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-   final List<Tasklist> tasklist = [
-    Tasklist(listname: 'schooltask'),
-    //Tasklist(listname: 'groceries')
-  ];
-  //[
-//    Tasklist(listname: 'schooltask'),
-//    //Tasklist(listname: 'groceries')
+   final List<Tasklist> tasklist=[];
 
 
   final newlist = TextEditingController();
@@ -36,6 +30,7 @@ class _TaskPageState extends State<TaskPage> {
         .add(<String, dynamic>{
       'list':Listname,
     });
+    tasklist.clear();
     Stream<QuerySnapshot> sp=await Firestore.instance.collection('lists').snapshots();
     sp.forEach((ds){
       List<DocumentSnapshot> ds1=ds.documents;
@@ -55,6 +50,7 @@ class _TaskPageState extends State<TaskPage> {
       body: ListView(
         children: <Widget>[
           Container(
+
               child: Column(
             children: <Widget>[
                 Padding(
