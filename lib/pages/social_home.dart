@@ -1,155 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:peeklist/models/user.dart';
-
-import 'create_account.dart';
-
-final GoogleSignIn googleSignIn = GoogleSignIn();
-final userRef = Firestore.instance.collection('users');
-final DateTime timestamp = DateTime.now();
-User currentUser;
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:peeklist/models/todo.dart';
+import 'package:peeklist/utils/auth.dart';
 
 class SocialHome extends StatefulWidget {
+  SocialHome({Key key}) : super(key: key);
+
   @override
   _SocialHomeState createState() => _SocialHomeState();
 }
 
+List socialFeed = [
+      Todo(
+        name: "Social Post 1",
+        isDone: false,
+        description: "This is a test...",
+        isSocial: true,
+      ),
+      Todo(
+        name: "Social Post 2",
+        isDone: false,
+        description: "This is a test...",
+        isSocial: true,
+      ),
+      Todo(
+        name: "Social Post 3",
+        isDone: false,
+        description: "This is a test...",
+        isSocial: true,
+      ),
+    ];
+
 class _SocialHomeState extends State<SocialHome> {
-  bool isAuth = false;
-  PageController pageController;
-  int pageIndex = 0;
+  bool _isAuth = false;
+  Map<String, dynamic> _profile;
+  bool _loading = false;
 
   @override
-  void initState() { 
+  void initState() {
+    // TODO: implement initState
     super.initState();
-
-    pageController = PageController();
-    //User sign in nd sign out
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      handleSignIn(account);
-    }, onError: (err) {
-      print('Error Signing In... $err');
-    });
-    //Reauthenticate user
-    googleSignIn.signInSilently(suppressErrors: false).then((account) {
-      handleSignIn(account);
-    }).catchError((err) {
-      print('Error signing in $err');
-    });
+    authService.profile.listen((state) => setState(() => _profile = state));
+    authService.loading.listen((state) => setState(() => _loading = state));
+    authService.isAuth.listen((state) => setState(() => _isAuth = state));
   }
 
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
+  ListTile makeListTile(Todo todo) => ListTile(
+    contentPadding:
+        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+    leading: Container(
+      padding: EdgeInsets.only(right: 12.0),
+      decoration: new BoxDecoration(
+          border: new Border(
+              right: new BorderSide(width: 1.0, color: Colors.black87))),
+      child: Icon(Icons.autorenew, color: Colors.black),
+    ),
+    title: Text(
+      todo.name,
+      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    ),
+    // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-  handleSignIn(GoogleSignInAccount account) {
-      if (account != null) {
-        createUserInFirestore();
-        setState(() {
-          isAuth = true;
-        });
-      } else {
-        setState(() {
-          isAuth = false;
-        });
-      }
-  }
+    subtitle: Row(
+      children: <Widget>[
+        Expanded(
+            flex: 1,
+            child: Container(
+              // tag: 'hero',
+              child: Checkbox(value: todo.isDone)
+            )),
+        Expanded(
+          flex: 4,
+          child: Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Text(todo.description,
+                  style: TextStyle(color: Colors.black))),
+        )
+      ],
+    ),
+    trailing:
+        Icon(Icons.keyboard_arrow_right, color: Colors.black, size: 30.0),
+    onTap: () {},
+  );
 
-  createUserInFirestore() async {
-    // check if user exists in users collection in database by id
-    final GoogleSignInAccount user = googleSignIn.currentUser;
-    DocumentSnapshot doc = await userRef.document(user.id).get();
-
-    // if user does not exist, then take them to create account page
-    if (!doc.exists) {
-      final username = await Navigator.push(context, MaterialPageRoute(
-        builder: (context) => CreateAccount()));
-
-      userRef.document(user.id).setData({
-        "id": user.id,
-        "username": username,
-        "photoUrl": user.photoUrl,
-        "email": user.email,
-        "displayName": user.displayName,
-        "bio": "",
-        "timestamp": timestamp,
-      });
-
-      doc = await userRef.document(user.id).get();
-    }
-
-    currentUser = User.fromDocument(doc);
-    // get username from create account, use it to make new user document in users collection
-
-  }
-
-  login() {
-    googleSignIn.signIn();
-  }
-
-  logout() {
-    googleSignIn.signOut();
-  }
-
-  onPageChanged(int pageIndex) {
-    setState(() {
-      this.pageIndex = pageIndex;
-    });
-
-  }
-
-  onTap(int pageIndex) {
-    pageController.animateToPage(
-      pageIndex,
-      duration: Duration(milliseconds: 250),
-      curve: Curves.easeInOut,  
-    );
-  }
-
-  Scaffold buildAuthScreen() {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 25.0),
-              child: Center(
-                child: Text(
-                  "Social Page",
-                  style: TextStyle(
-                    fontSize: 25.0,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+  Card makeCard(Todo todo) => Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.search)
-            ),
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.add),
-            ),
-          ]
-        ),
+      // color: Theme.of(context).accentColor,
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        // decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+        child: makeListTile(todo),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
+
+  
 
   Widget buildUnAuthScreen() {
+    
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -175,25 +125,87 @@ class _SocialHomeState extends State<SocialHome> {
                 color: Colors.white
               ),
             ),
-            GestureDetector(
-              onTap: login,
-              child: Container(
-                width: 260.0,
-                height: 60.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/google_signin_button.png'),
-                    fit: BoxFit.cover,
-                  )
-                ),
+            RaisedButton(
+              child: Text("Login with Google"),
+              padding: EdgeInsets.all(15.0),
+              onPressed: () => authService.googleSignIn(),
+              elevation: 5.0,
+              color: Theme.of(context).primaryColorDark,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.black),
               ),
-            )
+            ),
       ],)
     ),);
+  }
+  
+  Scaffold buildAuthScreen() {
+    final makeBody = Container(
+      padding: EdgeInsets.all(10.0),
+      // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: socialFeed.length,
+        itemBuilder: (BuildContext context, int index) {
+          return makeCard(socialFeed[index]);
+        },
+      ),
+    );
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: makeBody,
+      floatingActionButton: SpeedDial(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Theme.of(context).accentColor,
+            child: Icon(Icons.add),
+            label: "Add",
+            onTap: () => print('Add')
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+            child: Icon(Icons.person),
+            label: "Profile",
+            onTap: () {},
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Theme.of(context).primaryColorLight,
+            child: Icon(Icons.search),
+            label: "Search",
+            onTap: () {
+        
+            },
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.black45,
+            child: Icon(Icons.exit_to_app),
+            label: "Logout",
+            onTap: () => authService.signOut(),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return isAuth ? buildAuthScreen() : buildUnAuthScreen();
+    return _isAuth ? buildAuthScreen() : buildUnAuthScreen();
   }
 }
