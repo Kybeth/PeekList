@@ -1,8 +1,9 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/widgets/header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peeklist/models/user.dart';
+import 'package:peeklist/utils/auth.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class CreateTask extends StatelessWidget {
@@ -48,12 +49,14 @@ class CreateTask extends StatelessWidget {
 
 Future _addtask(String taskname,String tasknote,String list)async {
   var mylist="inbox";
+  var uid = await AuthService().userID();
   if(list==null || list.length==0){
     mylist=list;
   }
   await Firestore.instance
   .collection('tasks')
     .add(<String, dynamic>{
+    'uid': uid,
     'name': taskname,
     'comment': tasknote,
     'list' : mylist,

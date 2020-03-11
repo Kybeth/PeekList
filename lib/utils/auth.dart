@@ -62,6 +62,12 @@ class AuthService {
     isAuth.add(false);
   }
 
+  Future userID() async{
+  final FirebaseUser user = await _auth.currentUser();
+  return user.uid;
+  }
+
+
 }
 
 final AuthService authService = AuthService();
