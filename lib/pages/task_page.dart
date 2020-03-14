@@ -6,6 +6,8 @@ import 'package:peeklist/pages/inbox.dart';
 import 'package:peeklist/models/tasklist.dart';
 import 'package:peeklist/pages/tasklistpage.dart';
 
+import '../utils/auth.dart';
+
 
 class TaskPage extends StatefulWidget {
   // final FirebaseUser user;
@@ -17,10 +19,22 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-   final List<Tasklist> tasklist=[];
-
+  final List<Tasklist> tasklist=[];
+  Map<String, dynamic> _profile;
 
   final newlist = TextEditingController();
+
+  @override
+  void initState() { 
+    super.initState();
+    authService.profile.listen((state) => setState(() => _profile = state));
+  }
+
+  // void addTask() {
+  //   List inbox = _profile['tasks']['inbox'];
+
+  // }
+  
 
 
   Future _addtomylist(String Listname)async {
