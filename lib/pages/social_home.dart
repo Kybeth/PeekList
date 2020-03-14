@@ -42,7 +42,7 @@ class _SocialHomeState extends State<SocialHome> {
     super.initState();
     authService.profile.listen((state) => setState(() => _profile = state));
     authService.loading.listen((state) => setState(() => _loading = state));
-    authService.isAuth.listen((state) => setState(() => _isAuth = state));
+    // authService.isAuth.listen((state) => setState(() => _isAuth = state));
   }
 
   ListTile makeListTile(Todo todo) => ListTile(
@@ -98,49 +98,9 @@ class _SocialHomeState extends State<SocialHome> {
 
   
 
-  Widget buildUnAuthScreen() {
-    
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.of(context).accentColor.withOpacity(0.8),
-              Theme.of(context).primaryColor,
-            ]
-          )
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Peek List',
-              style: TextStyle(
-                fontFamily: "Signatra",
-                fontSize: 90.0,
-                color: Colors.white
-              ),
-            ),
-            RaisedButton(
-              child: Text("Login with Google"),
-              padding: EdgeInsets.all(15.0),
-              onPressed: () => authService.googleSignIn(),
-              elevation: 5.0,
-              color: Theme.of(context).primaryColorDark,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.black),
-              ),
-            ),
-      ],)
-    ),);
-  }
-  
-  Scaffold buildAuthScreen() {
+
+  @override
+  Widget build(BuildContext context) {
     final makeBody = Container(
       padding: EdgeInsets.all(10.0),
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
@@ -202,10 +162,5 @@ class _SocialHomeState extends State<SocialHome> {
         ],
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _isAuth ? buildAuthScreen() : buildUnAuthScreen();
   }
 }

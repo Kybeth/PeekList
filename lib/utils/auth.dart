@@ -11,7 +11,7 @@ class AuthService {
   Observable<FirebaseUser> user;
   Observable<Map<String, dynamic>> profile;
   PublishSubject loading = PublishSubject();
-  PublishSubject isAuth = PublishSubject();
+  // PublishSubject isAuth = PublishSubject();
   // bool isAuth = false;
   // Observable<Map<bool, dynamic>> isAuth;
 
@@ -40,7 +40,7 @@ class AuthService {
     print("Signed In: " + user.displayName);
     loading.add(false);
     // isAuth = true as Observable<Map<bool, dynamic>>;
-    isAuth.add(true);
+    // isAuth.add(true);
     return user;
   }
 
@@ -53,13 +53,16 @@ class AuthService {
       'displayName': user.displayName,
       'lastSeen': DateTime.now(),
       'bio': "",
+      'tasks': {
+        'inbox': [],
+      },
     }, merge: true);
 
   }
 
   void signOut() {
     _auth.signOut();
-    isAuth.add(false);
+    // isAuth.add(false);
   }
 
   Future userID() async{
