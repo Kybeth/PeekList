@@ -5,7 +5,7 @@ import 'package:peeklist/pages/create_task.dart';
 import 'package:peeklist/pages/inbox.dart';
 import 'package:peeklist/models/tasklist.dart';
 import 'package:peeklist/pages/tasklistpage.dart';
-
+import 'package:peeklist/utils/auth.dart';
 import '../utils/auth.dart';
 
 
@@ -38,6 +38,8 @@ class _TaskPageState extends State<TaskPage> {
 
 
   Future _addtomylist(String Listname)async {
+
+
 
     await Firestore.instance
         .collection('lists')
@@ -86,11 +88,14 @@ class _TaskPageState extends State<TaskPage> {
                 ),
                    RaisedButton(
                     child: Text('Inbox'),
-                    onPressed: () {
+                    onPressed: () async{
+                      var uid=await AuthService().userID();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BuildInbox()));
+                              builder: (context) => BuildInbox(
+                                uid: uid,
+                              )));
                     }),
               ]),
                 Padding(

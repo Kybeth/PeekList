@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:peeklist/widgets/header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/utils/auth.dart';
+import 'package:peeklist/data/tasks.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class CreateTask extends StatelessWidget {
@@ -35,8 +36,17 @@ class CreateTask extends StatelessWidget {
           ),
 
           RaisedButton(
-            onPressed: (){
-              _addtask(_taskname.text,_tasknote.text,"inbox");
+            onPressed: () async{
+              Tasks ntask=new Tasks (
+                  name: _taskname.text,
+                  uid: await AuthService().userID(),
+                  comment: _tasknote.text,
+                list: 'inbox',
+                iscompleted: false,
+                isstarred: false
+              );
+
+              ntask.addtask();
               Navigator.of(context).pop();
             },
             child: Text('add'),
@@ -47,20 +57,20 @@ class CreateTask extends StatelessWidget {
   }
 }
 
-Future _addtask(String taskname,String tasknote,String list)async {
-  var mylist="inbox";
-  var uid = await AuthService().userID();
-  if(list==null || list.length==0){
-    mylist=list;
-  }
-  await Firestore.instance
-  .collection('tasks')
-    .add(<String, dynamic>{
-    'uid': uid,
-    'name': taskname,
-    'comment': tasknote,
-    'list' : mylist,
-    'time': Timestamp.now(),
-    'iscompleted':false,
-    });
-}
+//Future _addtask(String taskname,String tasknote,String list)async {
+//  var mylist="inbox";
+//  var uid = await AuthService().userID();
+//  if(list==null || list.length==0){
+//    mylist=list;
+//  }
+//  await Firestore.instance
+//  .collection('tasks')
+//    .add(<String, dynamic>{
+//    'uid': uid,
+//    'name': taskname,
+//    'comment': tasknote,
+//    'list' : mylist,
+//    'time': Timestamp.now(),
+//    'iscompleted':false,
+//    });
+//}
