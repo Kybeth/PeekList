@@ -53,9 +53,7 @@ class AuthService {
       'displayName': user.displayName,
       'lastSeen': DateTime.now(),
       'bio': "",
-      'tasks': {
-        'inbox': [],
-      },
+      'tasks': ['inbox'],
     }, merge: true);
 
   }
