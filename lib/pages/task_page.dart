@@ -41,6 +41,15 @@ class _TaskPageState extends State<TaskPage> {
     });
   }
 
+  gettasklist(){
+    List n=tasklist.toList();
+    List re=[];
+    for(int i=0; i<n.length; i++){
+      var strin=n[i].listname;
+      re.add(strin);
+    }
+    return re;
+  }
   @override
   void initState() {
     super.initState();
@@ -202,7 +211,9 @@ class _TaskPageState extends State<TaskPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateTask()),
+            MaterialPageRoute(builder: (context) => CreateTask(
+              allist: gettasklist(),
+            )),
           );
         },
         child: Icon(Icons.add),
@@ -220,26 +231,5 @@ class _TaskPageState extends State<TaskPage> {
 
 
 
-//Widget _buildBody(BuildContext context){
-//  return StreamBuilder<QuerySnapshot>(
-//    stream: Firestore.instance.collection('tasks').where('list',isEqualTo: 'inbox').snapshots(),
-//     builder: (context, snapshot) {
-//      if(!snapshot.hasData) return Container();
-//      return _buildList(context,snapshot.data.documents);
-//     },
-//  );
-//}
-//
-//Widget _buildList(BuildContext context,List<DocumentSnapshot> list){
-//  return ListView.builder(
-//      itemCount: list.length,
-//      itemBuilder: (context,idx){
-//        DocumentSnapshot doc =list[idx];
-//        return ListTile(
-//          title: Text(doc['name']),
-//          subtitle: Text(doc['comment']),
-//        );
-//      }
-//  );
-//}
+
 

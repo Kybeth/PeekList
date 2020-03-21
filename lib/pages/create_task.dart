@@ -5,13 +5,60 @@ import 'package:peeklist/widgets/header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/data/tasks.dart';
+
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
-class CreateTask extends StatelessWidget {
-  final _taskname=TextEditingController();
-  final _tasknote=TextEditingController();
+class CreateTask extends StatefulWidget {
+  final allist;
+  CreateTask({Key key, this.allist}) : super(key: key);
+  @override
+
+  State<StatefulWidget> createState() => CreateTasks(allist: allist);
+
+}
+
+class CreateTasks extends State<CreateTask>{
+  final allist;
+  CreateTasks({Key key, this.allist});
+  var _taskname=TextEditingController();
+  var _tasknote=TextEditingController();
+ // List allist=[];
+  var choose_list;
+
+
+//  Future getalllist()async{
+//    var uid=await AuthService().userID();
+//    Stream<QuerySnapshot> qsp=Firestore.instance.collection('users').where('uid',isEqualTo: uid).snapshots();
+//    await qsp.forEach((ds) {
+//      List<DocumentSnapshot> ds1=ds.documents;
+//      ds1.forEach((element) {
+//        List n=element['tasks'];
+//       allist.addAll(n);
+//      });
+//    });
+//  }
+
+  List<DropdownMenuItem> getlist(){
+    List<DropdownMenuItem> alllist=new List();
+      for(int i=0; i<allist.length; i++){
+        var listchoose=new DropdownMenuItem(
+          value: allist[i].toString(),
+          child: Text(allist[i].toString()),
+        );
+        alllist.add(listchoose);
+      }
+      return alllist;
+  }
+
 
   @override
+//  void initState() {
+//    super.initState();
+//    Future f1 = new Future(() => null);
+//    f1.then((_) async{
+//      await getalllist();
+//    });
+//  }
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
@@ -34,14 +81,28 @@ class CreateTask extends StatelessWidget {
                 prefixIcon: Icon(Icons.note)
             ),
           ),
-
+          Column(
+            children: <Widget>[
+              DropdownButton(
+                items: getlist(),
+                hint: Text('choose your lists'),
+                value: choose_list,
+                icon: Icon(Icons.arrow_drop_down),
+                onChanged: (T){
+                  setState(() {
+                    choose_list=T;
+                  });
+                },
+              )
+            ],
+          ),
           RaisedButton(
             onPressed: () async{
               Tasks ntask=new Tasks (
                   name: _taskname.text,
                   uid: await AuthService().userID(),
                   comment: _tasknote.text,
-                list: 'inbox',
+                list: choose_list,
                 iscompleted: false,
                 isstarred: false
               );
@@ -55,22 +116,21 @@ class CreateTask extends StatelessWidget {
       ),
     );
   }
+
+  Widget _showlist(BuildContext context){
+    return ListView.builder(
+      itemCount: allist.length,
+      itemBuilder: (context, idx) {
+
+
+        return FlatButton(
+            onPressed: (){
+              choose_list=allist[idx];
+            },
+            child: Text(allist[idx]));
+      },
+    );
+  }
+
 }
 
-//Future _addtask(String taskname,String tasknote,String list)async {
-//  var mylist="inbox";
-//  var uid = await AuthService().userID();
-//  if(list==null || list.length==0){
-//    mylist=list;
-//  }
-//  await Firestore.instance
-//  .collection('tasks')
-//    .add(<String, dynamic>{
-//    'uid': uid,
-//    'name': taskname,
-//    'comment': tasknote,
-//    'list' : mylist,
-//    'time': Timestamp.now(),
-//    'iscompleted':false,
-//    });
-//}

@@ -189,13 +189,14 @@ class Tasks {
   });
 
   Future<void> addtask() async {
+
     await Firestore.instance
         .collection('tasks')
         .add(<String, dynamic>{
       'uid': uid,
       'name': name,
       'comment': comment,
-      'list': list,
+      'list': list!=null? list:'inbox',
       'time': Timestamp.now(),
       'iscompleted': iscompleted,
       'isstarred' : isstarred
