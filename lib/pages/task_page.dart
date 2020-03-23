@@ -43,12 +43,12 @@ class _TaskPageState extends State<TaskPage> {
 
   gettasklist(){
     List n=tasklist.toList();
-    List re=[];
+    Set re={};
     for(int i=0; i<n.length; i++){
       var strin=n[i].listname;
       re.add(strin);
     }
-    return re;
+    return re.toList();
   }
   @override
   void initState() {
