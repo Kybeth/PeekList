@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.cyan,
         accentColor: Colors.grey,
       ),
       darkTheme: ThemeData(
