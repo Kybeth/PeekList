@@ -10,27 +10,25 @@ class CreateTask extends StatefulWidget {
   final allist;
   CreateTask({Key key, this.allist}) : super(key: key);
   @override
-
-  State<StatefulWidget> createState() => CreateTasks(allist: allist);
-
+  State<StatefulWidget> createState() => _CreateTaskState(allist: allist);
 }
+
 const String INIT_DATETIME = '2019-05-16 09:00';
 
-class CreateTasks extends State<CreateTask>{
+class _CreateTaskState extends State<CreateTask> {
   final allist;
-  CreateTasks({Key key, this.allist});
-  var _taskname=TextEditingController();
-  var _tasknote=TextEditingController();
-  final _duedate=TextEditingController();
- // List allist=[];
+  _CreateTaskState({Key key, this.allist});
+  var _taskname = TextEditingController();
+  var _tasknote = TextEditingController();
+  final _duedate = TextEditingController();
+  // List allist=[];
   var choose_list;
 
-  String _format = 'yyyy - MM - dd    EEE,H:m';//DateTimePicker
+  String _format = 'yyyy - MM - dd    EEE,H:m'; //DateTimePicker
   TextEditingController _formatCtrl = TextEditingController();
   DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
-
 
 //  Future getalllist()async{
 //    var uid=await AuthService().userID();
@@ -44,24 +42,25 @@ class CreateTasks extends State<CreateTask>{
 //    });
 //  }
 
-  List<DropdownMenuItem> getlist(){
-    List<DropdownMenuItem> alllist=new List();
-      for(int i=0; i<allist.length; i++){
-        var listchoose=new DropdownMenuItem(
-          value: allist[i].toString(),
-          child: Text(allist[i].toString()),
-        );
-        alllist.add(listchoose);
-      }
-      return alllist;
+  List<DropdownMenuItem> getlist() {
+    List<DropdownMenuItem> alllist = new List();
+    for (int i = 0; i < allist.length; i++) {
+      var listchoose = new DropdownMenuItem(
+        value: allist[i].toString(),
+        child: Text(allist[i].toString()),
+      );
+      alllist.add(listchoose);
+    }
+    return alllist;
   }
 
   @override
   void initState() {
-  super.initState();
-  _formatCtrl.text = _format;
-  _dateTime = DateTime.parse(INIT_DATETIME);
+    super.initState();
+    _formatCtrl.text = _format;
+    _dateTime = DateTime.parse(INIT_DATETIME);
   }
+
   /// Display time picker.
   void _showDateTimePicker() {
     DatePicker.showDatePicker(
@@ -84,6 +83,7 @@ class CreateTasks extends State<CreateTask>{
       },
     );
   }
+
   @override
 //  void initState() {
 //    super.initState();
@@ -93,7 +93,7 @@ class CreateTasks extends State<CreateTask>{
 //    });
 //  }
   Widget build(BuildContext context) {
-      List<Widget> radios = List<Widget>();
+    List<Widget> radios = List<Widget>();
     _locales.forEach((locale) {
       radios.add(Container(
         margin: EdgeInsets.only(right: 8.0),
@@ -126,26 +126,21 @@ class CreateTasks extends State<CreateTask>{
             autofocus: true,
             controller: _taskname,
             decoration: InputDecoration(
-                hintText: "Task Name",
-                prefixIcon: Icon(Icons.person)
-            ),
+                hintText: "Task Name", prefixIcon: Icon(Icons.person)),
           ),
           TextField(
             controller: _tasknote,
-            decoration: InputDecoration(
-                hintText: "Note",
-                prefixIcon: Icon(Icons.note)
-            ),
+            decoration:
+                InputDecoration(hintText: "Note", prefixIcon: Icon(Icons.note)),
           ),
-            TextField(
+          TextField(
             controller: _duedate,
             onTap: _showDateTimePicker,
             decoration: InputDecoration(
-                hintText: "DateTime",
-                prefixIcon: Icon(Icons.timer),
+              hintText: "DateTime",
+              prefixIcon: Icon(Icons.timer),
             ),
             readOnly: true,
-
           ),
           Container(
             child: Text(
@@ -159,24 +154,23 @@ class CreateTasks extends State<CreateTask>{
                 hint: Text('choose your lists'),
                 value: choose_list,
                 icon: Icon(Icons.arrow_drop_down),
-                onChanged: (T){
+                onChanged: (T) {
                   setState(() {
-                    choose_list=T;
+                    choose_list = T;
                   });
                 },
               )
             ],
           ),
           RaisedButton(
-            onPressed: () async{
-              Tasks ntask=new Tasks (
+            onPressed: () async {
+              Tasks ntask = new Tasks(
                   name: _taskname.text,
                   uid: await AuthService().userID(),
                   comment: _tasknote.text,
-                list: choose_list,
-                iscompleted: false,
-                isstarred: false
-              );
+                  list: choose_list,
+                  iscompleted: false,
+                  isstarred: false);
 
               ntask.addtask();
               Navigator.of(context).pop();
@@ -188,20 +182,16 @@ class CreateTasks extends State<CreateTask>{
     );
   }
 
-  Widget _showlist(BuildContext context){
+  Widget _showlist(BuildContext context) {
     return ListView.builder(
       itemCount: allist.length,
       itemBuilder: (context, idx) {
-
-
         return FlatButton(
-            onPressed: (){
-              choose_list=allist[idx];
+            onPressed: () {
+              choose_list = allist[idx];
             },
             child: Text(allist[idx]));
       },
     );
   }
-
 }
-
