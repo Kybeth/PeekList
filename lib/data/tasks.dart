@@ -175,6 +175,7 @@ class Tasks {
   final String list;
   final bool iscompleted;
   final bool isstarred;
+  final String time;
 
 //final Integer likes;
   //final String date;
@@ -184,7 +185,8 @@ class Tasks {
     this.comment,
     this.list,
     this.iscompleted,
-    this.isstarred
+    this.isstarred,
+    this.time
     //this.like
   });
 
@@ -197,7 +199,7 @@ class Tasks {
       'name': name,
       'comment': comment,
       'list': list!=null? list:'inbox',
-      'time': Timestamp.now(),
+      'time': time,
       'iscompleted': iscompleted,
       'isstarred' : isstarred
     });
