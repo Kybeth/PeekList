@@ -170,7 +170,9 @@ class _CreateTaskState extends State<CreateTask> {
                   comment: _tasknote.text,
                   list: choose_list,
                   iscompleted: false,
-                  isstarred: false);
+                  isstarred: false,
+                  time:'${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}'
+              );
 
               ntask.addtask();
               Navigator.of(context).pop();
