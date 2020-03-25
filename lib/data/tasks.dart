@@ -131,7 +131,10 @@ class Showstar extends StatelessWidget {
             ),
 
             trailing:
-            Icon(Icons.star),
+            IconButton(
+                icon:changeicon_star(doc['isstarred']),
+                onPressed: () => starred(doc)
+            ),
 
             title: Text(doc['name'], style: returnstyle(doc['iscompleted']),),
             subtitle: Text(
@@ -150,6 +153,15 @@ class Showstar extends StatelessWidget {
     }
   }
 
+  Future starred(DocumentSnapshot document) {
+    if (document['isstarred']) {
+      document.reference.updateData({"isstarred": false});
+    }
+    else {
+      document.reference.updateData({"isstarred": true});
+    }
+  }
+
   returnstyle(bool completed) {
     if (completed) {
       return TextStyle(fontWeight: FontWeight.w200);
@@ -164,6 +176,11 @@ class Showstar extends StatelessWidget {
   changeicon_com(bool completed) {
     return completed ? Icon(Icons.check_box) : Icon(
         Icons.check_box_outline_blank);
+  }
+
+  changeicon_star(bool completed) {
+    return completed ? Icon(Icons.star) : Icon(
+        Icons.star_border);
   }
 
 }
@@ -237,6 +254,7 @@ class CompletedTask extends StatelessWidget {
     return completed ? Icon(Icons.check_box) : Icon(
         Icons.check_box_outline_blank);
   }
+
 
 }
 
