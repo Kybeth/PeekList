@@ -7,6 +7,9 @@ import 'package:peeklist/models/tasklist.dart';
 import 'package:peeklist/pages/tasklistpage.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/pages/show_starred.dart';
+import 'package:peeklist/pages/today_page.dart';
+import 'package:peeklist/pages/planned_page.dart';
+import 'package:peeklist/pages/completed_page.dart';
 import '../utils/auth.dart';
 
 
@@ -86,7 +89,7 @@ class _TaskPageState extends State<TaskPage> {
       List<DocumentSnapshot> ds1=ds.documents;
       ds1.forEach((element) {
         element.reference.updateData({"tasks":task1});
-       });
+      });
     });
 
   }
@@ -117,7 +120,7 @@ class _TaskPageState extends State<TaskPage> {
                   color: Colors.green,
                   size: 30.0,
                 ),
-                   RaisedButton(
+                  RaisedButton(
                     child: Text('Inbox'),
                     onPressed: () async{
                       var uid=await AuthService().userID();
@@ -129,10 +132,10 @@ class _TaskPageState extends State<TaskPage> {
                               )));
                     }),
               ]),
-                Row(children: <Widget>[
+              Row(children: <Widget>[
                     Icon(
-                    Icons.inbox,
-                    color: Colors.green,
+                    Icons.grade,
+                    color: Colors.yellow[900],
                     size: 30.0,
                     ),
                     RaisedButton(
@@ -148,6 +151,61 @@ class _TaskPageState extends State<TaskPage> {
                       }),
               ]
           ),
+              Row(children: <Widget>[
+                  Icon(
+                  Icons.today,
+                  color: Colors.blue,
+                  size: 30.0,
+                ),
+                  RaisedButton(
+                    child: Text('Today'),
+                    onPressed: () async{
+                      var uid=await AuthService().userID();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BuildToday(
+                                uid: uid,
+                              )));
+                    }),
+              ]),
+              Row(children: <Widget>[
+                  Icon(
+                  Icons.calendar_today,
+                  color: Colors.red,
+                  size: 30.0,
+                ),
+                   RaisedButton(
+                    child: Text('Planned'),
+                    onPressed: () async{
+                      var uid=await AuthService().userID();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BuildPlanned(
+                                uid: uid,
+                              )));
+                    }),
+              ]),
+              Row(children: <Widget>[
+                  Icon(
+                  Icons.event_available,
+                  color: Colors.black,
+                  size: 30.0,
+                ),
+                   RaisedButton(
+                    child: Text('Completed'),
+                    onPressed: () async{
+                      var uid=await AuthService().userID();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BuildCompleted(
+                                uid: uid,
+                              )));
+                    }),
+              ]),
+                
                 Padding(
                   padding: EdgeInsets.only(top: 25.0),
                    child: Center(
