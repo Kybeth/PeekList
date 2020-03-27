@@ -23,6 +23,7 @@ class _CreateTaskState extends State<CreateTask> {
   final _duedate = TextEditingController();
   // List allist=[];
   var choose_list;
+  var isprivate=false;
 
   String _format = 'yyyy - MM - dd    EEE,H:m'; //DateTimePicker
   TextEditingController _formatCtrl = TextEditingController();
@@ -82,6 +83,11 @@ class _CreateTaskState extends State<CreateTask> {
         });
       },
     );
+  }
+
+  changeicon_com(bool isprivated) {
+    return isprivated ? Icon(Icons.check_box_outline_blank) : Icon(
+        Icons.check_box);
   }
 
   @override
@@ -147,8 +153,9 @@ class _CreateTaskState extends State<CreateTask> {
               '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}',
             ),
           ),
-          Column(
+          Row(
             children: <Widget>[
+              Text('choose list or not: '),
               DropdownButton(
                 items: getlist(),
                 hint: Text('choose your lists'),
@@ -162,6 +169,31 @@ class _CreateTaskState extends State<CreateTask> {
               )
             ],
           ),
+
+
+//              Text('Do you want to share this tasks?'),
+//              IconButton(
+//                icon: changeicon_com(isprivate),
+//                onPressed: (){
+//                  isprivate=true;
+//              },
+//              )
+
+          Row(
+
+            children: <Widget>[
+
+              Text('Do you want to share this tasks?'),
+              IconButton(
+                icon: changeicon_com(isprivate),
+                onPressed: (){
+                  setState(() {
+                    isprivate= isprivate? false:true;
+                  });
+              },
+              )
+            ],
+          ),
           RaisedButton(
             onPressed: () async {
               Tasks ntask = new Tasks(
@@ -171,7 +203,8 @@ class _CreateTaskState extends State<CreateTask> {
                   list: choose_list,
                   iscompleted: false,
                   isstarred: false,
-                  time:'${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}'
+                  time:_dateTime,
+                  isprivate:isprivate
               );
 
               ntask.addtask();
@@ -184,16 +217,4 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
-  Widget _showlist(BuildContext context) {
-    return ListView.builder(
-      itemCount: allist.length,
-      itemBuilder: (context, idx) {
-        return FlatButton(
-            onPressed: () {
-              choose_list = allist[idx];
-            },
-            child: Text(allist[idx]));
-      },
-    );
-  }
 }

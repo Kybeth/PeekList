@@ -195,11 +195,12 @@ class _TaskPageState extends State<TaskPage> {
                 children: tasklist.map((lst) {
                   return FlatButton(
                       child: Text(lst.listname),
-                      onPressed: () {
+                      onPressed: () async{
+                        var uid=await AuthService().userID();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => tasklistpage()));
+                                builder: (context) => tasklistpage(listname: lst.listname,uid: uid,)));
                       });
                 }).toList(),
               ),

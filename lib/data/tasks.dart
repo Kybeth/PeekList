@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:peeklist/utils/auth.dart';
 
 class Showlist extends StatelessWidget {
+  // you could use this to show a new list data with give it a list name
 
   final String uid;
   final String list;
@@ -175,7 +176,8 @@ class Tasks {
   final String list;
   final bool iscompleted;
   final bool isstarred;
-  final String time;
+  final time ;
+  final bool isprivate;
 
 //final Integer likes;
   //final String date;
@@ -186,7 +188,8 @@ class Tasks {
     this.list,
     this.iscompleted,
     this.isstarred,
-    this.time
+    this.time,
+    this.isprivate
     //this.like
   });
 
@@ -201,7 +204,8 @@ class Tasks {
       'list': list!=null? list:'inbox',
       'time': time,
       'iscompleted': iscompleted,
-      'isstarred' : isstarred
+      'isstarred' : isstarred,
+      'isprivate' :isprivate
     });
   }
 }
