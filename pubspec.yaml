@@ -36,6 +36,8 @@ dependencies:
   flutter_svg:
   rxdart: 0.20.0
   flutter_speed_dial: ^1.2.1
+  flutter_slidable: 0.5.3
+
 
 dev_dependencies:
   flutter_test:
