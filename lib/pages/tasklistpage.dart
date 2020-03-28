@@ -8,7 +8,7 @@ class tasklistpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("listname"),
+        title: Text(this.listname),
       ),
       body: Showlist(
         uid:"$uid",
