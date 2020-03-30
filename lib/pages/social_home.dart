@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/models/todo.dart';
+import 'package:peeklist/models/user.dart';
+import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/utils/auth.dart';
 
 class SocialHome extends StatefulWidget {
@@ -32,16 +34,12 @@ List socialFeed = [
     ];
 
 class _SocialHomeState extends State<SocialHome> {
-  bool _isAuth = false;
-  Map<String, dynamic> _profile;
-  bool _loading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    authService.profile.listen((state) => setState(() => _profile = state));
-    authService.loading.listen((state) => setState(() => _loading = state));
+
     // authService.isAuth.listen((state) => setState(() => _isAuth = state));
   }
 
@@ -96,9 +94,6 @@ class _SocialHomeState extends State<SocialHome> {
       ),
     );
 
-  
-
-
   @override
   Widget build(BuildContext context) {
     final makeBody = Container(
@@ -137,7 +132,9 @@ class _SocialHomeState extends State<SocialHome> {
             backgroundColor: Theme.of(context).primaryColor,
             child: Icon(Icons.person),
             label: "Profile",
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/myprofile', arguments: currentUser);
+            },
           ),
           SpeedDialChild(
             labelStyle: TextStyle(
@@ -147,7 +144,7 @@ class _SocialHomeState extends State<SocialHome> {
             child: Icon(Icons.search),
             label: "Search",
             onTap: () {
-        
+              Navigator.pushNamed(context, '/search');
             },
           ),
           SpeedDialChild(

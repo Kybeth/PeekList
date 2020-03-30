@@ -1,31 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String id;
-  final String username;
+  final String uid;
   final String email;
-  final String photoUrl;
+  final String photoURL;
   final String displayName;
   final String bio;
+  final List<dynamic> tasks;
 
   User({
-    this.id,
-    this.username,
+    this.uid,
     this.email,
-    this.photoUrl,
+    this.photoURL,
     this.displayName,
-    this.bio
+    this.bio,
+    this.tasks,
   });
 
   //deserialization - take a document snapshot and create an instance of user class
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
-      id: doc['id'],
+      uid: doc['uid'],
       email: doc['email'],
-      username: doc['username'],
-      photoUrl: doc['photoUrl'],
+      photoURL: doc['photoURL'],
       displayName: doc['displayName'],
       bio: doc['bio'],
+      tasks: doc['tasks'],
     );
   }
 }
