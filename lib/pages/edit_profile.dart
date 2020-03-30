@@ -91,7 +91,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  updateProfileData() {
+  updateProfileData() async {
     setState(() {
       displayNameController.text.trim().length < 3 ||
       displayNameController.text.isEmpty ? _displayNameValid = false :
@@ -101,7 +101,8 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (_displayNameValid && _bioValid) {
-      UserService().updateUserProfile(widget.uid, displayNameController.text, bioController.text);
+      var x = await UserService().updateUserProfile(widget.uid, displayNameController.text, bioController.text);
+      print(x);
       SnackBar snackBar = SnackBar(content: Text("Profile Updated"),);
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }

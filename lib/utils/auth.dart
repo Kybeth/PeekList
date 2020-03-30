@@ -48,16 +48,39 @@ class AuthService {
 
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
-    return ref.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName,
-      'lastSeen': DateTime.now(),
-      'bio': "",
-      'tasks': ['inbox'],
-      'searchKey': user.displayName[0].toLowerCase(),
-    }, merge: true);
+    ref.get().then((DocumentSnapshot docSnapshot) => {
+      if (docSnapshot.exists) {
+        ref.updateData({
+          'email': user.email,
+          'photoURL': user.photoUrl,
+          'lastSeen': DateTime.now(),
+          'searchKey': user.displayName[0].toLowerCase(),
+        })
+      } else {
+        ref.setData({
+          'uid': user.uid,
+          'email': user.email,
+          'photoURL': user.photoUrl,
+          'displayName': user.displayName,
+          'lastSeen': DateTime.now(),
+          'bio': "",
+          'tasks': ['inbox'],
+          'searchKey': user.displayName[0].toLowerCase(),
+          }
+        )
+      }
+    });
+  
+    // return ref.setData({
+    //   'uid': user.uid,
+    //   'email': user.email,
+    //   'photoURL': user.photoUrl,
+    //   'displayName': user.displayName,
+    //   'lastSeen': DateTime.now(),
+    //   'bio': "",
+    //   'tasks': ['inbox'],
+    //   'searchKey': user.displayName[0].toLowerCase(),
+    // }, merge: true);
   }
 
   void signOut() {
