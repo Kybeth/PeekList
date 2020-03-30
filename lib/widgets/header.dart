@@ -12,6 +12,6 @@ AppBar header(context, { bool isAppTitle = false, String titleText, removeBackBu
       )
     ),
     centerTitle: true,
-    backgroundColor: Theme.of(context).accentColor,
+    backgroundColor: Theme.of(context).primaryColor,
   );
 }
