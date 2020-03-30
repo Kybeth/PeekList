@@ -31,18 +31,6 @@ class _CreateTaskState extends State<CreateTask> {
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
 
-//  Future getalllist()async{
-//    var uid=await AuthService().userID();
-//    Stream<QuerySnapshot> qsp=Firestore.instance.collection('users').where('uid',isEqualTo: uid).snapshots();
-//    await qsp.forEach((ds) {
-//      List<DocumentSnapshot> ds1=ds.documents;
-//      ds1.forEach((element) {
-//        List n=element['tasks'];
-//       allist.addAll(n);
-//      });
-//    });
-//  }
-
   List<DropdownMenuItem> getlist() {
     List<DropdownMenuItem> alllist = new List();
     for (int i = 0; i < allist.length; i++) {
@@ -91,13 +79,6 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   @override
-//  void initState() {
-//    super.initState();
-//    Future f1 = new Future(() => null);
-//    f1.then((_) async{
-//      await getalllist();
-//    });
-//  }
   Widget build(BuildContext context) {
     List<Widget> radios = List<Widget>();
     _locales.forEach((locale) {
@@ -169,15 +150,6 @@ class _CreateTaskState extends State<CreateTask> {
               )
             ],
           ),
-
-
-//              Text('Do you want to share this tasks?'),
-//              IconButton(
-//                icon: changeicon_com(isprivate),
-//                onPressed: (){
-//                  isprivate=true;
-//              },
-//              )
 
           Row(
 

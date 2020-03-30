@@ -1,4 +1,5 @@
 # peeklist
+[![Build Status](https://travis-ci.com/Kybeth/PeekList.svg?branch=master)](https://travis-ci.com/Kybeth/PeekList)
 
 A new Flutter project.
 
