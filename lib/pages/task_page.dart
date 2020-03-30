@@ -26,20 +26,28 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   final List<Tasklist> tasklist=[];
   Map<String, dynamic> _profile;
+  String docid;
+  Set alllists={};
 
   final newlist = TextEditingController();
 
   void _getdata()async{
-    tasklist.clear();
+
     var uid= await AuthService().userID();
     Stream<QuerySnapshot> qsp=Firestore.instance.collection('users').where('uid',isEqualTo: uid).snapshots();
     await qsp.forEach((ds) {
       List<DocumentSnapshot> ds1=ds.documents;
+      tasklist.clear();
       ds1.forEach((element) {
+        docid=element.documentID;
         for(int i=0;i<element['tasks'].length;i++){
           var newlist=Tasklist(listname: element['tasks'][i]);
           tasklist.add(newlist);
+          alllists.add(element['tasks'][i]);
         }
+      });
+      setState(() {
+        tasklist;
       });
     });
   }
@@ -75,22 +83,9 @@ class _TaskPageState extends State<TaskPage> {
 
   Future _addtomylist(String Listname)async {
     var uid=await AuthService().userID();
-    var newlist=Tasklist(listname: Listname);
-    List task1=[];
-    tasklist.add(newlist);
-    tasklist.forEach((element) {
-     var n=element.listname;
-     task1.add(n);
-    });
-    tasklist.clear();
-
-    Stream<QuerySnapshot> sp=Firestore.instance.collection('users').where('uid',isEqualTo: uid).snapshots();
-    sp.forEach((ds){
-      List<DocumentSnapshot> ds1=ds.documents;
-      ds1.forEach((element) {
-        element.reference.updateData({"tasks":task1});
-      });
-    });
+    List newlist=alllists.toList();
+    newlist.add(Listname);
+    await Firestore.instance.collection('users').where('uid',isEqualTo: uid).reference().document(docid).updateData({'tasks': newlist});
 
   }
 
