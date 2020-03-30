@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:peeklist/pages/my_profile.dart';
 import 'package:peeklist/pages/root.dart';
+import 'package:peeklist/pages/user_profile.dart';
+
+import 'pages/search.dart';
 
 
 void main() {
@@ -15,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.cyan,
+        primarySwatch: Colors.red,
         accentColor: Colors.grey,
       ),
       darkTheme: ThemeData(
@@ -24,6 +28,11 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.black,
       ),
       home: new Root(),
+      routes: <String, WidgetBuilder>{
+        '/search': (context) => Search(),
+        '/userprofile': (context) => UserProfile(),
+        '/myprofile': (context) => MyProfile(),
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:peeklist/pages/root.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthService {
@@ -19,6 +20,7 @@ class AuthService {
     user = Observable(_auth.onAuthStateChanged);
     profile = user.switchMap((FirebaseUser u) {
       if (u != null) {
+        currentUser = u.uid;
         return _db.collection('users').document(u.uid).snapshots().map((snap) => snap.data);
       } else {
         return Observable.just({ });
@@ -46,16 +48,39 @@ class AuthService {
 
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
-    return ref.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName,
-      'lastSeen': DateTime.now(),
-      'bio': "",
-      'tasks': ['inbox'],
-    }, merge: true);
-
+    ref.get().then((DocumentSnapshot docSnapshot) => {
+      if (docSnapshot.exists) {
+        ref.updateData({
+          'email': user.email,
+          'photoURL': user.photoUrl,
+          'lastSeen': DateTime.now(),
+          'searchKey': user.displayName[0].toLowerCase(),
+        })
+      } else {
+        ref.setData({
+          'uid': user.uid,
+          'email': user.email,
+          'photoURL': user.photoUrl,
+          'displayName': user.displayName,
+          'lastSeen': DateTime.now(),
+          'bio': "",
+          'tasks': ['inbox'],
+          'searchKey': user.displayName[0].toLowerCase(),
+          }
+        )
+      }
+    });
+  
+    // return ref.setData({
+    //   'uid': user.uid,
+    //   'email': user.email,
+    //   'photoURL': user.photoUrl,
+    //   'displayName': user.displayName,
+    //   'lastSeen': DateTime.now(),
+    //   'bio': "",
+    //   'tasks': ['inbox'],
+    //   'searchKey': user.displayName[0].toLowerCase(),
+    // }, merge: true);
   }
 
   void signOut() {
@@ -64,9 +89,15 @@ class AuthService {
   }
 
   Future userID() async{
-  final FirebaseUser user = await _auth.currentUser();
-  return user.uid;
+    final FirebaseUser user = await _auth.currentUser();
+    return user.uid;
   }
+
+  // searchUsersByEmail(query) async {
+  //   _db.collection('users').where('email', isGreaterThanOrEqualTo: query).getDocuments().then((querySnapshot) {
+  //     querySnapshot.forEach((doc) {});
+  //   });
+  // }
 
 
 }
