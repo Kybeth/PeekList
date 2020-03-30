@@ -21,14 +21,11 @@ class GoogleSignInAuthenticationMock extends Mock
 }
 class GoogleSignInMock extends Mock implements GoogleSignIn {}
 
-//void main() {
-//
-//  group("Auth Mock", () {
-//    final FirebaseAuthMock firebaseAuthMock = FirebaseAuthMock();
-//    final GoogleSignInMock googleSignInMock = GoogleSignInMock();
-//    final FirebaseUserMock firebaseUserMock = FirebaseUserMock();
-//    final GoogleSignInAccountMock googleSignInAccountMock = GoogleSignInAccountMock();
-//    final GoogleSignInAuthenticationMock googleSignInAuthenticationMock = GoogleSignInAuthenticationMock();
-//  });
-//
-//}
+void main() {
+
+  test('Test sample', () {
+    final a = 1;
+    expect(a, 1);
+  });
+
+}
