@@ -15,7 +15,7 @@ class Showlist extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('list', isEqualTo: "$list").orderBy(
+          'uid', isEqualTo: "$uid").where('list', isEqualTo: "$list").where('iscompleted', isEqualTo: false).orderBy(
           'iscompleted', descending: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -157,8 +157,7 @@ class Showstar extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('isstarred', isEqualTo: true).orderBy(
-          'iscompleted', descending: false).snapshots(),
+          'uid', isEqualTo: "$uid").where('isstarred', isEqualTo: true).where('iscompleted', isEqualTo: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return new Showlist().buildList(context, snapshot.data.documents);
@@ -185,50 +184,51 @@ class CompletedTask extends StatelessWidget {
       },
     );
   }
-
 }
 
-//queries for today page and planned page incomplete
-/*
-class TodayTask extends StatelessWidget {
+//for getting todays datetime
+DateTime _now = DateTime.now();
+DateTime _start = DateTime(_now.year, _now.month, _now.day, 0, 0);
+DateTime _end = DateTime(_now.year, _now.month, _now.day, 23, 59, 59);
 
+
+class TodayTask extends StatelessWidget {
+  //shows all tasks for today even if its past due time
   final String uid;
   const TodayTask({Key key, this.uid}) :super(key: key);
-
   
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('time', isEqualTo: DateTime.now()).snapshots(),
+          'uid', isEqualTo: "$uid").where('time', isGreaterThanOrEqualTo: _start).where('time', isLessThanOrEqualTo: _end) 
+        .where('iscompleted', isEqualTo: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
-        return _buildList3(context, snapshot.data.documents);
+        return new Showlist().buildList(context, snapshot.data.documents);
       },
     );
   }
 }
 
-
-class ShowPlanned extends StatelessWidget {
+class IncompleteTask extends StatelessWidget {
 
   final String uid;
-  const ShowPlanned({Key key, this.uid}) :super(key: key);
-
+  const IncompleteTask({Key key, this.uid}) :super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('time', isEqualTo: DateTime.now()).snapshots(),
+          'uid', isEqualTo: "$uid").where('time', isLessThanOrEqualTo: DateTime.now()) 
+        .where('iscompleted', isEqualTo: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
-        return _buildList3(context, snapshot.data.documents);
+        return new Showlist().buildList(context, snapshot.data.documents);
       },
     );
   }
 }
-*/
 
 
 class Tasks {

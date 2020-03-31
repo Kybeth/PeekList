@@ -12,9 +12,17 @@ class BuildToday extends StatelessWidget {
       appBar: AppBar(
         title: Text("Today"),
       ),
-      body:CompletedTask(
+      body:TodayTask(
         uid:"$uid"
       ).build(context),
+
+      floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        // Code to create new task
+      },
+      child: Icon(Icons.create),
+      backgroundColor: Colors.green,
+    ),
     );
   }
 }

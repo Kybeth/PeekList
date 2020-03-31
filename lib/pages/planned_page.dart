@@ -10,9 +10,9 @@ class BuildPlanned extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Planned"),
+        title: Text("tasks past due date and time"),
       ),
-      body:CompletedTask(
+      body:IncompleteTask(
         uid:"$uid"
       ).build(context),
     );

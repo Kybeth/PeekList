@@ -170,8 +170,8 @@ class _TaskPageState extends State<TaskPage> {
                   color: Colors.red,
                   size: 30.0,
                 ),
-                   RaisedButton(
-                    child: Text('Planned'),
+                  RaisedButton(
+                    child: Text('Incomplete'),
                     onPressed: () async{
                       var uid=await AuthService().userID();
                       Navigator.push(
