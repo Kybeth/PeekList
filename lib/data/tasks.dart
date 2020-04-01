@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -15,8 +16,7 @@ class Showlist extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('list', isEqualTo: "$list").where('iscompleted', isEqualTo: false).orderBy(
-          'iscompleted', descending: false).snapshots(),
+          'uid', isEqualTo: "$uid").where('list', isEqualTo: "$list").where('iscompleted', isEqualTo: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return buildList(context, snapshot.data.documents);
@@ -186,23 +186,25 @@ class CompletedTask extends StatelessWidget {
   }
 }
 
-//for getting todays datetime
-DateTime _now = DateTime.now();
-DateTime _start = DateTime(_now.year, _now.month, _now.day, 0, 0);
-DateTime _end = DateTime(_now.year, _now.month, _now.day, 23, 59, 59);
+//for getting todays date
+DateTime now=DateTime.now();
+DateTime before=DateTime(now.year,now.month,now.day,0,0,0,0,0);
+DateTime after=DateTime(now.year,now.month,now.day,23,59,59,0,0);
+
 
 
 class TodayTask extends StatelessWidget {
   //shows all tasks for today even if its past due time
   final String uid;
-  const TodayTask({Key key, this.uid}) :super(key: key);
+  TodayTask({Key key, this.uid}) :super(key: key);
+
   
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('time', isGreaterThanOrEqualTo: _start).where('time', isLessThanOrEqualTo: _end) 
-        .where('iscompleted', isEqualTo: false).snapshots(),
+          'uid', isEqualTo: "$uid").where('time', isGreaterThan: Timestamp.fromDate(before)).where('time',isLessThanOrEqualTo: Timestamp.fromDate(after)).
+      where('iscompleted', isEqualTo: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return new Showlist().buildList(context, snapshot.data.documents);
