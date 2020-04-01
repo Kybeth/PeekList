@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:peeklist/pages/my_profile.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/pages/user_profile.dart';
+import 'package:peeklist/pages/create_task.dart';
 
 import 'pages/search.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => Search(),
         '/userprofile': (context) => UserProfile(),
         '/myprofile': (context) => MyProfile(),
+        '/createtask':(context) => CreateTask(),
       },
     );
   }

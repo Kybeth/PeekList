@@ -263,12 +263,13 @@ class _TaskPageState extends State<TaskPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateTask(
-              allist: gettasklist(),
-            )),
-          );
+          Navigator.of(context).pushNamed('/createtask', arguments: "inbox");
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(builder: (context) => CreateTask(
+////              allist: gettasklist(),
+//            )),
+//          );
         },
         child: Icon(Icons.add),
       ),

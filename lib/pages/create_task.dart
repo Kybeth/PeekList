@@ -7,17 +7,16 @@ import 'package:peeklist/data/tasks.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class CreateTask extends StatefulWidget {
-  final allist;
-  CreateTask({Key key, this.allist}) : super(key: key);
+//  CreateTask({Key key, this.allist}) : super(key: key);
   @override
-  State<StatefulWidget> createState() => _CreateTaskState(allist: allist);
+  State<StatefulWidget> createState() => _CreateTaskState();
 }
 
 const String INIT_DATETIME = '2019-05-16 09:00';
 
 class _CreateTaskState extends State<CreateTask> {
-  final allist;
-  _CreateTaskState({Key key, this.allist});
+//  final allist;
+//  _CreateTaskState({Key key, this.allist});
   var _taskname = TextEditingController();
   var _tasknote = TextEditingController();
   final _duedate = TextEditingController();
@@ -31,17 +30,17 @@ class _CreateTaskState extends State<CreateTask> {
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
 
-  List<DropdownMenuItem> getlist() {
-    List<DropdownMenuItem> alllist = new List();
-    for (int i = 0; i < allist.length; i++) {
-      var listchoose = new DropdownMenuItem(
-        value: allist[i].toString(),
-        child: Text(allist[i].toString()),
-      );
-      alllist.add(listchoose);
-    }
-    return alllist;
-  }
+//  List<DropdownMenuItem> getlist() {
+//    List<DropdownMenuItem> alllist = new List();
+//    for (int i = 0; i < allist.length; i++) {
+//      var listchoose = new DropdownMenuItem(
+//        value: allist[i].toString(),
+//        child: Text(allist[i].toString()),
+//      );
+//      alllist.add(listchoose);
+//    }
+//    return alllist;
+//  }
 
   @override
   void initState() {
@@ -80,6 +79,7 @@ class _CreateTaskState extends State<CreateTask> {
 
   @override
   Widget build(BuildContext context) {
+    var list_name = ModalRoute.of(context).settings.arguments;
     List<Widget> radios = List<Widget>();
     _locales.forEach((locale) {
       radios.add(Container(
@@ -105,7 +105,7 @@ class _CreateTaskState extends State<CreateTask> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Add a task"),
+        title: new Text(list_name),
       ),
       body: new Column(
         children: <Widget>[
@@ -137,17 +137,17 @@ class _CreateTaskState extends State<CreateTask> {
           Row(
             children: <Widget>[
               Text('choose list or not: '),
-              DropdownButton(
-                items: getlist(),
-                hint: Text('choose your lists'),
-                value: choose_list,
-                icon: Icon(Icons.arrow_drop_down),
-                onChanged: (T) {
-                  setState(() {
-                    choose_list = T;
-                  });
-                },
-              )
+//              DropdownButton(
+//                items: getlist(),
+//                hint: Text('choose your lists'),
+//                value: choose_list,
+//                icon: Icon(Icons.arrow_drop_down),
+//                onChanged: (T) {
+//                  setState(() {
+//                    choose_list = T;
+//                  });
+//                },
+//              )
             ],
           ),
 
