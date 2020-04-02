@@ -5,9 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/data/tasks.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:peeklist/models/user.dart';
+import 'package:peeklist/utils/user.dart';
+import 'package:peeklist/widgets/progress.dart';
 
 class CreateTask extends StatefulWidget {
-//  CreateTask({Key key, this.allist}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _CreateTaskState();
 }
@@ -15,8 +17,6 @@ class CreateTask extends StatefulWidget {
 const String INIT_DATETIME = '2019-05-16 09:00';
 
 class _CreateTaskState extends State<CreateTask> {
-//  final allist;
-//  _CreateTaskState({Key key, this.allist});
   var _taskname = TextEditingController();
   var _tasknote = TextEditingController();
   final _duedate = TextEditingController();
@@ -30,18 +30,46 @@ class _CreateTaskState extends State<CreateTask> {
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
 
-//  List<DropdownMenuItem> getlist() {
-//    List<DropdownMenuItem> alllist = new List();
-//    for (int i = 0; i < allist.length; i++) {
-//      var listchoose = new DropdownMenuItem(
-//        value: allist[i].toString(),
-//        child: Text(allist[i].toString()),
-//      );
-//      alllist.add(listchoose);
-//    }
-//    return alllist;
-//  }
-
+  buildProfileHeader(uid) {
+    return FutureBuilder(
+      future: UserService().getUserById(uid),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return circularProgress();
+        }
+        User currentProfile = User.fromDocument(snapshot.data);
+        return Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 10,),
+              Text(
+                currentProfile.displayName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+              SizedBox(height: 5,),
+              Text(
+                currentProfile.email,
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              SizedBox(height: 3,),
+              Text(
+                currentProfile.bio,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ]
+          )
+        );
+      },
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -137,17 +165,7 @@ class _CreateTaskState extends State<CreateTask> {
           Row(
             children: <Widget>[
               Text('choose list or not: '),
-//              DropdownButton(
-//                items: getlist(),
-//                hint: Text('choose your lists'),
-//                value: choose_list,
-//                icon: Icon(Icons.arrow_drop_down),
-//                onChanged: (T) {
-//                  setState(() {
-//                    choose_list = T;
-//                  });
-//                },
-//              )
+              buildProfileHeader('5ArWuiimryeGX9QayaRv4OadXoA2'),
             ],
           ),
 
