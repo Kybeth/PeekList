@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/widgets/header.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/data/tasks.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
@@ -9,9 +8,14 @@ import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 
+
 class CreateTask extends StatefulWidget {
+  final choose_list;
+  final uid;
+  CreateTask({Key key, this.choose_list,this.uid}): super(key:key);
   @override
-  State<StatefulWidget> createState() => _CreateTaskState();
+
+  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list,uid: uid);
 }
 
 const String INIT_DATETIME = '2019-05-16 09:00';
@@ -19,16 +23,21 @@ const String INIT_DATETIME = '2019-05-16 09:00';
 class _CreateTaskState extends State<CreateTask> {
   var _taskname = TextEditingController();
   var _tasknote = TextEditingController();
-  final _duedate = TextEditingController();
+  var _duedate = TextEditingController();
   // List allist=[];
   var choose_list;
-  var isprivate=false;
+  var listName;
+  var isprivate=true;
+  var uid;
+  _CreateTaskState({Key key, this.choose_list,this.uid});
 
   String _format = 'yyyy - MM - dd    EEE,H:m'; //DateTimePicker
   TextEditingController _formatCtrl = TextEditingController();
   DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
+
+
 
   buildProfileHeader(uid) {
     return FutureBuilder(
@@ -38,38 +47,34 @@ class _CreateTaskState extends State<CreateTask> {
           return circularProgress();
         }
         User currentProfile = User.fromDocument(snapshot.data);
-        return Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 10,),
-              Text(
-                currentProfile.displayName,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
-              ),
-              SizedBox(height: 5,),
-              Text(
-                currentProfile.email,
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              SizedBox(height: 3,),
-              Text(
-                currentProfile.bio,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ]
-          )
-        );
+        List<DropdownMenuItem> getlist() {
+          List<DropdownMenuItem> alllist = new List();
+          for (int i = 0; i < currentProfile.tasks.length; i++) {
+            var listchoose = new DropdownMenuItem(
+              value: currentProfile.tasks[i].toString(),
+              child: Text(currentProfile.tasks[i].toString()),
+            );
+            alllist.add(listchoose);
+          }
+          return alllist;
+        }
+        return DropdownButton(
+            items: getlist(),
+            hint: Text('choose your lists'),
+            value: listName,
+            icon: Icon(Icons.arrow_drop_down),
+            onChanged: (T) {
+              setState(() {
+                listName = T;
+              });
+            });
       },
     );
   }
+
+
+
+
   @override
   void initState() {
     super.initState();
@@ -133,7 +138,7 @@ class _CreateTaskState extends State<CreateTask> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(list_name),
+        title: new Text(choose_list),
       ),
       body: new Column(
         children: <Widget>[
@@ -165,7 +170,7 @@ class _CreateTaskState extends State<CreateTask> {
           Row(
             children: <Widget>[
               Text('choose list or not: '),
-              buildProfileHeader('5ArWuiimryeGX9QayaRv4OadXoA2'),
+              buildProfileHeader(uid),
             ],
           ),
 
@@ -186,6 +191,9 @@ class _CreateTaskState extends State<CreateTask> {
           ),
           RaisedButton(
             onPressed: () async {
+              if(listName!=null){
+                choose_list=listName;
+              }
               Tasks ntask = new Tasks(
                   name: _taskname.text,
                   uid: await AuthService().userID(),

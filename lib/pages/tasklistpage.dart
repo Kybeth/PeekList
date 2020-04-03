@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/data/tasks.dart';
 import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/utils/auth.dart';
 
 class tasklistpage extends StatelessWidget {
   final String listname;
@@ -17,8 +18,13 @@ class tasklistpage extends StatelessWidget {
         list: "$listname",
       ).build(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/createtask', arguments: listname);
+        onPressed: () async{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTask(
+                choose_list: listname, uid:uid
+            )),
+          );
         },
         child: Icon(Icons.add),
       ),

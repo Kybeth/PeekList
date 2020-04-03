@@ -28,7 +28,6 @@ class _TaskPageState extends State<TaskPage> {
   Map<String, dynamic> _profile;
   String docid;
   Set alllists={};
-
   final newlist = TextEditingController();
 
   void _getdata()async{
@@ -262,14 +261,15 @@ class _TaskPageState extends State<TaskPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/createtask', arguments: "inbox");
-//          Navigator.push(
-//            context,
-//            MaterialPageRoute(builder: (context) => CreateTask(
-////              allist: gettasklist(),
-//            )),
-//          );
+        onPressed: () async{
+ //         Navigator.of(context).pushNamed('/createtask', arguments: "inbox");
+          var uid=await AuthService().userID();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTask(
+                choose_list: 'inbox', uid:uid
+            )),
+       );
         },
         child: Icon(Icons.add),
       ),

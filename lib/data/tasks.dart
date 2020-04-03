@@ -64,9 +64,9 @@ class Showlist extends State<StatefulWidget> {
               ),
               secondaryActions: <Widget>[
                 IconSlideAction(
-                  caption: 'private',
-                  color: Colors.red,
-                  icon: Icons.remove_red_eye,
+                  caption: pritext(doc),
+                  color: priColor(doc),
+                  icon: priIcon(doc),
                   onTap: () {
                     privated(doc);
 //                    setState(() {
@@ -81,9 +81,12 @@ class Showlist extends State<StatefulWidget> {
     );
   }
 
+
+
+
   hasprivate(DocumentSnapshot document){
-    if(document.data.containsKey('isprivate') && document['isprivate']==true){
-      return Colors.red;
+    if(document.data.containsKey('isprivate') && document['isprivate']==false){
+      return Colors.green;
     }
     else{
       return Colors.white;
@@ -145,6 +148,35 @@ class Showlist extends State<StatefulWidget> {
         Icons.star_border);
   }
 
+  priColor(DocumentSnapshot document) {
+    if (document.data.containsKey('isprivate') &&
+        document['isprivate'] == false) {
+      return Colors.green;
+    }
+    else {
+      return Colors.red;
+    }
+  }
+
+  pritext(DocumentSnapshot document) {
+    if (document.data.containsKey('isprivate') &&
+        document['isprivate'] == false) {
+      return "open";
+    }
+    else {
+      return "privated";
+    }
+  }
+
+  priIcon (DocumentSnapshot document) {
+    if (document.data.containsKey('isprivate') &&
+        document['isprivate'] == false) {
+      return Icons.remove_red_eye;
+    }
+    else {
+      return Icons.block;
+    }
+  }
 }
 
 class Showstar extends StatelessWidget {
