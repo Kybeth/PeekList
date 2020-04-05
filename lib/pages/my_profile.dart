@@ -10,7 +10,6 @@ import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/widgets/progress.dart';
 
 class MyProfile extends StatefulWidget {
-  MyProfile({Key key}) : super(key: key);
 
   @override
   _MyProfileState createState() => _MyProfileState();
@@ -29,7 +28,8 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   notification() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(uid: uid)));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(uid: uid)));
+    Navigator.pushNamed(context, '/notifications', arguments: uid);
   }
 
   addFriend(currUser, recUser) async {
@@ -37,6 +37,7 @@ class _MyProfileState extends State<MyProfile> {
     print("Success");
     
   }
+
 
   Container buildButton({ String text, Function function }) {
     return Container(

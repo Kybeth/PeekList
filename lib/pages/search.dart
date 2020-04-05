@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/search.dart';
+import 'package:peeklist/utils/user.dart';
+import 'package:peeklist/widgets/progress.dart';
+import 'package:peeklist/widgets/search_tile.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -12,8 +15,15 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  String uid;
   var queryResult = [];
   var tempSearch = [];
+
+  addFriend(currUser, recUser) async {
+    await UserService().sendFriendRequest(currUser, recUser);
+    print("Success");
+    
+  }
 
   initiateSearch(value) {
     if (value.length == 0) {
@@ -45,9 +55,29 @@ class _SearchState extends State<Search> {
 
   }
 
-  
+  buildSearchResults(String uid, Map friends) {
+    return FutureBuilder(
+      future: UserService().checkFriend(uid, friends['uid']),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("Error ${snapshot.error}");
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return circularProgress();
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data == true) {
+            return Text("This is a friend");
+          } else {
+            return SearchTile(uid: uid, friends: friends);
+          }
+        }
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    RouteSettings settings = ModalRoute.of(context).settings;
+    uid = settings.arguments;
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -75,48 +105,11 @@ class _SearchState extends State<Search> {
             ),
           ),
           SizedBox(height: 10.0,),
+          // buildSearchResults()
           ListView.builder(
             itemCount: tempSearch.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                trailing: RaisedButton(
-                  child: Text('View'),
-                  color: Theme.of(context).primaryColorLight,
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.black),
-                  ),
-                  onPressed: () {
-                    // User user = User(
-                    //   uid: tempSearch[index]['uid'],
-                    //   displayName: tempSearch[index]['displayName'],
-                    //   email: tempSearch[index]['email'],
-                    //   photoURL: tempSearch[index]['photoURL'],
-                    //   bio: tempSearch[index]['bio'],
-                    // );
-                    // print(user);
-                    Navigator.pushNamed(context, '/myprofile', arguments: tempSearch[index]['uid']);
-                  }
-                ),
-                leading: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: CachedNetworkImageProvider(tempSearch[index]['photoURL']),
-                ),
-                title: Text(
-                  tempSearch[index]['displayName'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  tempSearch[index]['email'],
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              );
+              return buildSearchResults(uid, tempSearch[index]);
             },
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

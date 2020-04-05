@@ -12,9 +12,6 @@ class AuthService {
   Observable<FirebaseUser> user;
   Observable<Map<String, dynamic>> profile;
   PublishSubject loading = PublishSubject();
-  // PublishSubject isAuth = PublishSubject();
-  // bool isAuth = false;
-  // Observable<Map<bool, dynamic>> isAuth;
 
   AuthService() {
     user = Observable(_auth.onAuthStateChanged);
@@ -41,8 +38,6 @@ class AuthService {
     updateUserData(user);
     print("Signed In: " + user.displayName);
     loading.add(false);
-    // isAuth = true as Observable<Map<bool, dynamic>>;
-    // isAuth.add(true);
     return user;
   }
 
@@ -54,7 +49,7 @@ class AuthService {
           'email': user.email,
           'photoURL': user.photoUrl,
           'lastSeen': DateTime.now(),
-          'searchKey': user.displayName[0].toLowerCase(),
+          'searchKey': user.email[0].toLowerCase(),
         })
       } else {
         ref.setData({
@@ -65,41 +60,21 @@ class AuthService {
           'lastSeen': DateTime.now(),
           'bio': "",
           'tasks': ['inbox'],
-          'searchKey': user.displayName[0].toLowerCase(),
+          'searchKey': user.email[0].toLowerCase(),
           }
         )
       }
     });
-  
-    // return ref.setData({
-    //   'uid': user.uid,
-    //   'email': user.email,
-    //   'photoURL': user.photoUrl,
-    //   'displayName': user.displayName,
-    //   'lastSeen': DateTime.now(),
-    //   'bio': "",
-    //   'tasks': ['inbox'],
-    //   'searchKey': user.displayName[0].toLowerCase(),
-    // }, merge: true);
   }
 
   void signOut() {
     _auth.signOut();
-    // isAuth.add(false);
   }
 
   Future userID() async{
     final FirebaseUser user = await _auth.currentUser();
     return user.uid;
   }
-
-  // searchUsersByEmail(query) async {
-  //   _db.collection('users').where('email', isGreaterThanOrEqualTo: query).getDocuments().then((querySnapshot) {
-  //     querySnapshot.forEach((doc) {});
-  //   });
-  // }
-
-
 }
 
 final AuthService authService = AuthService();

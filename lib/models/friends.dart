@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Requests {
+class Friends {
   final String user;
   final String displayName;
   final String email;
   final String photoURL;
 
-  Requests({
+  Friends({
     this.user,
     this.displayName,
     this.email,
     this.photoURL,
   });
 
-  factory Requests.fromDocument(DocumentSnapshot doc) {
-    return Requests(
+  factory Friends.fromDocument(DocumentSnapshot doc) {
+    return Friends(
       user: doc['user'],
       displayName: doc['displayName'],
       email: doc['email'],

@@ -34,13 +34,20 @@ List socialFeed = [
     ];
 
 class _SocialHomeState extends State<SocialHome> {
+  String uid;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getUserId();
+    // uid = await authService.userID();
     // authService.isAuth.listen((state) => setState(() => _isAuth = state));
+  }
+
+  getUserId() async {
+    uid = await authService.userID();
+    print(uid);
   }
 
   ListTile makeListTile(Todo todo) => ListTile(
@@ -131,7 +138,7 @@ class _SocialHomeState extends State<SocialHome> {
             ),
             backgroundColor: Theme.of(context).primaryColor,
             child: Icon(Icons.person),
-            label: "Profile",
+            label: "My Profile",
             onTap: () {
               Navigator.pushNamed(context, '/myprofile', arguments: currentUser);
             },
@@ -141,10 +148,10 @@ class _SocialHomeState extends State<SocialHome> {
               color: Colors.black,
             ),
             backgroundColor: Theme.of(context).primaryColorLight,
-            child: Icon(Icons.search),
-            label: "Search",
+            child: Icon(Icons.notifications),
+            label: "Notification Center",
             onTap: () {
-              Navigator.pushNamed(context, '/search');
+              Navigator.pushNamed(context, '/notifications', arguments: uid);
             },
           ),
           SpeedDialChild(
@@ -152,9 +159,11 @@ class _SocialHomeState extends State<SocialHome> {
               color: Colors.black,
             ),
             backgroundColor: Colors.black45,
-            child: Icon(Icons.exit_to_app),
-            label: "Logout",
-            onTap: () => authService.signOut(),
+            child: Icon(Icons.person_add),
+            label: "Add Friends",
+            onTap: () {
+              Navigator.pushNamed(context, '/search', arguments: uid);
+            },
           ),
         ],
       ),

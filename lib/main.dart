@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:peeklist/pages/my_profile.dart';
+import 'package:peeklist/pages/notifications_page.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/pages/user_profile.dart';
 import 'package:peeklist/pages/create_task.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/userprofile': (context) => UserProfile(),
         '/myprofile': (context) => MyProfile(),
         '/createtask':(context) => CreateTask(),
+        '/notifications': (context) => NotificationsPage(),
       },
     );
   }
