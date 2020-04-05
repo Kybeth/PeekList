@@ -18,13 +18,12 @@ class CreateTask extends StatefulWidget {
   State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list,uid: uid);
 }
 
-const String INIT_DATETIME = '2019-05-16 09:00';
+//const String INIT_DATETIME = '2019-05-16 09:00';
 
 class _CreateTaskState extends State<CreateTask> {
   var _taskname = TextEditingController();
   var _tasknote = TextEditingController();
   var _duedate = TextEditingController();
-  // List allist=[];
   var choose_list;
   var listName;
   var isprivate=true;
@@ -60,7 +59,7 @@ class _CreateTaskState extends State<CreateTask> {
         }
         return DropdownButton(
             items: getlist(),
-            hint: Text('choose your lists'),
+            hint: Text(choose_list),
             value: listName,
             icon: Icon(Icons.arrow_drop_down),
             onChanged: (T) {
@@ -79,7 +78,6 @@ class _CreateTaskState extends State<CreateTask> {
   void initState() {
     super.initState();
     _formatCtrl.text = _format;
-    _dateTime = DateTime.parse(INIT_DATETIME);
   }
 
   /// Display time picker.
@@ -100,7 +98,9 @@ class _CreateTaskState extends State<CreateTask> {
       onConfirm: (dateTime, List<int> index) {
         setState(() {
           _dateTime = dateTime;
+          _duedate.text = '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}';
         });
+
       },
     );
   }
@@ -161,11 +161,6 @@ class _CreateTaskState extends State<CreateTask> {
               prefixIcon: Icon(Icons.timer),
             ),
             readOnly: true,
-          ),
-          Container(
-            child: Text(
-              '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}',
-            ),
           ),
           Row(
             children: <Widget>[
