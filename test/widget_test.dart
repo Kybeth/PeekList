@@ -8,19 +8,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:peeklist/main.dart';
+import 'package:peeklist/pages/create_task.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
+
+  Widget testWidget({Widget child}){
+    return MaterialApp(
+        home: child,
+    );
+  }
   testWidgets('finds a Text Widget', (WidgetTester tester) async {
-    // Build an App with a Text Widget that displays the letter 'H'
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: Text('H'),
-      ),
-    ));
     // Find a Widget that displays the letter 'H'
-    expect(find.text('H'), findsOneWidget);
+    await tester.pumpWidget(testWidget(child: new CreateTask(choose_list: 'mylist')));
+    final titleFinder = find.text('mylist');
+    expect(titleFinder, findsOneWidget);
   });
 }
