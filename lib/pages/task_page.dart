@@ -170,7 +170,7 @@ class _TaskPageState extends State<TaskPage> {
                   size: 30.0,
                 ),
                   RaisedButton(
-                    child: Text('Incomplete'),
+                    child: Text('Past Due'),
                     onPressed: () async{
                       var uid=await AuthService().userID();
                       Navigator.push(
