@@ -38,7 +38,7 @@ class _CreateTaskState extends State<CreateTask> {
 
 
 
-  buildProfileHeader(uid) {
+  buildList(uid) {
     return FutureBuilder(
       future: UserService().getUserById(uid),
       builder: (context, snapshot) {
@@ -112,7 +112,6 @@ class _CreateTaskState extends State<CreateTask> {
 
   @override
   Widget build(BuildContext context) {
-    var list_name = ModalRoute.of(context).settings.arguments;
     List<Widget> radios = List<Widget>();
     _locales.forEach((locale) {
       radios.add(Container(
@@ -165,7 +164,7 @@ class _CreateTaskState extends State<CreateTask> {
           Row(
             children: <Widget>[
               Text('choose list or not: '),
-              buildProfileHeader(uid),
+              buildList(uid),
             ],
           ),
 
