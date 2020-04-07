@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/widgets/header.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
+import 'package:peeklist/data/likes.dart';
 
 
 class CreateTask extends StatefulWidget {
@@ -188,6 +190,19 @@ class _CreateTaskState extends State<CreateTask> {
               if(listName!=null){
                 choose_list=listName;
               }
+//              var taskid='-M4HzfJApzxm99cpQ4eX';
+//              var taskname="testing data";
+//              var friendid='AuOVeVfl8hcShMyd7wM7VC3jr1r2';
+//              var friendname='Yuan Zhang';
+//              var comment='goodjob';
+//                Likes newlike=new Likes(
+//                    taskid: taskid,
+//                    taskname: taskname,
+//                    friendid: friendid,
+//                    friendname: friendname
+//                );
+//                var addone= await newlike.addlikes();
+//                await newlike.deletelikes(addone.documentID);
               Tasks ntask = new Tasks(
                   name: _taskname.text,
                   uid: await AuthService().userID(),

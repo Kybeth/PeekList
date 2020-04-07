@@ -274,6 +274,8 @@ class Tasks {
   final bool isstarred;
   final time ;
   final bool isprivate;
+  final List likes;
+  final List message;//friend's comment
 
 //final Integer likes;
   //final String date;
@@ -285,13 +287,15 @@ class Tasks {
     this.iscompleted,
     this.isstarred,
     this.time,
-    this.isprivate
+    this.isprivate,
+    this.likes,
+    this.message,
     //this.like
   });
 
-  Future<void> addtask() async {
+  Future<DocumentReference> addtask() async {
 
-    await Firestore.instance
+    var tasksid=await Firestore.instance
         .collection('tasks')
         .add(<String, dynamic>{
       'uid': uid,
@@ -301,7 +305,23 @@ class Tasks {
       'time': time,
       'iscompleted': iscompleted,
       'isstarred' : isstarred,
-      'isprivate' :isprivate
+      'isprivate' :isprivate,
+      'likes':[],
+      'messages':[]
     });
+    return tasksid;
+  }
+  // 2020/4/7 return the list of documents likes and messages
+  Future all_like(String taskid)async{
+   QuerySnapshot likes= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
+   List<DocumentSnapshot> all_likes=await likes.documents;
+   return all_likes;
+
+  }
+
+  Future all_message(String taskid)async{
+    QuerySnapshot message= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
+    List<DocumentSnapshot> all_message=await message.documents;
+    return all_message;
   }
 }
