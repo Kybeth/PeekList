@@ -108,6 +108,16 @@ class Showlist extends State<StatefulWidget> {
   }
 
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+  Future completed(DocumentSnapshot document) {
+    if (document['iscompleted']) {
+      document.reference.updateData({"iscompleted": false});
+    } else {
+      document.reference.updateData({"iscompleted": true});
+=======
+>>>>>>> Stashed changes
 
     Future completed(DocumentSnapshot document) {
       if (document['iscompleted']) {
@@ -116,6 +126,10 @@ class Showlist extends State<StatefulWidget> {
       else {
         document.reference.updateData({"iscompleted": true,'action':"complete_task",'actiontime':Timestamp.now()});
       }
+<<<<<<< Updated upstream
+=======
+>>>>>>> b500debdd6c8f0c934037fdaf18c213aec047105
+>>>>>>> Stashed changes
     }
 
   Future starred(DocumentSnapshot document) {
@@ -279,6 +293,25 @@ class Tasks {
 
 //final Integer likes;
   //final String date;
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+  Tasks(
+      {this.name,
+      this.uid,
+      this.comment,
+      this.list,
+      this.iscompleted,
+      this.isstarred,
+      this.time,
+      this.isprivate
+      //this.like
+      });
+
+  Future<void> addtask() async {
+    await Firestore.instance.collection('tasks').add(<String, dynamic>{
+=======
+>>>>>>> Stashed changes
   Tasks({
     this.name,
     this.uid,
@@ -298,20 +331,50 @@ class Tasks {
     var tasksid=await Firestore.instance
         .collection('tasks')
         .add(<String, dynamic>{
+<<<<<<< Updated upstream
+=======
+>>>>>>> b500debdd6c8f0c934037fdaf18c213aec047105
+>>>>>>> Stashed changes
       'uid': uid,
       'name': name,
       'comment': comment,
       'list': list!=null? list:'inbox',
       'time': time,
       'iscompleted': iscompleted,
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+      'isstarred': isstarred,
+      'isprivate': isprivate
+=======
+>>>>>>> Stashed changes
       'isstarred' : isstarred,
       'isprivate' :isprivate,
       'likes':[],
       'messages':[],
       'action':'create_task',
       'actiontime':Timestamp.now()
+<<<<<<< Updated upstream
     });
     return tasksid;
+=======
+>>>>>>> b500debdd6c8f0c934037fdaf18c213aec047105
+    });
+    return tasksid;
+  }
+  // 2020/4/7 return the list of documents likes and messages
+  Future all_like(String taskid)async{
+   QuerySnapshot likes= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
+   List<DocumentSnapshot> all_likes=await likes.documents;
+   return all_likes;
+
+  }
+
+  Future all_message(String taskid)async{
+    QuerySnapshot message= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
+    List<DocumentSnapshot> all_message=await message.documents;
+    return all_message;
+>>>>>>> Stashed changes
   }
   // 2020/4/7 return the list of documents likes and messages
   Future all_like(String taskid)async{
