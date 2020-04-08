@@ -57,6 +57,7 @@ class _CreateTaskState extends State<CreateTask> {
             );
             alllist.add(listchoose);
           }
+          alllist.add(new DropdownMenuItem(value: "inbox",child: Text("inbox")));
           return alllist;
         }
         return DropdownButton(
@@ -72,9 +73,6 @@ class _CreateTaskState extends State<CreateTask> {
       },
     );
   }
-
-
-
 
   @override
   void initState() {
@@ -139,7 +137,7 @@ class _CreateTaskState extends State<CreateTask> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(choose_list),
+        title: new Text("Add Task"),
       ),
       body: new Column(
         children: <Widget>[
