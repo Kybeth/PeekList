@@ -111,10 +111,10 @@ class Showlist extends State<StatefulWidget> {
 
     Future completed(DocumentSnapshot document) {
       if (document['iscompleted']) {
-        document.reference.updateData({"iscompleted": false});
+        document.reference.updateData({"iscompleted": false,'action':"cancel_complete",'actiontime':Timestamp.now()});
       }
       else {
-        document.reference.updateData({"iscompleted": true});
+        document.reference.updateData({"iscompleted": true,'action':"complete_task",'actiontime':Timestamp.now()});
       }
     }
 
@@ -307,7 +307,9 @@ class Tasks {
       'isstarred' : isstarred,
       'isprivate' :isprivate,
       'likes':[],
-      'messages':[]
+      'messages':[],
+      'action':'create_task',
+      'actiontime':Timestamp.now()
     });
     return tasksid;
   }
