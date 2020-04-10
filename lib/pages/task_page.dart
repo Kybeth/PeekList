@@ -53,12 +53,45 @@ class _TaskPageState extends State<TaskPage> {
     });
   }
 
-  void _deletelist(listname, uid) async {
-    // query to delete list and all tasks in the list
+  //void _deletelist(listname, uid) async {
+  // query to delete list and all tasks in the list
+  //}
+  Future _renamelist(String uid, String old_name, String new_name) async {
+    int index;
+    QuerySnapshot changedata;
+    await Firestore.instance
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((value) {
+      List lists = value['tasks'];
+      index = lists.indexOf(old_name);
+      lists[index] = new_name;
+      value.reference.updateData({'tasks': lists});
+    });
+    changedata = await Firestore.instance
+        .collection('tasks')
+        .where('uid', isEqualTo: uid)
+        .where('list', isEqualTo: old_name)
+        .getDocuments();
+    await changedata.documents.forEach((element) {
+      element.reference.updateData({'list': new_name});
+    });
   }
 
-  void _renamelist(listname, uid, renamed) async {
-    //query to rename list and rename all the tasks in the list
+  Future _deletelist(String uid, String list_name) async {
+    QuerySnapshot changedata;
+    await Firestore.instance.collection('users').document(uid).updateData({
+      'tasks': FieldValue.arrayRemove([list_name])
+    });
+    changedata = await Firestore.instance
+        .collection('tasks')
+        .where('uid', isEqualTo: uid)
+        .where('list', isEqualTo: list_name)
+        .getDocuments();
+    await changedata.documents.forEach((element) {
+      element.reference.delete();
+    });
   }
 
   gettasklist() {
@@ -279,7 +312,7 @@ class _TaskPageState extends State<TaskPage> {
                         var uid = await AuthService().userID();
                         //print("value:$value");
                         if (value == '1') {
-                    var l = lst.listname;
+                          var l = lst.listname;
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -299,7 +332,7 @@ class _TaskPageState extends State<TaskPage> {
                                   FlatButton(
                                     child: Text("Delete"),
                                     onPressed: () {
-                                      _deletelist(lst.listname, uid);
+                                      _deletelist(uid, lst.listname);
                                       Navigator.of(context).pop();
                                     },
                                   ),
@@ -333,7 +366,7 @@ class _TaskPageState extends State<TaskPage> {
                                       child: Text("rename"),
                                       onPressed: () {
                                         _renamelist(
-                                            lst.listname, uid, renamelist.text);
+                                            uid, lst.listname, renamelist.text);
                                         Navigator.of(context).pop();
                                       },
                                     ),
