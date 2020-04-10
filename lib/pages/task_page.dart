@@ -10,6 +10,7 @@ import 'package:peeklist/pages/show_starred.dart';
 import 'package:peeklist/pages/today_page.dart';
 import 'package:peeklist/pages/planned_page.dart';
 import 'package:peeklist/pages/completed_page.dart';
+import 'package:peeklist/data/tasks.dart';
 import '../utils/auth.dart';
 
 
@@ -82,9 +83,8 @@ class _TaskPageState extends State<TaskPage> {
 
   Future _addtomylist(String Listname)async {
     var uid=await AuthService().userID();
-    List newlist=alllists.toList();
-    newlist.add(Listname);
-    await Firestore.instance.collection('users').where('uid',isEqualTo: uid).reference().document(docid).updateData({'tasks': newlist});
+    await Firestore.instance.collection('users').document(uid).updateData({'tasks': FieldValue.arrayUnion([Listname])});
+
 
   }
 
@@ -228,7 +228,10 @@ class _TaskPageState extends State<TaskPage> {
                             textColor: Colors.blue,
                             onPressed: () async{
                               //print(newtasklistinputController.text);
-                              await _addtomylist(newlist.text);
+                             await _addtomylist(newlist.text);
+//                              var uid=await AuthService().userID();
+//
+//                              await ListMethod().delete_list(uid, newlist.text);
                             },
                           )
                         ],
