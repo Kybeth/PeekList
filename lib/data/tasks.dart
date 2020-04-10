@@ -72,7 +72,7 @@ class Showlist extends State<StatefulWidget> {
                   onTap: () {
                     privated(doc);
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Task Status Changed!'),
+                      content: changetext(doc) ,
                     ));
 //                    setState(() {
 //                      hasprivate(doc);
@@ -133,9 +133,7 @@ class Showlist extends State<StatefulWidget> {
     if (!document.data.containsKey('isprivate')) {
       document.reference.updateData({"isprivate": true});
     } else {
-      if (document['isprivate']) {
-        document.reference.updateData({"isprivate": false});
-      } else {
+      if (!document['isprivate']) {
         document.reference.updateData({"isprivate": true});
       }
     }
@@ -150,10 +148,15 @@ class Showlist extends State<StatefulWidget> {
       if (!document['iscompleted']) {
         document.reference.updateData({"iscompleted": true,'complete':Timestamp.now()});
       }
-      else {
-        document.reference.updateData({"iscompleted": true,'action':"complete_task",'actiontime':Timestamp.now()});
-      }
     }
+  }
+  changetext(DocumentSnapshot document){
+      if(document['isprivate']){
+        return Text('Private Task Status Can Not Change');
+      }
+      else{
+        return Text('Task Status Changed');
+      }
   }
 
   Future starred(DocumentSnapshot document) {
