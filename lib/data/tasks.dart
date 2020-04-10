@@ -315,19 +315,8 @@ class Tasks {
     });
     return tasksid;
   }
-  // 2020/4/7 return the list of documents likes and messages
-  Future all_like(String taskid)async{
-   QuerySnapshot likes= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
-   List<DocumentSnapshot> all_likes=await likes.documents;
-   return all_likes;
 
-  }
 
-  Future all_message(String taskid)async{
-    QuerySnapshot message= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
-    List<DocumentSnapshot> all_message=await message.documents;
-    return all_message;
-  }
 }
 
 //this class is all functions of tasks
