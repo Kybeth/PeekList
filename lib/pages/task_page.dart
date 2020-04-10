@@ -10,6 +10,7 @@ import 'package:peeklist/pages/show_starred.dart';
 import 'package:peeklist/pages/today_page.dart';
 import 'package:peeklist/pages/planned_page.dart';
 import 'package:peeklist/pages/completed_page.dart';
+import 'package:peeklist/data/tasks.dart';
 import '../utils/auth.dart';
 
 class TaskPage extends StatefulWidget {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ class Showlist extends State<StatefulWidget> {
   final String uid;
   final String list;
   Showlist({Key key, this.uid, this.list});
+
 
   @override
   Widget build(BuildContext context) {
@@ -345,6 +348,12 @@ class Tasks {
     });
     return tasksid;
   }
+
+
+}
+
+//this class is all functions of tasks
+class TaskMethod{
   // 2020/4/7 return the list of documents likes and messages
   Future all_like(String taskid)async{
    QuerySnapshot likes= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
@@ -357,5 +366,39 @@ class Tasks {
     QuerySnapshot message= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
     List<DocumentSnapshot> all_message=await message.documents;
     return all_message;
+  }
+}
+
+//this class is all functions of list
+class ListMethod{
+
+  //rename a list
+  Future rename_list(String uid, String old_name, String new_name) async{
+    int index;
+    QuerySnapshot changedata;
+    await Firestore.instance.collection('users').document(uid).get().then((value){
+      List lists=value['tasks'];
+      index=lists.indexOf(old_name);
+      lists[index]=new_name;
+      value.reference.updateData({
+        'tasks': lists
+      });
+    });
+   changedata= await Firestore.instance.collection('tasks').where('uid',isEqualTo: uid).where('list',isEqualTo: old_name).getDocuments();
+   await changedata.documents.forEach((element) {
+     element.reference.updateData({'list':new_name});
+   });
+  }
+
+  Future delete_list(String uid,String list_name)async{
+    QuerySnapshot changedata;
+    await Firestore.instance.collection('users').document(uid).updateData({
+      'tasks':FieldValue.arrayRemove([list_name])
+    });
+    changedata=await Firestore.instance.collection('tasks').where('uid',isEqualTo: uid).where('list',isEqualTo: list_name).getDocuments();
+    await changedata.documents.forEach((element) {
+      element.reference.delete();
+    });
+
   }
 }
