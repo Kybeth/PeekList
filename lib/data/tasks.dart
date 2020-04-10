@@ -48,7 +48,7 @@ class Showlist extends State<StatefulWidget> {
                 ))),
                 height: 80,
                 child: ListTile(
-                  leading: 
+                  leading:
                   IconButton(
                     icon: changeicon_com(doc['iscompleted']),
                     onPressed: () => completed(doc),
@@ -147,8 +147,8 @@ class Showlist extends State<StatefulWidget> {
 
 
     Future completed(DocumentSnapshot document) {
-      if (document['iscompleted']) {
-        document.reference.updateData({"iscompleted": false,'action':"cancel_complete",'actiontime':Timestamp.now()});
+      if (!document['iscompleted']) {
+        document.reference.updateData({"iscompleted": true,'complete':Timestamp.now()});
       }
       else {
         document.reference.updateData({"iscompleted": true,'action':"complete_task",'actiontime':Timestamp.now()});
@@ -343,8 +343,8 @@ class Tasks {
       'isprivate' :isprivate,
       'likes':[],
       'messages':[],
-      'action':'create_task',
-      'actiontime':Timestamp.now()
+      'create':Timestamp.now(),
+      'complete':null,
     });
     return tasksid;
   }
