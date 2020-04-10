@@ -278,14 +278,15 @@ class _TaskPageState extends State<TaskPage> {
                         var uid = await AuthService().userID();
                         //print("value:$value");
                         if (value == '1') {
+                    var l = lst.listname;
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               // return object of type Dialog
                               return AlertDialog(
-                                title: Text("Delete List?"),
+                                title: Text("Delete $l?"),
                                 content: Text(
-                                    "Deleting list will remove all tasks in the list as well."),
+                                    "Deleting this list will remove all tasks in the list."),
                                 actions: <Widget>[
                                   // usually buttons at the bottom of the dialog
                                   FlatButton(
@@ -313,7 +314,7 @@ class _TaskPageState extends State<TaskPage> {
                               builder: (BuildContext context) {
                                 // return object of type Dialog
                                 return AlertDialog(
-                                  title: Text("Rename '$l' ?"),
+                                  title: Text("Rename $l ?"),
                                   content: TextField(
                                     decoration: InputDecoration(
                                         labelText: 'Rename this list to?'),
@@ -330,7 +331,6 @@ class _TaskPageState extends State<TaskPage> {
                                     FlatButton(
                                       child: Text("rename"),
                                       onPressed: () {
-                                        print(renamelist.text);
                                         _renamelist(
                                             lst.listname, uid, renamelist.text);
                                         Navigator.of(context).pop();
