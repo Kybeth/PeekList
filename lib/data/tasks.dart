@@ -17,8 +17,12 @@ class Showlist extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('list', isEqualTo: "$list").where('iscompleted', isEqualTo: false).snapshots(),
+      stream: Firestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: "$uid")
+          .where('list', isEqualTo: "$list")
+          .where('iscompleted', isEqualTo: false)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return buildList(context, snapshot.data.documents);
@@ -38,30 +42,26 @@ class Showlist extends State<StatefulWidget> {
               child: Container(
                 decoration: BoxDecoration(
                     border: Border(
-                        left:BorderSide(
-                          width: 5,
-                          color: hasprivate(doc),
-                        )
-                    )
-                ),
+                        left: BorderSide(
+                  width: 10,
+                  color: hasprivate(doc),
+                ))),
                 height: 80,
                 child: ListTile(
-                  leading:
+                  leading: 
                   IconButton(
                     icon: changeicon_com(doc['iscompleted']),
                     onPressed: () => completed(doc),
                   ),
-
-                  trailing:
-                  IconButton(
-                      icon:changeicon_star(doc['isstarred']),
-                      onPressed: () => starred(doc)
+                  trailing: IconButton(
+                      icon: changeicon_star(doc['isstarred']),
+                      onPressed: () => starred(doc)),
+                  title: Text(
+                    doc['name'],
+                    style: returnstyle(doc['iscompleted']),
                   ),
-
-
-                  title: Text(doc['name'], style: returnstyle(doc['iscompleted']),),
-                  subtitle: Text(
-                      doc['comment'], style: returnstyle(doc['iscompleted'])),
+                  subtitle: Text(doc['comment'],
+                      style: returnstyle(doc['iscompleted'])),
                 ),
               ),
               secondaryActions: <Widget>[
@@ -71,44 +71,79 @@ class Showlist extends State<StatefulWidget> {
                   icon: priIcon(doc),
                   onTap: () {
                     privated(doc);
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Task Status Changed!'),
+                    ));
 //                    setState(() {
 //                      hasprivate(doc);
 //                    });
-                    },
+                  },
+                ),
+                IconSlideAction(
+                  caption: 'Delete',
+                  color: Colors.red[900],
+                  icon: Icons.delete,
+                  onTap: () {
+                    //deleted(doc);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        // return object of type Dialog
+                        return AlertDialog(
+                          title:  Text("Delete task?"),
+                          content:  Text(
+                              "Deleting with remove all data associated with the task"),
+                          actions: <Widget>[
+                            // usually buttons at the bottom of the dialog
+                            FlatButton(
+                              child:Text("Cancel"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            FlatButton(
+                              child:  Text("Delete"),
+                              onPressed: () {
+                                deleted(doc);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 )
               ],
             ),
-          ) ;
-        }
-    );
+          );
+        });
   }
 
-
-
-
-  hasprivate(DocumentSnapshot document){
-    if(document.data.containsKey('isprivate') && document['isprivate']==false){
+  hasprivate(DocumentSnapshot document) {
+    if (document.data.containsKey('isprivate') &&
+        document['isprivate'] == false) {
       return Colors.green;
-    }
-    else{
+    } else {
       return Colors.white;
     }
   }
 
   Future privated(DocumentSnapshot document) {
-    if (!document.data.containsKey('isprivate')){
+    if (!document.data.containsKey('isprivate')) {
       document.reference.updateData({"isprivate": true});
-    }
-    else {
+    } else {
       if (document['isprivate']) {
         document.reference.updateData({"isprivate": false});
-      }
-      else {
+      } else {
         document.reference.updateData({"isprivate": true});
       }
     }
   }
 
+  Future deleted(DocumentSnapshot document) {
+    document.reference.delete();
+  }
 
 
     Future completed(DocumentSnapshot document) {
@@ -119,43 +154,39 @@ class Showlist extends State<StatefulWidget> {
         document.reference.updateData({"iscompleted": true,'action':"complete_task",'actiontime':Timestamp.now()});
       }
     }
+  }
 
   Future starred(DocumentSnapshot document) {
     if (document['isstarred']) {
       document.reference.updateData({"isstarred": false});
-    }
-    else {
+    } else {
       document.reference.updateData({"isstarred": true});
     }
   }
 
-    returnstyle(bool completed) {
-      if (completed) {
-        return TextStyle(fontWeight: FontWeight.w200);
-      }
-      else {
-        return TextStyle(fontWeight: FontWeight.normal);
-      }
-
+  returnstyle(bool completed) {
+    if (completed) {
+      return TextStyle(fontWeight: FontWeight.w200);
+    } else {
+      return TextStyle(fontWeight: FontWeight.normal);
     }
-
+  }
 
   changeicon_com(bool completed) {
-    return completed ? Icon(Icons.check_box) : Icon(
-        Icons.check_box_outline_blank);
+    return completed
+        ? Icon(Icons.check_box)
+        : Icon(Icons.check_box_outline_blank);
   }
 
   changeicon_star(bool completed) {
-    return completed ? Icon(Icons.star) : Icon(
-        Icons.star_border);
+    return completed ? Icon(Icons.star) : Icon(Icons.star_border);
   }
 
   priColor(DocumentSnapshot document) {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
       return Colors.green;
-    }
-    else {
+    } else {
       return Colors.red;
     }
   }
@@ -164,34 +195,34 @@ class Showlist extends State<StatefulWidget> {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
       return "open";
-    }
-    else {
+    } else {
       return "privated";
     }
   }
 
-  priIcon (DocumentSnapshot document) {
+  priIcon(DocumentSnapshot document) {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
       return Icons.remove_red_eye;
-    }
-    else {
+    } else {
       return Icons.block;
     }
   }
-}
+
 
 class Showstar extends StatelessWidget {
-
   final String uid;
-  const Showstar({Key key, this.uid}) :super(key: key);
-
+  const Showstar({Key key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('isstarred', isEqualTo: true).where('iscompleted', isEqualTo: false).snapshots(),
+      stream: Firestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: "$uid")
+          .where('isstarred', isEqualTo: true)
+          .where('iscompleted', isEqualTo: false)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return new Showlist().buildList(context, snapshot.data.documents);
@@ -200,18 +231,18 @@ class Showstar extends StatelessWidget {
   }
 }
 
-
 class CompletedTask extends StatelessWidget {
-
   final String uid;
-  const CompletedTask({Key key, this.uid}) :super(key: key);
+  const CompletedTask({Key key, this.uid}) : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('iscompleted', isEqualTo: true).snapshots(),
+      stream: Firestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: "$uid")
+          .where('iscompleted', isEqualTo: true)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return new Showlist().buildList(context, snapshot.data.documents);
@@ -221,24 +252,25 @@ class CompletedTask extends StatelessWidget {
 }
 
 //for getting todays date
-DateTime now=DateTime.now();
-DateTime before=DateTime(now.year,now.month,now.day,0,0,0,0,0);
-DateTime after=DateTime(now.year,now.month,now.day,23,59,59,0,0);
-
-
+DateTime now = DateTime.now();
+DateTime before = DateTime(now.year, now.month, now.day, 0, 0, 0, 0, 0);
+DateTime after = DateTime(now.year, now.month, now.day, 23, 59, 59, 0, 0);
 
 class TodayTask extends StatelessWidget {
   //shows all tasks for today even if its past due time
   final String uid;
-  TodayTask({Key key, this.uid}) :super(key: key);
+  TodayTask({Key key, this.uid}) : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('time', isGreaterThan: Timestamp.fromDate(before)).where('time',isLessThanOrEqualTo: Timestamp.fromDate(after)).
-      where('iscompleted', isEqualTo: false).snapshots(),
+      stream: Firestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: "$uid")
+          .where('time', isGreaterThan: Timestamp.fromDate(before))
+          .where('time', isLessThanOrEqualTo: Timestamp.fromDate(after))
+          .where('iscompleted', isEqualTo: false)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return new Showlist().buildList(context, snapshot.data.documents);
@@ -248,16 +280,18 @@ class TodayTask extends StatelessWidget {
 }
 
 class IncompleteTask extends StatelessWidget {
-
   final String uid;
-  const IncompleteTask({Key key, this.uid}) :super(key: key);
-  
+  const IncompleteTask({Key key, this.uid}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').where(
-          'uid', isEqualTo: "$uid").where('time', isLessThanOrEqualTo: DateTime.now()) 
-        .where('iscompleted', isEqualTo: false).snapshots(),
+      stream: Firestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: "$uid")
+          .where('time', isLessThanOrEqualTo: DateTime.now())
+          .where('iscompleted', isEqualTo: false)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return new Showlist().buildList(context, snapshot.data.documents);
@@ -266,7 +300,6 @@ class IncompleteTask extends StatelessWidget {
   }
 }
 
-
 class Tasks {
   final String name;
   final String uid;
@@ -274,7 +307,7 @@ class Tasks {
   final String list;
   final bool iscompleted;
   final bool isstarred;
-  final time ;
+  final time;
   final bool isprivate;
   final List likes;
   final List message;//friend's comment
@@ -303,7 +336,7 @@ class Tasks {
       'uid': uid,
       'name': name,
       'comment': comment,
-      'list': list!=null? list:'inbox',
+      'list': list != null ? list : 'inbox',
       'time': time,
       'iscompleted': iscompleted,
       'isstarred' : isstarred,
