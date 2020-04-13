@@ -20,7 +20,6 @@ class CreateTask extends StatefulWidget {
   State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list,uid: uid);
 }
 
-//const String INIT_DATETIME = '2019-05-16 09:00';
 
 class _CreateTaskState extends State<CreateTask> {
   var _taskname = TextEditingController();
@@ -37,8 +36,6 @@ class _CreateTaskState extends State<CreateTask> {
   DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
-
-
 
   buildList(uid) {
     return FutureBuilder(
@@ -57,7 +54,7 @@ class _CreateTaskState extends State<CreateTask> {
             );
             alllist.add(listchoose);
           }
-          alllist.add(new DropdownMenuItem(value: "inbox",child: Text("inbox")));
+          alllist.add(new DropdownMenuItem(value: "inbox", child: Text("inbox")));
           return alllist;
         }
         return DropdownButton(
