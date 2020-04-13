@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:peeklist/data/tasks.dart';
+import 'package:peeklist/pages/root.dart';
+import 'package:peeklist/utils/auth.dart';
+import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 
-import '../widgets/header.dart';
-
-final userRef = Firestore.instance.collection('users');
 
 class Timeline extends StatefulWidget {
   @override
@@ -12,81 +14,107 @@ class Timeline extends StatefulWidget {
 }
 
 class _TimelineState extends State<Timeline> {
-
-  List<dynamic> users;
+  String uid;
 
   @override
   void initState() {
-    // getUsers();
-    // getUserById();
     super.initState();
-    
+    getCurrentUser();
   }
 
-  createUser() async {
-    userRef.add({
-      
+  getCurrentUser() async {
+    String userId = await authService.userID();
+    setState(() {
+      uid = userId;
     });
   }
 
-  // getUsers() async {
-  //   // final QuerySnapshot snapshot = await userRef.where("isAdmin", isEqualTo: true).getDocuments();
-  //   final QuerySnapshot snapshot = await userRef
-  //   .where("postsCount", isGreaterThan: 0)
-  //   .where("isAdmin", isEqualTo: true)
-  //   .getDocuments();
-  //   snapshot.documents.forEach((DocumentSnapshot doc) {
-  //     print(doc.data);
-  //   });
-  // }
 
-  // getUsers() async {
-  //   final QuerySnapshot snapshot = await userRef.getDocuments();
-  //   setState(() {
-  //     users = snapshot.documents;
-  //   });
-  // }
-
-  // getUserById() {
-  //   final String id = "pUXFP82zvWSHEfD8vMXt";
-  //   userRef.document(id).get().then((DocumentSnapshot doc) {
-  //     print(doc.data);
-  //   });
-  // }
-
-  // getUserById() async {
-  //   final String id = "pUXFP82zvWSHEfD8vMXt";
-  //   final DocumentSnapshot doc = await userRef.document(id).get();
-  //   print(doc.data);
-  // }
-
-  // getUsers() {
-  //   userRef.getDocuments().then((QuerySnapshot snapshot) {
-  //     snapshot.documents.forEach((DocumentSnapshot doc) {
-  //       print(doc.data);
-  //       print(doc.documentID);
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(context) {
     return Scaffold(
-      appBar: header(context, isAppTitle: true),
-      body: FutureBuilder<QuerySnapshot>( //StreamBuilder - to get a stream of data in real time
-        future: userRef.getDocuments(), //stream: userRef.snapshots() - instead of future
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return circularProgress();
-          }
-          final List<Text> children = snapshot.data.documents.map((doc) => Text(doc['username'])).toList();
-          return Container(
-            child: ListView(
-              children: children,
+      body: buildTimeline(),
+      floatingActionButton: SpeedDial(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
             ),
-          );
-        },
+            backgroundColor: Theme.of(context).accentColor,
+            child: Icon(Icons.add),
+            label: "Add",
+            onTap: () => print('Add')
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+            child: Icon(Icons.person),
+            label: "My Profile",
+            onTap: () {
+              Navigator.pushNamed(context, '/myprofile', arguments: currentUser);
+            },
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Theme.of(context).primaryColorLight,
+            child: Icon(Icons.notifications),
+            label: "Notification Center",
+            onTap: () {
+              Navigator.pushNamed(context, '/notifications', arguments: uid);
+            },
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.black45,
+            child: Icon(Icons.person_add),
+            label: "Add Friends",
+            onTap: () {
+              Navigator.pushNamed(context, '/search', arguments: uid);
+            },
+          ),
+        ],
       ),
+    );
+  }
+
+  buildTimeline() {
+    return StreamBuilder(
+      stream: UserService().getTimeline(this.uid),
+        builder: (context, asyncSnap) {
+          if (asyncSnap.hasError) {
+            return Text("Error ${asyncSnap.error}");
+          } else if (asyncSnap.data == null) {
+            return circularProgress();
+          } else if (asyncSnap.data.length == 0) {
+            return Text("No tasks in timeline");
+          } else {
+            return new ListView.builder(
+              shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: asyncSnap.data.length,
+                itemBuilder: (context, int index) {
+                  Tasks tasks = asyncSnap.data[index];
+                  return buildSocialCard(tasks);
+                }
+            );
+          }
+        }
+    );
+  }
+
+  buildSocialCard(Tasks tasks) {
+    return ListTile(
+      title: Text(tasks.name),
+      subtitle: Text(tasks.comment),
     );
   }
 }

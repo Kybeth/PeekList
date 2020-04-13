@@ -18,7 +18,7 @@ class Showlist extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection('tasks')
+          .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('list', isEqualTo: "$list")
           .where('iscompleted', isEqualTo: false)
@@ -221,7 +221,7 @@ class Showstar extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection('tasks')
+          .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('isstarred', isEqualTo: true)
           .where('iscompleted', isEqualTo: false)
@@ -242,7 +242,7 @@ class CompletedTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection('tasks')
+          .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('iscompleted', isEqualTo: true)
           .snapshots(),
@@ -268,7 +268,7 @@ class TodayTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection('tasks')
+          .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('time', isGreaterThan: Timestamp.fromDate(before))
           .where('time', isLessThanOrEqualTo: Timestamp.fromDate(after))
@@ -290,7 +290,7 @@ class IncompleteTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection('tasks')
+          .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('time', isLessThanOrEqualTo: DateTime.now())
           .where('iscompleted', isEqualTo: false)
@@ -311,8 +311,9 @@ class Tasks {
   final bool iscompleted;
   final bool isstarred;
   final time;
+  final create;
   final bool isprivate;
-  final List likes;
+  final Map<dynamic, dynamic> likes;
   final List message;//friend's comment
 
 //final Integer likes;
@@ -328,13 +329,29 @@ class Tasks {
     this.isprivate,
     this.likes,
     this.message,
+    this.create,
     //this.like
   });
+
+  factory Tasks.fromDocument(DocumentSnapshot doc) {
+    return Tasks(
+      name: doc['name'],
+      uid: doc['uid'],
+      comment: doc['comment'],
+      list: doc['list'],
+      iscompleted: doc['iscompleted'],
+      isstarred: doc['isstarred'],
+      time: doc['time'],
+      isprivate: doc['isprivate'],
+      likes: doc['likes'],
+      create: doc['create'],
+    );
+  }
 
   Future<DocumentReference> addtask() async {
 
     var tasksid=await Firestore.instance
-        .collection('tasks')
+        .collection('pubTasks')
         .add(<String, dynamic>{
       'uid': uid,
       'name': name,
@@ -344,8 +361,7 @@ class Tasks {
       'iscompleted': iscompleted,
       'isstarred' : isstarred,
       'isprivate' :isprivate,
-      'likes':[],
-      'messages':[],
+      'likes':{},
       'create':Timestamp.now(),
       'complete':null,
     });
@@ -387,7 +403,7 @@ class ListMethod{
         'tasks': lists
       });
     });
-   changedata= await Firestore.instance.collection('tasks').where('uid',isEqualTo: uid).where('list',isEqualTo: old_name).getDocuments();
+   changedata= await Firestore.instance.collection('pubTasks').where('uid',isEqualTo: uid).where('list',isEqualTo: old_name).getDocuments();
    await changedata.documents.forEach((element) {
      element.reference.updateData({'list':new_name});
    });
@@ -398,7 +414,7 @@ class ListMethod{
     await Firestore.instance.collection('users').document(uid).updateData({
       'tasks':FieldValue.arrayRemove([list_name])
     });
-    changedata=await Firestore.instance.collection('tasks').where('uid',isEqualTo: uid).where('list',isEqualTo: list_name).getDocuments();
+    changedata=await Firestore.instance.collection('pubTasks').where('uid',isEqualTo: uid).where('list',isEqualTo: list_name).getDocuments();
     await changedata.documents.forEach((element) {
       element.reference.delete();
     });

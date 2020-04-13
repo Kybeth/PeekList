@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/models/friends.dart';
+import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
 import 'package:peeklist/models/user.dart';
+import 'package:peeklist/data/tasks.dart';
 
 class UserService {
   var _db = Firestore.instance.collection('users');
@@ -90,6 +92,18 @@ class UserService {
   Stream<List<Requests>> getRequests(uid) {
     return Firestore.instance.collection('users').document(uid).collection('followRequests').snapshots().map((snap) => snap.documents.map((doc) {
       return Requests.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<Tasks>> getTimeline(uid) {
+    return Firestore.instance.collection('users').document(uid).collection('timeline').snapshots().map((snap) => snap.documents.map((doc) {
+      return Tasks.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<Interactions>> getInteractions(uid) {
+    return Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().map((snap) => snap.documents.map((doc) {
+      return Interactions.fromDocument(doc);
     }).toList());
   }
 
