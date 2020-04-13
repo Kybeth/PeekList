@@ -1,5 +1,6 @@
 # peeklist
 [![Build Status](https://travis-ci.com/Kybeth/PeekList.svg?branch=master)](https://travis-ci.com/Kybeth/PeekList)
+![Coverage](https://raw.githubusercontent.com/Kybeth/PeekList/Sprint4/coverage_badge.svg?sanitize=true)
 
 A new Flutter project.
 
