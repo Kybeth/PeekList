@@ -315,6 +315,7 @@ class Tasks {
   final bool isprivate;
   final Map<dynamic, dynamic> likes;
   final List message;//friend's comment
+  final String taskId;
 
 //final Integer likes;
   //final String date;
@@ -330,6 +331,7 @@ class Tasks {
     this.likes,
     this.message,
     this.create,
+    this.taskId,
     //this.like
   });
 
@@ -345,6 +347,7 @@ class Tasks {
       isprivate: doc['isprivate'],
       likes: doc['likes'],
       create: doc['create'],
+      taskId: doc.documentID,
     );
   }
 

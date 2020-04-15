@@ -22,13 +22,13 @@ exports.onCreateFriend = functions.firestore
             .doc(userId)
             .collection('timeline');
 
-        const userRef = admin
+        const friendRef = admin
             .firestore()
             .collection('users')
-            .doc(userId);
+            .doc(friendId);
 
         const querySnapshot = await friendTaskRef.get();
-        const userSnapshot = await userRef.get();
+        const userSnapshot = await friendRef.get();
         const user = userSnapshot.data();
         querySnapshot.forEach(doc => {
             if (doc.exists) {
@@ -71,7 +71,7 @@ exports.onCreateFriend = functions.firestore
     });
 
 exports.onCreateTask = functions.firestore
-    .document("/tasks/{taskId}")
+    .document("/pubTasks/{taskId}")
     .onCreate(async (snapshot, context) => {
         const taskId = context.params.taskId;
         const task = snapshot.data();
@@ -120,7 +120,7 @@ exports.onCreateTask = functions.firestore
     });
 
 exports.onUpdateTask = functions.firestore
-    .document('/tasks/{taskId}')
+    .document('/pubTasks/{taskId}')
     .onUpdate(async (change, context) => {
         const taskUpdated = change.after.data();
         const taskId = context.params.taskId;
@@ -150,7 +150,7 @@ exports.onUpdateTask = functions.firestore
     });
 
 exports.onDeleteTask = functions.firestore
-    .document('/tasks/{taskId}')
+    .document('/pubTasks/{taskId}')
     .onDelete(async (context, snapshot) => {
         const taskToDelete = snapshot.data();
         const taskId = context.params.taskId;

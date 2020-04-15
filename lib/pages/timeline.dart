@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/data/tasks.dart';
+import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
+import 'package:peeklist/widgets/social_task.dart';
 
 
 class Timeline extends StatefulWidget {
@@ -102,8 +104,8 @@ class _TimelineState extends State<Timeline> {
                 scrollDirection: Axis.vertical,
                 itemCount: asyncSnap.data.length,
                 itemBuilder: (context, int index) {
-                  Tasks tasks = asyncSnap.data[index];
-                  return buildSocialCard(tasks);
+                  SocialModel tasks = asyncSnap.data[index];
+                  return SocialTask(task: tasks, uid: this.uid,);
                 }
             );
           }
@@ -111,10 +113,4 @@ class _TimelineState extends State<Timeline> {
     );
   }
 
-  buildSocialCard(Tasks tasks) {
-    return ListTile(
-      title: Text(tasks.name),
-      subtitle: Text(tasks.comment),
-    );
-  }
 }
