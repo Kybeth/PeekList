@@ -14,10 +14,11 @@ import 'package:peeklist/data/likes.dart';
 class CreateTask extends StatefulWidget {
   final choose_list;
   final uid;
-  CreateTask({Key key, this.choose_list,this.uid}): super(key:key);
+  final isPrivate;
+  CreateTask({Key key, this.choose_list,this.uid, this.isPrivate = true}): super(key:key);
   @override
 
-  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list,uid: uid);
+  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list, uid: uid, isPrivate: isPrivate);
 }
 
 
@@ -27,9 +28,10 @@ class _CreateTaskState extends State<CreateTask> {
   var _duedate = TextEditingController();
   var choose_list;
   var listName;
-  var isprivate=true;
+  var isPrivate;
   var uid;
-  _CreateTaskState({Key key, this.choose_list,this.uid});
+
+  _CreateTaskState({Key key, this.choose_list, this.uid, this.isPrivate});
 
   String _format = 'yyyy - MM - dd    EEE,H:m'; //DateTimePicker
   TextEditingController _formatCtrl = TextEditingController();
@@ -171,10 +173,10 @@ class _CreateTaskState extends State<CreateTask> {
 
               Text('Do you want to share this tasks?'),
               IconButton(
-                icon: changeicon_com(isprivate),
+                icon: changeicon_com(isPrivate),
                 onPressed: (){
                   setState(() {
-                    isprivate= isprivate? false:true;
+                    isPrivate= isPrivate? false:true;
                   });
               },
               )
@@ -206,7 +208,7 @@ class _CreateTaskState extends State<CreateTask> {
                   iscompleted: false,
                   isstarred: false,
                   time:_dateTime,
-                  isprivate:isprivate
+                  isprivate:isPrivate
               );
 
               ntask.addtask();
