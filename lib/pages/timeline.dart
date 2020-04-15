@@ -8,7 +8,7 @@ import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/widgets/social_task.dart';
-
+import 'package:peeklist/pages/create_task.dart';
 
 class Timeline extends StatefulWidget {
   @override
@@ -48,7 +48,15 @@ class _TimelineState extends State<Timeline> {
             backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.add),
             label: "Add",
-            onTap: () => print('Add')
+            onTap: () async {
+              var uid = await AuthService().userID();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CreateTask(choose_list: 'inbox', uid: uid, isPrivate: false)),
+              );
+            },
           ),
           SpeedDialChild(
             labelStyle: TextStyle(

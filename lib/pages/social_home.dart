@@ -4,6 +4,7 @@ import 'package:peeklist/models/todo.dart';
 import 'package:peeklist/models/user.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/utils/auth.dart';
+import 'package:peeklist/pages/create_task.dart';
 
 class SocialHome extends StatefulWidget {
   SocialHome({Key key}) : super(key: key);
@@ -129,8 +130,16 @@ class _SocialHomeState extends State<SocialHome> {
             ),
             backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.add),
-            label: "Add",
-            onTap: () => print('Add')
+            label: "Add Task",
+            onTap: () async {
+              var uid = await AuthService().userID();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CreateTask(choose_list: 'inbox', uid: uid)),
+              );
+            },
           ),
           SpeedDialChild(
             labelStyle: TextStyle(
