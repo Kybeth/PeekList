@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peeklist/models/friends.dart';
 import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
 import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/models/user.dart';
-import 'package:peeklist/data/tasks.dart';
 
 class UserService {
   var _db = Firestore.instance.collection('users');
@@ -109,3 +107,5 @@ class UserService {
   }
 
 }
+
+final UserService userService = UserService();

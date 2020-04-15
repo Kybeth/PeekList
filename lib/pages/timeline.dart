@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:peeklist/data/tasks.dart';
 import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/utils/auth.dart';
@@ -30,8 +28,6 @@ class _TimelineState extends State<Timeline> {
       uid = userId;
     });
   }
-
-
 
   @override
   Widget build(context) {
@@ -98,7 +94,7 @@ class _TimelineState extends State<Timeline> {
 
   buildTimeline() {
     return StreamBuilder(
-      stream: UserService().getTimeline(this.uid),
+      stream: userService.getTimeline(this.uid),
         builder: (context, asyncSnap) {
           if (asyncSnap.hasError) {
             return Text("Error ${asyncSnap.error}");
