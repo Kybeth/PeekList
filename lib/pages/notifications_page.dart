@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
-import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
-import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/widgets/progress.dart';
 
 class NotificationsPage extends StatefulWidget {
@@ -40,11 +37,11 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () => UserService().acceptFriendRequest(uid, req),
+            onPressed: () => userService.acceptFriendRequest(uid, req),
           ),
           IconButton(
             icon: Icon(Icons.clear),
-            onPressed: () => UserService().declineFriendRequest(uid, req),
+            onPressed: () => userService.declineFriendRequest(uid, req),
           ),
         ],
       ),
@@ -83,7 +80,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
 
   buildInteractions() {
     return StreamBuilder(
-      stream: UserService().getInteractions(uid),
+      stream: userService.getInteractions(uid),
       builder: (context, asyncSnap) {
         if (asyncSnap.hasError) {
           return Text("Error ${asyncSnap.error}");
@@ -145,7 +142,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
-        backgroundImage: CachedNetworkImageProvider(inter.user['photoURL']),
+        backgroundImage: CachedNetworkImageProvider(inter.userMeta['photoURL']),
       ),
       title: Text(inter.title),
       subtitle: Text('Type: ${inter.type}'),

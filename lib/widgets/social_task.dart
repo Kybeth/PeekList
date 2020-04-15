@@ -37,7 +37,7 @@ class _SocialTaskState extends State<SocialTask> {
       likes[widget.uid] = true;
     });
     
-    await taskService.likeTask(widget.task, likes);
+    await taskService.likeTask(widget.uid, widget.task, likes);
 
     print(likes);
 
@@ -49,7 +49,7 @@ class _SocialTaskState extends State<SocialTask> {
       likeCount -= 1;
       likes.remove(widget.uid);
     });
-    await taskService.likeTask(widget.task, likes);
+    await taskService.unlikeTask(widget.uid, widget.task, likes);
 
   }
 

@@ -62,11 +62,12 @@ exports.onCreateFriend = functions.firestore
                 'type': 'friend',
                 'time': Date.now(),
                 'title': `You are now friends with ${friend.displayName}`,
-                'user': {
+                'userMeta': {
                     'uid': friendId,
                     'photoURL': friend.photoURL,
                     'displayName': friend.displayName,
-                }
+                },
+                'metaData': {},
             });
     });
 
@@ -146,6 +147,27 @@ exports.onUpdateTask = functions.firestore
              });
         }
 
+        if (taskUpdated.isprivate) {
+            const userRef = admin.firestore()
+                .collection('users')
+                .doc(taskUpdated.uid)
+                .collection('friends')
+
+            const querySnapshot = await userRef.get();
+            querySnapshot.forEach(doc => {
+                const friendId = doc.id;
+                admin.firestore()
+                    .collection('users')
+                    .doc(friendId)
+                    .collection('timeline')
+                    .doc(taskId)
+                    .get().then((doc) => {
+                        if (doc.exists) {
+                            doc.ref.delete();
+                        }
+                    });
+            });
+        }
 
     });
 
@@ -154,7 +176,7 @@ exports.onDeleteTask = functions.firestore
     .onDelete(async (context, snapshot) => {
         const taskToDelete = snapshot.data();
         const taskId = context.params.taskId;
-        if (!taskUpdated.isprivate) {
+        if (!taskToDelete.isprivate) {
             const userRef = admin.firestore()
                 .collection('users')
                 .doc(taskToDelete.uid)
@@ -194,10 +216,74 @@ exports.onReceiveFriendRequest = functions.firestore
                 'type': 'request',
                 'time': Date.now(),
                 'title': `Friend Request from ${friend.displayName}`,
-                'user': {
+                'userMeta': {
                     'uid': friendId,
                     'photoURL': friend.photoURL,
                     'displayName': friend.displayName,
+                },
+                'metaData': {},
+            });
+    });
+
+exports.onLike = functions.firestore
+    .document('/pubTasks/{taskId}/likes/{friendId}')
+    .onCreate(async (snapshot, context) => {
+        console.log(snapshot.data());
+        const res = snapshot.data();
+        console.log(res);
+        const taskId = context.params.taskId;
+        const friendId = context.params.friendId;
+        admin.firestore()
+            .collection('users')
+            .doc(friendId)
+            .collection('interactions')
+            .doc()
+            .set({
+                'type': 'like',
+                'time': Date.now(),
+                'title': `${res.userMeta.displayName} liked your task`,
+                'userMeta': {
+                    'uid': res.userMeta.uid,
+                    'displayName': res.userMeta.displayName,
+                    'photoURL': res.userMeta.photoURL,
+                },
+                'metaData': {
+                    'taskId': taskId,
+                    'taskTitle': res.metaData.taskTitle,
+                }
+            });
+    });
+
+exports.onComment = functions.firestore
+    .document('/pubTasks/{taskId}/comments/{commentId}')
+    .onCreate(async (snapshot, context) => {
+        const res = snapshot.data();
+        const taskId = context.params.taskId;
+        const commentId = context.params.commentId;
+        const taskRef = admin.firestore()
+            .collection('pubTasks')
+            .doc(taskId);
+
+        const taskSnapshot = await taskRef.get();
+        const taskData = taskSnapshot.data();
+        admin.firestore()
+            .collection('users')
+            .doc(taskData.uid)
+            .collection('interactions')
+            .doc()
+            .set({
+                'type': 'comment',
+                'time': Date.now(),
+                'title': `${res.userMeta.name} replied: ${res.message}`,
+                'userMeta': {
+                    'displayName': res.userMeta.name,
+                    'photoURL': res.userMeta.photoURL,
+                    'uid': res.userMeta.uid,
+                },
+                'metaData': {
+                    'taskName': taskData.name,
+                    'taskId': taskId,
+                    'uid': taskData.uid,
                 }
             });
     });
