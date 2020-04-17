@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/models/social_model.dart';
@@ -6,7 +7,9 @@ import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/widgets/social_task.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/pages/my_profile.dart';
 
 class Timeline extends StatefulWidget {
   @override
@@ -103,18 +106,51 @@ class _TimelineState extends State<Timeline> {
           } else if (asyncSnap.data.length == 0) {
             return Text("No tasks in timeline");
           } else {
-            return new ListView.builder(
-              shrinkWrap: true,
+            return new
+              Column(
+              children: <Widget>[
+                shownewmessage(),
+
+                ListView.builder(
+                shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemCount: asyncSnap.data.length,
                 itemBuilder: (context, int index) {
-                  SocialModel tasks = asyncSnap.data[index];
-                  return SocialTask(task: tasks, uid: this.uid,);
+                SocialModel tasks = asyncSnap.data[index];
+
+                return SocialTask(task: tasks, uid: this.uid,);
                 }
+                )
+              ],
             );
+
           }
         }
     );
   }
 
+  shownewmessage(){
+    return StreamBuilder(
+      stream: Firestore.instance.collection('users').document(this.uid).snapshots(),
+      builder: (context,snapshots){
+        if(!snapshots.hasData){
+          return Container();
+        }
+        else{
+          AsyncSnapshot dsp=snapshots;
+          return new ListTile(
+            title: Text(dsp.data['displayName']),
+            trailing: Icon(Icons.notifications),
+            leading:
+            InkWell(
+              onTap: (){
+                Navigator.pushNamed(context, '/myprofile', arguments: currentUser);
+              },
+              child:
+              CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(dsp.data['photoURL']),
+                backgroundColor: Colors.white,
+              ),));
+        }},);
+  }
 }

@@ -104,7 +104,8 @@ class _SocialHomeState extends State<SocialHome> {
 
   @override
   Widget build(BuildContext context) {
-    final makeBody = Container(
+    final makeBody =
+    Container(
       padding: EdgeInsets.all(10.0),
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
       child: ListView.builder(
@@ -119,7 +120,7 @@ class _SocialHomeState extends State<SocialHome> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: makeBody,
+      body:makeBody,
       floatingActionButton: SpeedDial(
         backgroundColor: Theme.of(context).primaryColorDark,
         animatedIcon: AnimatedIcons.menu_close,
