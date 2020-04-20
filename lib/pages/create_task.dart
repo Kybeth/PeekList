@@ -9,7 +9,7 @@ import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/data/likes.dart';
-
+import 'package:peeklist/widgets/messaging_widget.dart';
 
 class CreateTask extends StatefulWidget {
   final choose_list;
@@ -187,19 +187,6 @@ class _CreateTaskState extends State<CreateTask> {
               if(listName!=null){
                 choose_list=listName;
               }
-//              var taskid='-M4HzfJApzxm99cpQ4eX';
-//              var taskname="testing data";
-//              var friendid='AuOVeVfl8hcShMyd7wM7VC3jr1r2';
-//              var friendname='Yuan Zhang';
-//              var comment='goodjob';
-//                Likes newlike=new Likes(
-//                    taskid: taskid,
-//                    taskname: taskname,
-//                    friendid: friendid,
-//                    friendname: friendname
-//                );
-//                var addone= await newlike.addlikes();
-//                await newlike.deletelikes(addone.documentID);
               Tasks ntask = new Tasks(
                   name: _taskname.text,
                   uid: await AuthService().userID(),
@@ -217,6 +204,17 @@ class _CreateTaskState extends State<CreateTask> {
             child: Text('add'),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TestPage(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

@@ -36,6 +36,7 @@ dependencies:
   timeago:
   flutter_speed_dial: ^1.2.1
   flutter_slidable: 0.5.3
+  firebase_messaging: 6.0.13
 
 
 dev_dependencies:
