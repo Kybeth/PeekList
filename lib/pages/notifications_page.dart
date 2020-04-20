@@ -17,6 +17,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   bool isLoading = false;
   var notifications = [];
   String uid;
+  var allintertnumber;
 
   @override
   void initState() {
@@ -94,6 +95,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
               scrollDirection: Axis.vertical,
               itemCount: asyncSnap.data.length,
               itemBuilder: (context, int index) {
+                allintertnumber=asyncSnap.data.length;
                 Interactions inter = asyncSnap.data[index];
                 return buildInter(inter);
               }
