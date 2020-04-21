@@ -10,6 +10,7 @@ import 'package:peeklist/pages/show_starred.dart';
 import 'package:peeklist/pages/today_page.dart';
 import 'package:peeklist/pages/planned_page.dart';
 import 'package:peeklist/pages/completed_page.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/data/tasks.dart';
 import '../utils/auth.dart';
 
@@ -253,28 +254,6 @@ class _TaskPageState extends State<TaskPage> {
                 ),
               ),
             ),
-            Card(
-                elevation: 5,
-                child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        TextField(
-                          decoration:
-                              InputDecoration(labelText: 'new list name'),
-                          controller: newlist,
-                        ),
-                        RaisedButton(
-                          child: Text('create list'),
-                          textColor: Colors.blue,
-                          onPressed: () async {
-                            //print(newtasklistinputController.text);
-                            await _addtomylist(newlist.text);
-                          },
-                        )
-                      ],
-                    ))),
             Column(
 //                  children: <Widget>[
 //                    StreamBuilder(
@@ -291,6 +270,48 @@ class _TaskPageState extends State<TaskPage> {
                   FlatButton(
                       splashColor: Colors.green,
                       child: Text(lst.listname),
+                      onLongPress: () async{
+                        var uid = await AuthService().userID();
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              // return object of type Dialog
+                              return AlertDialog(
+                                title: Text("Delete/ rename?"),
+                                content: TextField(
+                                    decoration: InputDecoration(
+                                        labelText: 'Rename this list to?'),
+                                    controller: renamelist,
+                                  ),
+                                actions: <Widget>[
+                                  // usually buttons at the bottom of the dialog
+                                  FlatButton(
+                                    child: Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  FlatButton(
+                                      child: Text("rename"),
+                                      onPressed: () {
+                                        _renamelist(
+                                            uid, lst.listname, renamelist.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  FlatButton(
+                                    child: Text("Delete"),
+                                    onPressed: () {
+                                      _deletelist(uid, lst.listname);
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                      },
+ 
                       onPressed: () async {
                         var uid = await AuthService().userID();
                         Navigator.push(
@@ -381,26 +402,72 @@ class _TaskPageState extends State<TaskPage> {
           ])),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          //         Navigator.of(context).pushNamed('/createtask', arguments: "inbox");
-          var uid = await AuthService().userID();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    CreateTask(choose_list: 'inbox', uid: uid)),
-          );
-        },
-        child: Icon(Icons.add),
+
+      floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blue,
+        animatedIcon: AnimatedIcons.view_list,
+        children: [
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.orange[900],
+            child: Icon(Icons.create),
+            label: "Create new list",
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    // return object of type Dialog
+                    return AlertDialog(
+                      title: Text("Create New User List"),
+                      content: TextField(
+                        decoration:
+                            InputDecoration(labelText: 'list name'),
+                        controller: newlist,
+                      ),
+                      actions: <Widget>[
+                        // usually buttons at the bottom of the dialog
+                        FlatButton(
+                          child: Text("Cancel"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text("create list"),
+                          onPressed: () 
+                            async {
+                            await _addtomylist(newlist.text);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            },
+          ),
+          SpeedDialChild(
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.green,
+            child: Icon(Icons.add),
+            label: "add task",
+            onTap: () async {
+              var uid = await AuthService().userID();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CreateTask(choose_list: 'inbox', uid: uid)),
+              );
+            },
+          ),
+        ],
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
-
-//  Widget _showlist(BuildContext context,DocumentSnapshot ds){
-//    return ListView.builder(
-//
-//    );
-//  }
 }
