@@ -37,7 +37,7 @@ class _TaskPageState extends State<TaskPage> {
         .collection('users')
         .where('uid', isEqualTo: uid)
         .snapshots();
-    await qsp.forEach((ds) {
+        qsp.forEach((ds) {
       List<DocumentSnapshot> ds1 = ds.documents;
       tasklist.clear();
       ds1.forEach((element) {
@@ -226,7 +226,48 @@ class _TaskPageState extends State<TaskPage> {
                                       listname: lst.listname,
                                       uid: uid,
                                     )));
-                      }),
+                      },
+                      onLongPress: () async{
+                        var uid = await AuthService().userID();
+                        showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                // return object of type Dialog
+                                return AlertDialog(
+                                  title: Text("Rename or delete this list?"),
+                                  content: TextField(
+                                    decoration: InputDecoration(
+                                        labelText: 'Rename this list to?'),
+                                    controller: renamelist,
+                                  ),
+                                  actions: <Widget>[
+                                    // usually buttons at the bottom of the dialog
+                                    FlatButton(
+                                      child: Text("Cancel"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text("rename"),
+                                      onPressed: () async{
+                                        await ListMethod().rename_list(uid, lst.listname, renamelist.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                    child: Text("Delete"),
+                                    onPressed: () async{
+                                      await ListMethod().delete_list(uid, lst.listname);
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  ],
+                                );
+                              });
+
+                      },
+ ),
                   PopupMenuButton(
                       itemBuilder: (_) => <PopupMenuItem<String>>[
                             PopupMenuItem<String>(
@@ -259,7 +300,6 @@ class _TaskPageState extends State<TaskPage> {
                                     child: Text("Delete"),
                                     onPressed: () async{
                                       await ListMethod().delete_list(uid, lst.listname);
-                                     // _deletelist(uid, lst.listname);
                                       Navigator.of(context).pop();
                                     },
                                   ),
@@ -293,8 +333,6 @@ class _TaskPageState extends State<TaskPage> {
                                       child: Text("rename"),
                                       onPressed: () async{
                                         await ListMethod().rename_list(uid, lst.listname, renamelist.text);
-//                                        _renamelist(
-//                                            uid, lst.listname, renamelist.text);
                                         Navigator.of(context).pop();
                                       },
                                     ),
