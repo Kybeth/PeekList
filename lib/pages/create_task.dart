@@ -8,7 +8,6 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
-import 'package:peeklist/data/likes.dart';
 import 'package:peeklist/widgets/messaging_widget.dart';
 
 class CreateTask extends StatefulWidget {

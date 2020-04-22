@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:peeklist/pages/social_home.dart';
 import 'package:peeklist/pages/task_page.dart';
 import 'package:peeklist/pages/timeline.dart';
 
@@ -133,8 +132,6 @@ class _RootState extends State<Root>
       stream: authService.user,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          currentUser = _profile['uid'];
-          print(currentUser);
           return buildAuthScreen();
         } else {
           return buildUnAuthScreen();

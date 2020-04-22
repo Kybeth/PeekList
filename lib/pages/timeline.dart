@@ -110,7 +110,7 @@ class _TimelineState extends State<Timeline> {
               Column(
               children: <Widget>[
                 shownewmessage(),
-
+                Divider(),
                 ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,

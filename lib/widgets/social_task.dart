@@ -3,7 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/pages/comments_page.dart';
+import 'package:peeklist/pages/task_details.dart';
 import 'package:peeklist/utils/tasks.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../pages/comments_page.dart';
 
 class SocialTask extends StatefulWidget {
 
@@ -52,49 +56,61 @@ class _SocialTaskState extends State<SocialTask> {
     await taskService.unlikeTask(widget.uid, widget.task, likes);
 
   }
-
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 8.0,
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                leading: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(widget.task.user['photoURL']),
-                  backgroundColor: Colors.grey,
-                ),
-                title: Text(widget.task.name),
-                subtitle: Text(widget.task.comment),
-                onTap: () => print("Tapped"),
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.0,),
+      child: InkWell(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(widget.task.user['photoURL']),
+                backgroundColor: Colors.grey,
               ),
-              ButtonBar(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: isLiked == true ? Colors.blue : Colors.white,
-                    child: IconButton(
+              contentPadding: EdgeInsets.all(2),
+              title: Text(
+                "${widget.task.user['displayName']}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetails(task: widget.task, uid: widget.uid,))),
+              trailing: Text("${timeago.format(widget.task.create.toDate())}"),
+            ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: ListTile(
+                contentPadding: EdgeInsets.all(2),
+                leading: widget.task.iscompleted == true ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+                title: Text(
+                "${widget.task.name}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+                subtitle: Text("${widget.task.comment}"),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetails(task: widget.task, uid: widget.uid,))),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text("${this.likeCount}"),
+                    IconButton(
                       icon: Icon(Icons.thumb_up),
+                      color: isLiked == true ? Colors.blue : Colors.black,
                       onPressed: isLiked == true ? unlike : handleLike,
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.comment),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(task: widget.task, uid: widget.uid,))),
-                  )
-                ],
-              )
-            ],
+                    IconButton(
+                      icon: Icon(Icons.comment),
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(task: widget.task, uid: widget.uid,))),
+                    ),
+                  ],
+                ),
+              ),
           ),
+            Divider(),
+
+          ],
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peeklist/models/comments.dart';
+import 'package:peeklist/models/likes.dart';
 import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
@@ -56,6 +57,13 @@ class TaskService {
       return Comments.fromDocument(doc);
     }).toList());
   }
+
+  Stream<List<Likes>> getLikes(String taskId) {
+    return _dbTasks.document(taskId).collection('likes').snapshots().map((snap) => snap.documents.map((doc) {
+      return Likes.fromDocument(doc);
+    }).toList());
+  }
+
 }
 
 final TaskService taskService = TaskService();
