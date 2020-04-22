@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peeklist/models/friends.dart';
+import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
+import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/models/user.dart';
 
 class UserService {
@@ -93,4 +94,18 @@ class UserService {
     }).toList());
   }
 
+  Stream<List<SocialModel>> getTimeline(uid) {
+    return Firestore.instance.collection('users').document(uid).collection('timeline').snapshots().map((snap) => snap.documents.map((doc) {
+      return SocialModel.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<Interactions>> getInteractions(uid) {
+    return Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().map((snap) => snap.documents.map((doc) {
+      return Interactions.fromDocument(doc);
+    }).toList());
+  }
+
 }
+
+final UserService userService = UserService();

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:peeklist/pages/my_profile.dart';
 import 'package:peeklist/pages/notifications_page.dart';
 import 'package:peeklist/pages/root.dart';
-import 'package:peeklist/pages/user_profile.dart';
 import 'package:peeklist/pages/create_task.dart';
 
 import 'pages/search.dart';
@@ -23,6 +22,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: Colors.red,
         accentColor: Colors.grey,
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.black.withOpacity(0),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -32,7 +34,6 @@ class MyApp extends StatelessWidget {
       home: new Root(),
       routes: <String, WidgetBuilder>{
         '/search': (context) => Search(),
-        '/userprofile': (context) => UserProfile(),
         '/myprofile': (context) => MyProfile(),
         '/createtask':(context) => CreateTask(),
         '/notifications': (context) => NotificationsPage(),

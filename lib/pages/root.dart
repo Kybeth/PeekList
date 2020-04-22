@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/pages/social_home.dart';
 import 'package:peeklist/pages/task_page.dart';
+import 'package:peeklist/pages/timeline.dart';
 
 import '../models/user.dart';
 import '../utils/auth.dart';
@@ -118,7 +119,8 @@ class _RootState extends State<Root>
       body: TabBarView(
         children: <Widget>[
           TaskPage(),
-          SocialHome(),
+//          SocialHome(),
+          Timeline(),
         ],
         controller: _tabController,
       ),

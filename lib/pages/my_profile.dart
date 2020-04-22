@@ -103,26 +103,6 @@ class _MyProfileState extends State<MyProfile> {
       ),
     ],
   );
-      // return Padding(
-      //   padding: EdgeInsets.symmetric(horizontal: 50),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     children: <Widget>[
-      //       RaisedButton.icon(
-      //         onPressed: () => addFriend(currentUser, currentProfile),
-      //         icon: Icon(Icons.person_add),
-      //         label: Text("Add Friend"),
-      //         elevation: 5.0,
-      //         color: Theme.of(context).primaryColorLight,
-      //         colorBrightness: Brightness.dark,
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(18.0),
-      //           side: BorderSide(color: Colors.black),
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // );
     }
   }
 
@@ -167,28 +147,6 @@ class _MyProfileState extends State<MyProfile> {
               ),
               SizedBox(height: 20,),
               buildProfileButton(currentProfile),
-              // Row(
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: <Widget>[
-              //     FlatButton(
-              //       child: Icon(
-              //         Icons.message,
-              //         color: Colors.white,
-              //       ),
-              //       color: Colors.grey,
-              //       onPressed: (){},
-              //     ),
-              //     SizedBox(width: 10),
-              //     FlatButton(
-              //       child: Icon(
-              //         Icons.add,
-              //         color: Colors.white,
-              //       ),
-              //       color: Theme.of(context).accentColor,
-              //       onPressed: (){},
-              //     ),
-              //   ],
-              // ),
             ]
           )
         );

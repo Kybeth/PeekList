@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
-import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
-import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/widgets/progress.dart';
 
 class NotificationsPage extends StatefulWidget {
@@ -18,6 +17,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   bool isLoading = false;
   var notifications = [];
   String uid;
+  var allintertnumber;
 
   @override
   void initState() {
@@ -38,11 +38,11 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () => UserService().acceptFriendRequest(uid, req),
+            onPressed: () => userService.acceptFriendRequest(uid, req),
           ),
           IconButton(
             icon: Icon(Icons.clear),
-            onPressed: () => UserService().declineFriendRequest(uid, req),
+            onPressed: () => userService.declineFriendRequest(uid, req),
           ),
         ],
       ),
@@ -80,7 +80,29 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   }
 
   buildInteractions() {
-    return Container();
+    return StreamBuilder(
+      stream: userService.getInteractions(uid),
+      builder: (context, asyncSnap) {
+        if (asyncSnap.hasError) {
+          return Text("Error ${asyncSnap.error}");
+        } else if (asyncSnap.data == null) {
+          return circularProgress();
+        } else if (asyncSnap.data.length == 0) {
+          return Text('No interactions');
+        } else {
+          return new ListView.builder(
+            shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: asyncSnap.data.length,
+              itemBuilder: (context, int index) {
+                allintertnumber=asyncSnap.data.length;
+                Interactions inter = asyncSnap.data[index];
+                return buildInter(inter);
+              }
+          );
+        }
+      },
+    );
   }
 
   @override
@@ -116,5 +138,16 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  buildInter(Interactions inter) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Colors.grey,
+        backgroundImage: CachedNetworkImageProvider(inter.userMeta['photoURL']),
+      ),
+      title: Text(inter.title),
+      subtitle: Text('Type: ${inter.type}'),
+    );
   }
 }

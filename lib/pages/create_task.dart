@@ -9,18 +9,18 @@ import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/data/likes.dart';
-
+import 'package:peeklist/widgets/messaging_widget.dart';
 
 class CreateTask extends StatefulWidget {
   final choose_list;
   final uid;
-  CreateTask({Key key, this.choose_list,this.uid}): super(key:key);
+  final isPrivate;
+  CreateTask({Key key, this.choose_list,this.uid, this.isPrivate = true}): super(key:key);
   @override
 
-  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list,uid: uid);
+  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list, uid: uid, isPrivate: isPrivate);
 }
 
-//const String INIT_DATETIME = '2019-05-16 09:00';
 
 class _CreateTaskState extends State<CreateTask> {
   var _taskname = TextEditingController();
@@ -28,17 +28,16 @@ class _CreateTaskState extends State<CreateTask> {
   var _duedate = TextEditingController();
   var choose_list;
   var listName;
-  var isprivate=true;
+  var isPrivate;
   var uid;
-  _CreateTaskState({Key key, this.choose_list,this.uid});
+
+  _CreateTaskState({Key key, this.choose_list, this.uid, this.isPrivate});
 
   String _format = 'yyyy - MM - dd    EEE,H:m'; //DateTimePicker
   TextEditingController _formatCtrl = TextEditingController();
   DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
-
-
 
   buildList(uid) {
     return FutureBuilder(
@@ -57,7 +56,7 @@ class _CreateTaskState extends State<CreateTask> {
             );
             alllist.add(listchoose);
           }
-          alllist.add(new DropdownMenuItem(value: "inbox",child: Text("inbox")));
+          alllist.add(new DropdownMenuItem(value: "inbox", child: Text("inbox")));
           return alllist;
         }
         return DropdownButton(
@@ -174,10 +173,10 @@ class _CreateTaskState extends State<CreateTask> {
 
               Text('Do you want to share this tasks?'),
               IconButton(
-                icon: changeicon_com(isprivate),
+                icon: changeicon_com(isPrivate),
                 onPressed: (){
                   setState(() {
-                    isprivate= isprivate? false:true;
+                    isPrivate= isPrivate? false:true;
                   });
               },
               )
@@ -188,19 +187,6 @@ class _CreateTaskState extends State<CreateTask> {
               if(listName!=null){
                 choose_list=listName;
               }
-//              var taskid='-M4HzfJApzxm99cpQ4eX';
-//              var taskname="testing data";
-//              var friendid='AuOVeVfl8hcShMyd7wM7VC3jr1r2';
-//              var friendname='Yuan Zhang';
-//              var comment='goodjob';
-//                Likes newlike=new Likes(
-//                    taskid: taskid,
-//                    taskname: taskname,
-//                    friendid: friendid,
-//                    friendname: friendname
-//                );
-//                var addone= await newlike.addlikes();
-//                await newlike.deletelikes(addone.documentID);
               Tasks ntask = new Tasks(
                   name: _taskname.text,
                   uid: await AuthService().userID(),
@@ -209,7 +195,7 @@ class _CreateTaskState extends State<CreateTask> {
                   iscompleted: false,
                   isstarred: false,
                   time:_dateTime,
-                  isprivate:isprivate
+                  isprivate:isPrivate
               );
 
               ntask.addtask();
@@ -218,6 +204,17 @@ class _CreateTaskState extends State<CreateTask> {
             child: Text('add'),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TestPage(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

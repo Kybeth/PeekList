@@ -10,8 +10,8 @@ import 'package:peeklist/pages/show_starred.dart';
 import 'package:peeklist/pages/today_page.dart';
 import 'package:peeklist/pages/planned_page.dart';
 import 'package:peeklist/pages/completed_page.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/data/tasks.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import '../utils/auth.dart';
 
 class TaskPage extends StatefulWidget {
@@ -54,46 +54,7 @@ class _TaskPageState extends State<TaskPage> {
     });
   }
 
-  //void _deletelist(listname, uid) async {
-  // query to delete list and all tasks in the list
-  //}
-  Future _renamelist(String uid, String old_name, String new_name) async {
-    int index;
-    QuerySnapshot changedata;
-    await Firestore.instance
-        .collection('users')
-        .document(uid)
-        .get()
-        .then((value) {
-      List lists = value['tasks'];
-      index = lists.indexOf(old_name);
-      lists[index] = new_name;
-      value.reference.updateData({'tasks': lists});
-    });
-    changedata = await Firestore.instance
-        .collection('tasks')
-        .where('uid', isEqualTo: uid)
-        .where('list', isEqualTo: old_name)
-        .getDocuments();
-    await changedata.documents.forEach((element) {
-      element.reference.updateData({'list': new_name});
-    });
-  }
 
-  Future _deletelist(String uid, String list_name) async {
-    QuerySnapshot changedata;
-    await Firestore.instance.collection('users').document(uid).updateData({
-      'tasks': FieldValue.arrayRemove([list_name])
-    });
-    changedata = await Firestore.instance
-        .collection('tasks')
-        .where('uid', isEqualTo: uid)
-        .where('list', isEqualTo: list_name)
-        .getDocuments();
-    await changedata.documents.forEach((element) {
-      element.reference.delete();
-    });
-  }
 
   gettasklist() {
     List n = tasklist.toList();
@@ -125,14 +86,10 @@ class _TaskPageState extends State<TaskPage> {
 
   Future _addtomylist(String Listname) async {
     var uid = await AuthService().userID();
-    List newlist = alllists.toList();
-    newlist.add(Listname);
     await Firestore.instance
         .collection('users')
-        .where('uid', isEqualTo: uid)
-        .reference()
-        .document(docid)
-        .updateData({'tasks': newlist});
+        .document(uid)
+        .updateData({'tasks': FieldValue.arrayUnion([Listname])});
   }
 
   @override
@@ -142,176 +99,124 @@ class _TaskPageState extends State<TaskPage> {
         children: <Widget>[
           Container(
               child: Column(children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 25.0),
-              child: Center(
-                child: Text(
-                  "Task Page",
-                  style: TextStyle(
-                    fontSize: 25.0,
+                  Padding(
+                    padding: EdgeInsets.only(top: 25.0),
+                    child: Center(
+                      child: Text(
+                        "Task Page",
+                        style: TextStyle(
+                          fontSize: 25.0,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Row(children: <Widget>[
-              Icon(
-                Icons.inbox,
-                color: Colors.green,
-                size: 30.0,
-              ),
-              RaisedButton(
-                  child: Text('Inbox'),
-                  onPressed: () async {
-                    var uid = await AuthService().userID();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BuildInbox(
-                                  uid: uid,
-                                )));
-                  }),
-            ]),
-            Row(children: <Widget>[
-              Icon(
-                Icons.grade,
-                color: Colors.yellow[900],
-                size: 30.0,
-              ),
-              RaisedButton(
-                  child: Text('starred'),
-                  onPressed: () async {
-                    var uid = await AuthService().userID();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BuildStarred(
-                                  uid: uid,
-                                )));
-                  }),
-            ]),
-            Row(children: <Widget>[
-              Icon(
-                Icons.today,
-                color: Colors.blue,
-                size: 30.0,
-              ),
-              RaisedButton(
-                  child: Text('Today'),
-                  onPressed: () async {
-                    var uid = await AuthService().userID();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BuildToday(
-                                  uid: uid,
-                                )));
-                  }),
-            ]),
-            Row(children: <Widget>[
-              Icon(
-                Icons.calendar_today,
-                color: Colors.red,
-                size: 30.0,
-              ),
-              RaisedButton(
-                  child: Text('Incomplete'),
-                  onPressed: () async {
-                    var uid = await AuthService().userID();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BuildPlanned(
-                                  uid: uid,
-                                )));
-                  }),
-            ]),
-            Row(children: <Widget>[
-              Icon(
-                Icons.event_available,
-                color: Colors.black,
-                size: 30.0,
-              ),
-              RaisedButton(
-                  child: Text('Completed'),
-                  onPressed: () async {
-                    var uid = await AuthService().userID();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BuildCompleted(
-                                  uid: uid,
-                                )));
-                  }),
-            ]),
-            Padding(
-              padding: EdgeInsets.only(top: 25.0),
-              child: Center(
-                child: Text(
-                  "My Lists",
-                  style: TextStyle(
-                    fontSize: 25.0,
+                  Row(children: <Widget>[
+                    Icon(
+                      Icons.inbox,
+                      color: Colors.green,
+                      size: 30.0,
+                    ),
+                    RaisedButton(
+                        child: Text('Inbox'),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BuildInbox(
+                                        uid: uid,
+                                      )));
+                        }),
+                  ]),
+                  Row(children: <Widget>[
+                    Icon(
+                      Icons.grade,
+                      color: Colors.yellow[900],
+                      size: 30.0,
+                    ),
+                    RaisedButton(
+                        child: Text('starred'),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BuildStarred(
+                                        uid: uid,
+                                      )));
+                        }),
+                  ]),
+                  Row(children: <Widget>[
+                    Icon(
+                      Icons.today,
+                      color: Colors.blue,
+                      size: 30.0,
+                    ),
+                    RaisedButton(
+                        child: Text('Today'),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BuildToday(
+                                        uid: uid,
+                                      )));
+                        }),
+                  ]),
+                  Row(children: <Widget>[
+                    Icon(
+                      Icons.calendar_today,
+                      color: Colors.red,
+                      size: 30.0,
+                    ),
+                    RaisedButton(
+                        child: Text('Incomplete'),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BuildPlanned(
+                                        uid: uid,
+                                      )));
+                        }),
+                  ]),
+                  Row(children: <Widget>[
+                    Icon(
+                      Icons.event_available,
+                      color: Colors.black,
+                      size: 30.0,
+                    ),
+                    RaisedButton(
+                        child: Text('Completed'),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BuildCompleted(
+                                        uid: uid,
+                                      )));
+                        }),
+                  ]),
+                  Padding(
+                    padding: EdgeInsets.only(top: 25.0),
+                    child: Center(
+                      child: Text(
+                        "My Lists",
+                        style: TextStyle(
+                          fontSize: 25.0,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Column(
-//                  children: <Widget>[
-//                    StreamBuilder(
-//
-//                      stream: Firestore.instance.collection('users').where('uid',isEqualTo: AuthService().userID()).snapshots(),
-//                      builder: (context, snapshot) {
-//                        if (!snapshot.hasData) return Container();
-//                        return _showlist(context, snapshot.data.documents);
-//                      },
-//                    )
-//                  ],
+                  Column(
               children: tasklist.map((lst) {
                 return Row(children: <Widget>[
                   FlatButton(
                       splashColor: Colors.green,
                       child: Text(lst.listname),
-                      onLongPress: () async{
-                        var uid = await AuthService().userID();
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              // return object of type Dialog
-                              return AlertDialog(
-                                title: Text("Delete/ rename?"),
-                                content: TextField(
-                                    decoration: InputDecoration(
-                                        labelText: 'Rename this list to?'),
-                                    controller: renamelist,
-                                  ),
-                                actions: <Widget>[
-                                  // usually buttons at the bottom of the dialog
-                                  FlatButton(
-                                    child: Text("Cancel"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  FlatButton(
-                                      child: Text("rename"),
-                                      onPressed: () {
-                                        _renamelist(
-                                            uid, lst.listname, renamelist.text);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  FlatButton(
-                                    child: Text("Delete"),
-                                    onPressed: () {
-                                      _deletelist(uid, lst.listname);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                      },
- 
                       onPressed: () async {
                         var uid = await AuthService().userID();
                         Navigator.push(
@@ -352,8 +257,9 @@ class _TaskPageState extends State<TaskPage> {
                                   ),
                                   FlatButton(
                                     child: Text("Delete"),
-                                    onPressed: () {
-                                      _deletelist(uid, lst.listname);
+                                    onPressed: () async{
+                                      await ListMethod().delete_list(uid, lst.listname);
+                                     // _deletelist(uid, lst.listname);
                                       Navigator.of(context).pop();
                                     },
                                   ),
@@ -385,9 +291,10 @@ class _TaskPageState extends State<TaskPage> {
                                     ),
                                     FlatButton(
                                       child: Text("rename"),
-                                      onPressed: () {
-                                        _renamelist(
-                                            uid, lst.listname, renamelist.text);
+                                      onPressed: () async{
+                                        await ListMethod().rename_list(uid, lst.listname, renamelist.text);
+//                                        _renamelist(
+//                                            uid, lst.listname, renamelist.text);
                                         Navigator.of(context).pop();
                                       },
                                     ),
@@ -402,7 +309,6 @@ class _TaskPageState extends State<TaskPage> {
           ])),
         ],
       ),
-
       floatingActionButton: SpeedDial(
         backgroundColor: Colors.blue,
         animatedIcon: AnimatedIcons.view_list,
@@ -466,7 +372,6 @@ class _TaskPageState extends State<TaskPage> {
           ),
         ],
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
