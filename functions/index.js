@@ -61,6 +61,9 @@ exports.onCreateFriend = functions.firestore
             .set({
                 'type': 'friend',
                 'time': Date.now(),
+                                //4/20/2020
+                                'readed': false,
+                                //
                 'title': `You are now friends with ${friend.displayName}`,
                 'userMeta': {
                     'uid': friendId,
@@ -215,6 +218,9 @@ exports.onReceiveFriendRequest = functions.firestore
             .set({
                 'type': 'request',
                 'time': Date.now(),
+                                //4/20/2020
+                'readed': false,
+                                //
                 'title': `Friend Request from ${friend.displayName}`,
                 'userMeta': {
                     'uid': friendId,
@@ -241,6 +247,9 @@ exports.onLike = functions.firestore
             .set({
                 'type': 'like',
                 'time': Date.now(),
+                                //4/20/2020
+                                'readed': false,
+                                //
                 'title': `${res.userMeta.displayName} liked your task`,
                 'userMeta': {
                     'uid': res.userMeta.uid,
@@ -274,6 +283,9 @@ exports.onComment = functions.firestore
             .set({
                 'type': 'comment',
                 'time': Date.now(),
+                                //4/20/2020
+                                'readed': false,
+                                //
                 'title': `${res.userMeta.name} replied: ${res.message}`,
                 'userMeta': {
                     'displayName': res.userMeta.name,
@@ -287,3 +299,4 @@ exports.onComment = functions.firestore
                 }
             });
     });
+

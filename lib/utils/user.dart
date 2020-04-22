@@ -106,6 +106,12 @@ class UserService {
     }).toList());
   }
 
-}
+ void updateIntertions(uid)async{
+    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
+      element.documents.forEach((doc) {
+        doc.reference.updateData({'readed':true});
+      });
+    });
+}}
 
 final UserService userService = UserService();

@@ -140,7 +140,8 @@ class _TimelineState extends State<Timeline> {
           AsyncSnapshot dsp=snapshots;
           return new ListTile(
             title: Text(dsp.data['displayName']),
-            trailing: Icon(Icons.notifications),
+            trailing:
+            shownotification(),
             leading:
             InkWell(
               onTap: (){
@@ -153,4 +154,33 @@ class _TimelineState extends State<Timeline> {
               ),));
         }},);
   }
+  shownotification(){
+    return StreamBuilder(
+      stream: Firestore.instance.collection('users').document(uid).collection('interactions').snapshots(),
+      builder: (context,snapshots){
+        if(!snapshots.hasData){
+          return Text('');
+        }
+        else {
+          var allinter=snapshots.data.documents;
+          var hadnoread;
+          for (int i=0; i<allinter.length; i++){
+            if(allinter[i]['readed']!=true){
+              hadnoread=true;
+              return  new IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/notifications', arguments: uid);
+                  });
+            }
+          }
+          if(hadnoread!=true){
+            return Text('');
+          }
+
+        }
+      },
+    );
+  }
+
 }

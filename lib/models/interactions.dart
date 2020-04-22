@@ -6,6 +6,7 @@ class Interactions {
   final String type;
   final Map<dynamic, dynamic> userMeta;
   final Map<dynamic, dynamic> metaData;
+  final bool readed;
 
   Interactions({
     this.time,
@@ -13,6 +14,8 @@ class Interactions {
     this.type,
     this.userMeta,
     this.metaData,
+    this.readed
+
   });
 
   factory Interactions.fromDocument(DocumentSnapshot doc) {
@@ -22,6 +25,7 @@ class Interactions {
       type: doc['type'],
       title: doc['title'],
       metaData: doc['metaData'],
+      readed:doc['readed']
     );
   }
 }
