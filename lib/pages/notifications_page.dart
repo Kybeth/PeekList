@@ -6,6 +6,7 @@ import 'package:peeklist/models/requests.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 
+
 class NotificationsPage extends StatefulWidget {
 
   @override
@@ -17,7 +18,6 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   bool isLoading = false;
   var notifications = [];
   String uid;
-  var allintertnumber;
 
   @override
   void initState() {
@@ -26,6 +26,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   }
 
   buildRequest(uid, Requests req) {
+
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
@@ -90,12 +91,13 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
         } else if (asyncSnap.data.length == 0) {
           return Text('No interactions');
         } else {
+          userService.updateIntertions(uid);
           return new ListView.builder(
             shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemCount: asyncSnap.data.length,
               itemBuilder: (context, int index) {
-                allintertnumber=asyncSnap.data.length;
+                //allintertnumber=asyncSnap.data.length;
                 Interactions inter = asyncSnap.data[index];
                 return buildInter(inter);
               }
@@ -141,6 +143,7 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   }
 
   buildInter(Interactions inter) {
+
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
