@@ -110,17 +110,19 @@ class _TimelineState extends State<Timeline> {
               Column(
               children: <Widget>[
                 shownewmessage(),
-                Divider(),
-                ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: asyncSnap.data.length,
-                itemBuilder: (context, int index) {
-                SocialModel tasks = asyncSnap.data[index];
+                //Divider(),
+                Expanded(
+                  child:  ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: asyncSnap.data.length,
+                      itemBuilder: (context, int index) {
+                        SocialModel tasks = asyncSnap.data[index];
 
-                return SocialTask(task: tasks, uid: this.uid,);
-                }
-                )
+                        return SocialTask(task: tasks, uid: this.uid,);
+                      }
+                  ),)
+
               ],
             );
 
