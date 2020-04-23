@@ -16,11 +16,14 @@ class Timeline extends StatefulWidget {
 
 class _TimelineState extends State<Timeline> {
   String uid;
+  List notificationlist;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+
+    getnotification();
   }
 
   getCurrentUser() async {
@@ -28,6 +31,12 @@ class _TimelineState extends State<Timeline> {
     setState(() {
       uid = userId;
     });
+  }
+  getnotification()async{
+    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
+        notificationlist=element.documents;
+    });
+
   }
 
   @override
@@ -155,32 +164,43 @@ class _TimelineState extends State<Timeline> {
         }},);
   }
   shownotification(){
-    return StreamBuilder(
-      stream: Firestore.instance.collection('users').document(uid).collection('interactions').snapshots(),
-      builder: (context,snapshots){
-        if(!snapshots.hasData){
-          return Text('');
-        }
-        else {
-          var allinter=snapshots.data.documents;
-          var hadnoread;
-          for (int i=0; i<allinter.length; i++){
-            if(allinter[i]['readed']!=true){
-              hadnoread=true;
-              return  new IconButton(
+    getnotification();
+    for(int i=0; i<notificationlist.length;i++){
+      if (notificationlist[i]['readed']!=true){
+        return  new IconButton(
                   icon: Icon(Icons.notifications),
                   onPressed: (){
                     Navigator.pushNamed(context, '/notifications', arguments: uid);
                   });
-            }
-          }
-          if(hadnoread!=true){
-            return Text('');
-          }
-
-        }
-      },
-    );
+      }
+    }
+    return Text('');
+//    return StreamBuilder(
+//      stream: Firestore.instance.collection('users').document(uid).collection('interactions').snapshots(),
+//      builder: (context,snapshots){
+//        if(!snapshots.hasData){
+//          return Text('');
+//        }
+//        else {
+//          var allinter=snapshots.data.documents;
+//          var hadnoread;
+//          for (int i=0; i<allinter.length; i++){
+//            if(allinter[i]['readed']!=true){
+//              hadnoread=true;
+//              return  new IconButton(
+//                  icon: Icon(Icons.notifications),
+//                  onPressed: (){
+//                    Navigator.pushNamed(context, '/notifications', arguments: uid);
+//                  });
+//            }
+//          }
+//          if(hadnoread!=true){
+//            return Text('');
+//          }
+//
+//        }
+//      },
+//    );
   }
 
 }
