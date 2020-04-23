@@ -95,7 +95,7 @@ class UserService {
   }
 
   Stream<List<SocialModel>> getTimeline(uid) {
-    return Firestore.instance.collection('users').document(uid).collection('timeline').snapshots().map((snap) => snap.documents.map((doc) {
+    return Firestore.instance.collection('users').document(uid).collection('timeline').orderBy('time',descending: true).snapshots().map((snap) => snap.documents.map((doc) {
       return SocialModel.fromDocument(doc);
     }).toList());
   }
