@@ -16,14 +16,14 @@ class Timeline extends StatefulWidget {
 
 class _TimelineState extends State<Timeline> {
   String uid;
-  List notificationlist;
+ // List notificationlist;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
 
-    getnotification();
+    //getnotification();
   }
 
   getCurrentUser() async {
@@ -32,12 +32,12 @@ class _TimelineState extends State<Timeline> {
       uid = userId;
     });
   }
-  getnotification()async{
-    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
-        notificationlist=element.documents;
-    });
-
-  }
+//  getnotification()async{
+//    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
+//        notificationlist=element.documents;
+//    });
+//
+//  }
 
   @override
   Widget build(context) {
@@ -149,8 +149,8 @@ class _TimelineState extends State<Timeline> {
           AsyncSnapshot dsp=snapshots;
           return new ListTile(
             title: Text(dsp.data['displayName']),
-            trailing:
-            shownotification(),
+            //trailing:
+            //shownotification(),
             leading:
             InkWell(
               onTap: (){
@@ -163,18 +163,20 @@ class _TimelineState extends State<Timeline> {
               ),));
         }},);
   }
-  shownotification(){
-    getnotification();
-    for(int i=0; i<notificationlist.length;i++){
-      if (notificationlist[i]['readed']!=true){
-        return  new IconButton(
-                  icon: Icon(Icons.notifications),
-                  onPressed: (){
-                    Navigator.pushNamed(context, '/notifications', arguments: uid);
-                  });
-      }
-    }
-    return Text('');
+
+
+//  shownotification(){
+//    getnotification();
+//    for(int i=0; i<notificationlist.length;i++){
+//      if (notificationlist[i]['readed']!=true){
+//        return  new IconButton(
+//                  icon: Icon(Icons.notifications),
+//                  onPressed: (){
+//                    Navigator.pushNamed(context, '/notifications', arguments: uid);
+//                  });
+//      }
+//    }
+//    return Text('');
 //    return StreamBuilder(
 //      stream: Firestore.instance.collection('users').document(uid).collection('interactions').snapshots(),
 //      builder: (context,snapshots){
@@ -201,6 +203,6 @@ class _TimelineState extends State<Timeline> {
 //        }
 //      },
 //    );
-  }
+//  }
 
 }
