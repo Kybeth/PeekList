@@ -75,7 +75,7 @@ class _SocialTaskState extends State<SocialTask> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetails(task: widget.task, uid: widget.uid,))),
+              onTap: () => Navigator.pushNamed(context, '/myprofile', arguments: widget.task.user['uid']),
               trailing: Text("${timeago.format(widget.task.create.toDate())}"),
             ),
           Padding(

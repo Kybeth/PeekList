@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/models/social_model.dart';
-import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/widgets/social_task.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:peeklist/pages/create_task.dart';
-import 'package:peeklist/pages/my_profile.dart';
 
 class Timeline extends StatefulWidget {
   @override
@@ -18,11 +16,14 @@ class Timeline extends StatefulWidget {
 
 class _TimelineState extends State<Timeline> {
   String uid;
+  List notificationlist;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+
+    getnotification();
   }
 
   getCurrentUser() async {
@@ -31,13 +32,19 @@ class _TimelineState extends State<Timeline> {
       uid = userId;
     });
   }
+  getnotification()async{
+    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
+        notificationlist=element.documents;
+    });
+
+  }
 
   @override
   Widget build(context) {
     return Scaffold(
       body: buildTimeline(),
       floatingActionButton: SpeedDial(
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).accentColor,
         animatedIcon: AnimatedIcons.menu_close,
         children: [
           SpeedDialChild(
@@ -61,18 +68,18 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.person),
             label: "My Profile",
             onTap: () {
-              Navigator.pushNamed(context, '/myprofile', arguments: currentUser);
+              Navigator.pushNamed(context, '/myprofile', arguments: uid);
             },
           ),
           SpeedDialChild(
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Theme.of(context).primaryColorLight,
+            backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.notifications),
             label: "Notification Center",
             onTap: () {
@@ -83,7 +90,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.black45,
+            backgroundColor: Theme.of(context).accentColor,
             child: Icon(Icons.person_add),
             label: "Add Friends",
             onTap: () {
@@ -110,7 +117,7 @@ class _TimelineState extends State<Timeline> {
               Column(
               children: <Widget>[
                 shownewmessage(),
-                //Divider(),
+                Divider(),
                 Expanded(
                   child:  ListView.builder(
                       shrinkWrap: true,
@@ -147,7 +154,7 @@ class _TimelineState extends State<Timeline> {
             leading:
             InkWell(
               onTap: (){
-                Navigator.pushNamed(context, '/myprofile', arguments: currentUser);
+                Navigator.pushNamed(context, '/myprofile', arguments: this.uid);
               },
               child:
               CircleAvatar(
@@ -157,32 +164,43 @@ class _TimelineState extends State<Timeline> {
         }},);
   }
   shownotification(){
-    return StreamBuilder(
-      stream: Firestore.instance.collection('users').document(uid).collection('interactions').snapshots(),
-      builder: (context,snapshots){
-        if(!snapshots.hasData){
-          return Text('');
-        }
-        else {
-          var allinter=snapshots.data.documents;
-          var hadnoread;
-          for (int i=0; i<allinter.length; i++){
-            if(allinter[i]['readed']!=true){
-              hadnoread=true;
-              return  new IconButton(
+    getnotification();
+    for(int i=0; i<notificationlist.length;i++){
+      if (notificationlist[i]['readed']!=true){
+        return  new IconButton(
                   icon: Icon(Icons.notifications),
                   onPressed: (){
                     Navigator.pushNamed(context, '/notifications', arguments: uid);
                   });
-            }
-          }
-          if(hadnoread!=true){
-            return Text('');
-          }
-
-        }
-      },
-    );
+      }
+    }
+    return Text('');
+//    return StreamBuilder(
+//      stream: Firestore.instance.collection('users').document(uid).collection('interactions').snapshots(),
+//      builder: (context,snapshots){
+//        if(!snapshots.hasData){
+//          return Text('');
+//        }
+//        else {
+//          var allinter=snapshots.data.documents;
+//          var hadnoread;
+//          for (int i=0; i<allinter.length; i++){
+//            if(allinter[i]['readed']!=true){
+//              hadnoread=true;
+//              return  new IconButton(
+//                  icon: Icon(Icons.notifications),
+//                  onPressed: (){
+//                    Navigator.pushNamed(context, '/notifications', arguments: uid);
+//                  });
+//            }
+//          }
+//          if(hadnoread!=true){
+//            return Text('');
+//          }
+//
+//        }
+//      },
+//    );
   }
 
 }

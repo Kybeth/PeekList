@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:peeklist/pages/task_page.dart';
 import 'package:peeklist/pages/timeline.dart';
 
-import '../models/user.dart';
 import '../utils/auth.dart';
-
-var currentUser;
 
 class Root extends StatefulWidget {
   final String title;
@@ -75,13 +73,31 @@ class _RootState extends State<Root>
   Scaffold buildUnAuthScreen() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Peek List'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text(
+            'Peek List',
+          style: GoogleFonts.raleway(
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20.0,
+            ),
+          ),
+        ),
         bottom: TabBar(
+          indicatorColor: Theme.of(context).accentColor,
+          labelStyle: GoogleFonts.raleway(
+            textStyle: TextStyle(
+                fontSize: 15.0
+            ),
+          ),
           tabs: [
             Tab(
+              icon: Icon(Icons.home, color: Colors.black,),
               text: "Home",
             ),
             Tab(
+              icon: Icon(Icons.person, color: Colors.black,),
               text: "Login",
             ),
           ],
@@ -102,13 +118,31 @@ class _RootState extends State<Root>
   Scaffold buildAuthScreen() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Peek List'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text(
+            'Peek List',
+          style: GoogleFonts.raleway(
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 25.0,
+            ),
+          ),
+        ),
         bottom: TabBar(
+          indicatorColor: Theme.of(context).accentColor,
+          labelStyle: GoogleFonts.raleway(
+            textStyle: TextStyle(
+              fontSize: 15.0
+            ),
+          ),
           tabs: [
             Tab(
+              icon: Icon(Icons.home, color: Colors.black,),
               text: "Home",
             ),
             Tab(
+              icon: Icon(Icons.group, color: Colors.black,),
               text: "Social",
             ),
           ],

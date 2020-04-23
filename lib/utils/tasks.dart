@@ -53,7 +53,7 @@ class TaskService {
   }
 
   Stream<List<Comments>> getComments(String taskId) {
-    return _dbTasks.document(taskId).collection('comments').snapshots().map((snap) => snap.documents.map((doc) {
+    return _dbTasks.document(taskId).collection('comments').orderBy("posted").snapshots().map((snap) => snap.documents.map((doc) {
       return Comments.fromDocument(doc);
     }).toList());
   }
