@@ -8,21 +8,21 @@ import 'package:peeklist/pages/create_task.dart';
 
 import 'pages/search.dart';
 
-const MaterialColor white = const MaterialColor(
-  0xFFFFFFFF,
-  const <int, Color>{
-    50: const Color(0xFFFFFFFF),
-    100: const Color(0xFFFFFFFF),
-    200: const Color(0xFFFFFFFF),
-    300: const Color(0xFFFFFFFF),
-    400: const Color(0xFFFFFFFF),
-    500: const Color(0xFFFFFFFF),
-    600: const Color(0xFFFFFFFF),
-    700: const Color(0xFFFFFFFF),
-    800: const Color(0xFFFFFFFF),
-    900: const Color(0xFFFFFFFF),
-  },
-);
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+
+  // Or do other work.
+}
+
 
 void main() {
   runApp(MyApp());
