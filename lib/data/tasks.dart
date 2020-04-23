@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:peeklist/utils/auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Showlist extends State<StatefulWidget> {
@@ -352,7 +349,6 @@ class Tasks {
   }
 
   Future<DocumentReference> addtask() async {
-
     var tasksid=await Firestore.instance
         .collection('pubTasks')
         .add(<String, dynamic>{
@@ -370,8 +366,6 @@ class Tasks {
     });
     return tasksid;
   }
-
-
 }
 
 //this class is all functions of tasks

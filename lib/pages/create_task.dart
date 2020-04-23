@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/data/tasks.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';

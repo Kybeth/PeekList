@@ -88,6 +88,12 @@ class UserService {
     });
   }
 
+  updateToken(profileId, deviceToken) async {
+    return await _db.document(profileId).updateData({
+      "deviceToken": deviceToken,
+    });
+  }
+
   Stream<List<Requests>> getRequests(uid) {
     return _db.document(uid).collection('followRequests').orderBy("received").snapshots().map((snap) => snap.documents.map((doc) {
       return Requests.fromDocument(doc);
@@ -118,6 +124,7 @@ class UserService {
         doc.reference.updateData({'readed':true});
       });
     });
-}}
+  }
+}
 
 final UserService userService = UserService();

@@ -5,23 +5,7 @@ import 'package:peeklist/pages/my_profile.dart';
 import 'package:peeklist/pages/notifications_page.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/pages/create_task.dart';
-
 import 'pages/search.dart';
-
-
-Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
-  if (message.containsKey('data')) {
-    // Handle data message
-    final dynamic data = message['data'];
-  }
-
-  if (message.containsKey('notification')) {
-    // Handle notification message
-    final dynamic notification = message['notification'];
-  }
-
-  // Or do other work.
-}
 
 
 void main() {
