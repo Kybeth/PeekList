@@ -49,6 +49,7 @@ exports.onCreateFriend = functions.firestore
                     'isprivate': taskData.isprivate,
                     'likes': taskData.likes,
                     'create': taskData.create,
+                    'uid': taskData.uid,
                 });
             }
         });
@@ -95,6 +96,28 @@ exports.onCreateTask = functions.firestore
                 .collection('friends');
             const userSnapshot = await userRef.get();
             const user = userSnapshot.data();
+            admin.firestore()
+                .collection('users')
+                .doc(task.uid)
+                .collection('timeline')
+                .doc(taskId)
+                .set({
+                    'name': task.name,
+                    'user': {
+                        'uid': task.uid,
+                        'photoURL': user.photoURL,
+                        'displayName': user.displayName,
+                    },
+                    'comment': task.comment,
+                    'list': task.list,
+                    'iscompleted': task.iscompleted,
+                    'isstarred': task.isstarred,
+                    'time': task.time,
+                    'private': task.isprivate,
+                    'likes': task.likes,
+                    'create': task.create,
+                    'uid': task.uid,
+                });
             const querySnapshot = await userFriendsRef.get();
             querySnapshot.forEach(doc => {
                 const friendId = doc.id;
@@ -118,6 +141,7 @@ exports.onCreateTask = functions.firestore
                         'private': task.isprivate,
                         'likes': task.likes,
                         'create': task.create,
+                        'uid': task.uid,
                     });
             });
         }
@@ -134,27 +158,49 @@ exports.onUpdateTask = functions.firestore
                 .doc(taskUpdated.uid)
                 .collection('friends')
 
-            const querySnapshot = await userRef.get();
-            querySnapshot.forEach(doc => {
-            const friendId = doc.id;
             admin.firestore()
                 .collection('users')
-                .doc(friendId)
+                .doc(taskUpdated.uid)
                 .collection('timeline')
                 .doc(taskId)
                 .get().then((doc) => {
                     if (doc.exists) {
                         doc.ref.update(taskUpdated);
-                     }
-                 });
-             });
-        }
+                    }
+                });
+
+            const querySnapshot = await userRef.get();
+            querySnapshot.forEach(doc => {
+                const friendId = doc.id;
+                admin.firestore()
+                    .collection('users')
+                    .doc(friendId)
+                    .collection('timeline')
+                    .doc(taskId)
+                    .get().then((doc) => {
+                        if (doc.exists) {
+                            doc.ref.update(taskUpdated);
+                        }
+                    });
+                });
+            }
 
         if (taskUpdated.isprivate) {
             const userRef = admin.firestore()
                 .collection('users')
                 .doc(taskUpdated.uid)
                 .collection('friends')
+
+            admin.firestore()
+                .collection('users')
+                .doc(taskUpdated.uid)
+                .collection('timeline')
+                .doc(taskId)
+                .get().then((doc) => {
+                    if (doc.exists) {
+                        doc.ref.delete();
+                    }
+                });
 
             const querySnapshot = await userRef.get();
             querySnapshot.forEach(doc => {
@@ -184,6 +230,17 @@ exports.onDeleteTask = functions.firestore
                 .collection('users')
                 .doc(taskToDelete.uid)
                 .collection('friends')
+
+            admin.firestore()
+                .collection('users')
+                .doc(taskToDelete.uid)
+                .collection('timeline')
+                .doc(taskId)
+                .get().then((doc) => {
+                    if (doc.exists) {
+                        doc.ref.delete();
+                    }
+                });
 
             const querySnapshot = await userRef.get();
             querySnapshot.forEach(doc => {

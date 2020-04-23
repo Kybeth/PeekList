@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
 import 'package:peeklist/utils/user.dart';
@@ -113,13 +114,31 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
     uid = settings.arguments;
     return Scaffold(
        appBar: AppBar(
-         title: Text('Notifications'),
+         centerTitle: true,
+         backgroundColor: Theme.of(context).primaryColorLight,
+         title: Text(
+             'Notifications',
+           style: GoogleFonts.raleway(
+             textStyle: TextStyle(
+               color: Colors.black,
+               fontSize: 20.0,
+             ),
+           ),
+         ),
          bottom: TabBar(
+           indicatorColor: Theme.of(context).accentColor,
+           labelStyle: GoogleFonts.raleway(
+             textStyle: TextStyle(
+               fontSize: 15.0
+             ),
+           ),
            tabs: [
              Tab(
+               icon: Icon(Icons.notifications),
                text: "Interactions",
              ),
              Tab(
+               icon: Icon(Icons.person_add),
                text: "Friend Requests",
              ),
            ],

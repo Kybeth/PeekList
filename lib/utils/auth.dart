@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peeklist/pages/root.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthService {
@@ -17,7 +16,6 @@ class AuthService {
     user = Observable(_auth.onAuthStateChanged);
     profile = user.switchMap((FirebaseUser u) {
       if (u != null) {
-        currentUser = u.uid;
         return _db.collection('users').document(u.uid).snapshots().map((snap) => snap.data);
       } else {
         return Observable.just({ });

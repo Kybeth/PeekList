@@ -89,25 +89,31 @@ class UserService {
   }
 
   Stream<List<Requests>> getRequests(uid) {
-    return Firestore.instance.collection('users').document(uid).collection('followRequests').snapshots().map((snap) => snap.documents.map((doc) {
+    return _db.document(uid).collection('followRequests').orderBy("received").snapshots().map((snap) => snap.documents.map((doc) {
       return Requests.fromDocument(doc);
     }).toList());
   }
 
   Stream<List<SocialModel>> getTimeline(uid) {
-    return Firestore.instance.collection('users').document(uid).collection('timeline').snapshots().map((snap) => snap.documents.map((doc) {
+    return _db.document(uid).collection('timeline').orderBy("create", descending: true).snapshots().map((snap) => snap.documents.map((doc) {
+      return SocialModel.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<SocialModel>> getUserTimeline(uid) {
+    return _db.document(uid).collection('timeline').where('uid', isEqualTo: uid).snapshots().map((snap) => snap.documents.map((doc) {
       return SocialModel.fromDocument(doc);
     }).toList());
   }
 
   Stream<List<Interactions>> getInteractions(uid) {
-    return Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().map((snap) => snap.documents.map((doc) {
+    return _db.document(uid).collection('interactions').snapshots().map((snap) => snap.documents.map((doc) {
       return Interactions.fromDocument(doc);
     }).toList());
   }
 
  void updateIntertions(uid)async{
-    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
+    await _db.document(uid).collection('interactions').snapshots().forEach((element) {
       element.documents.forEach((doc) {
         doc.reference.updateData({'readed':true});
       });
