@@ -15,9 +15,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import '../utils/auth.dart';
 
 class TaskPage extends StatefulWidget {
-  // final FirebaseUser user;
+// final FirebaseUser user;
 
-  // TaskPage({Key key, this.user}) : super(key: key);
+// TaskPage({Key key, this.user}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TaskPageState();
@@ -37,7 +37,7 @@ class _TaskPageState extends State<TaskPage> {
         .collection('users')
         .where('uid', isEqualTo: uid)
         .snapshots();
-        qsp.forEach((ds) {
+    qsp.forEach((ds) {
       List<DocumentSnapshot> ds1 = ds.documents;
       tasklist.clear();
       ds1.forEach((element) {
@@ -53,8 +53,6 @@ class _TaskPageState extends State<TaskPage> {
       });
     });
   }
-
-
 
   gettasklist() {
     List n = tasklist.toList();
@@ -76,20 +74,19 @@ class _TaskPageState extends State<TaskPage> {
     });
 
     authService.profile.listen((state) => setState(() => _profile = state));
-    //_getdata();
+//_getdata();
   }
 
-  // void addTask() {
-  //   List inbox = _profile['tasks']['inbox'];
+// void addTask() {
+//   List inbox = _profile['tasks']['inbox'];
 
-  // }
+// }
 
   Future _addtomylist(String Listname) async {
     var uid = await AuthService().userID();
-    await Firestore.instance
-        .collection('users')
-        .document(uid)
-        .updateData({'tasks': FieldValue.arrayUnion([Listname])});
+    await Firestore.instance.collection('users').document(uid).updateData({
+      'tasks': FieldValue.arrayUnion([Listname])
+    });
   }
 
   @override
@@ -99,248 +96,328 @@ class _TaskPageState extends State<TaskPage> {
         children: <Widget>[
           Container(
               child: Column(children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 25.0),
-                    child: Center(
-                      child: Text(
-                        "Task Page",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                        ),
-                      ),
-                    ),
+            Padding(
+              padding: EdgeInsets.only(top: 25.0),
+              child: Center(
+                child: Text(
+                  "Task Page",
+                  style: TextStyle(
+                    fontSize: 25.0,
                   ),
-                  Row(children: <Widget>[
-                    Icon(
-                      Icons.inbox,
-                      color: Colors.green,
-                      size: 30.0,
-                    ),
-                    RaisedButton(
-                        child: Text('Inbox'),
-                        onPressed: () async {
-                          var uid = await AuthService().userID();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BuildInbox(
-                                        uid: uid,
-                                      )));
-                        }),
-                  ]),
-                  Row(children: <Widget>[
-                    Icon(
-                      Icons.grade,
-                      color: Colors.yellow[900],
-                      size: 30.0,
-                    ),
-                    RaisedButton(
-                        child: Text('starred'),
-                        onPressed: () async {
-                          var uid = await AuthService().userID();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BuildStarred(
-                                        uid: uid,
-                                      )));
-                        }),
-                  ]),
-                  Row(children: <Widget>[
-                    Icon(
-                      Icons.today,
-                      color: Colors.blue,
-                      size: 30.0,
-                    ),
-                    RaisedButton(
-                        child: Text('Today'),
-                        onPressed: () async {
-                          var uid = await AuthService().userID();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BuildToday(
-                                        uid: uid,
-                                      )));
-                        }),
-                  ]),
-                  Row(children: <Widget>[
-                    Icon(
-                      Icons.calendar_today,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
-                    RaisedButton(
-                        child: Text('Incomplete'),
-                        onPressed: () async {
-                          var uid = await AuthService().userID();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BuildPlanned(
-                                        uid: uid,
-                                      )));
-                        }),
-                  ]),
-                  Row(children: <Widget>[
-                    Icon(
-                      Icons.event_available,
-                      color: Colors.black,
-                      size: 30.0,
-                    ),
-                    RaisedButton(
-                        child: Text('Completed'),
-                        onPressed: () async {
-                          var uid = await AuthService().userID();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BuildCompleted(
-                                        uid: uid,
-                                      )));
-                        }),
-                  ]),
-                  Padding(
-                    padding: EdgeInsets.only(top: 25.0),
-                    child: Center(
-                      child: Text(
-                        "My Lists",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-              children: tasklist.map((lst) {
-                return Row(children: <Widget>[
-                  FlatButton(
-                      splashColor: Colors.green,
-                      child: Text(lst.listname),
+                ),
+              ),
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ButtonTheme(
+                    minWidth: 150.0,
+                    height: 82.0,
+                    child: RaisedButton(
+                      color: Colors.grey[300],
+                      padding: const EdgeInsets.all(8.0),
                       onPressed: () async {
                         var uid = await AuthService().userID();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => tasklistpage(
-                                      listname: lst.listname,
+                                builder: (context) => BuildToday(
                                       uid: uid,
                                     )));
                       },
-                      onLongPress: () async{
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Icon(
+                              Icons.today,
+                              size: 25.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          Text(
+                            'Today',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ButtonTheme(
+                    minWidth: 150.0,
+                    height: 82.0,
+                    child: RaisedButton(
+                      color: Colors.grey[300],
+                      padding: const EdgeInsets.all(8.0),
+                      onPressed: () async {
                         var uid = await AuthService().userID();
-                        showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                // return object of type Dialog
-                                return AlertDialog(
-                                  title: Text("Rename or delete this list?"),
-                                  content: TextField(
-                                    decoration: InputDecoration(
-                                        labelText: 'Rename this list to?'),
-                                    controller: renamelist,
-                                  ),
-                                  actions: <Widget>[
-                                    // usually buttons at the bottom of the dialog
-                                    FlatButton(
-                                      child: Text("Cancel"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: Text("rename"),
-                                      onPressed: () async{
-                                        await ListMethod().rename_list(uid, lst.listname, renamelist.text);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    FlatButton(
-                                    child: Text("Delete"),
-                                    onPressed: () async{
-                                      await ListMethod().delete_list(uid, lst.listname);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  ],
-                                );
-                              });
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BuildStarred(
+                                      uid: uid,
+                                    )));
                       },
- ),
-                  PopupMenuButton(
-                      itemBuilder: (_) => <PopupMenuItem<String>>[
-                            PopupMenuItem<String>(
-                                child: const Text('Delete'), value: '1'),
-                            PopupMenuItem<String>(
-                                child: const Text('Rename'), value: '2'),
-                          ],
-                      onSelected: (value) async {
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Icon(
+                              Icons.star,
+                              size: 25.0,
+                              color: Colors.yellow[900],
+                            ),
+                          ),
+                          Text(
+                            'Starred',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ]),
+            Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ButtonTheme(
+                    minWidth: 150.0,
+                    height: 82.0,
+                    child: RaisedButton(
+                      color: Colors.grey[300],
+                      padding: const EdgeInsets.all(8.0),
+                      onPressed: () async {
                         var uid = await AuthService().userID();
-                        //print("value:$value");
-                        if (value == '1') {
-                          var l = lst.listname;
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              // return object of type Dialog
-                              return AlertDialog(
-                                title: Text("Delete $l?"),
-                                content: Text(
-                                    "Deleting this list will remove all tasks in the list."),
-                                actions: <Widget>[
-                                  // usually buttons at the bottom of the dialog
-                                  FlatButton(
-                                    child: Text("Cancel"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  FlatButton(
-                                    child: Text("Delete"),
-                                    onPressed: () async{
-                                      await ListMethod().delete_list(uid, lst.listname);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                        if (value == '2') {
-                          var l = lst.listname;
-                          showDialog(
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BuildInbox(
+                                      uid: uid,
+                                    )));
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Icon(
+                              Icons.list,
+                              size: 25.0,
+                              color: Colors.green[800],
+                            ),
+                          ),
+                          Text(
+                            'All',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ButtonTheme(
+                    minWidth: 151.0,
+                    height: 82.0,
+                    child: RaisedButton(
+                      color: Colors.grey[300],
+                      padding: const EdgeInsets.all(8.0),
+                      onPressed: () async {
+                        var uid = await AuthService().userID();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BuildCompleted(
+                                      uid: uid,
+                                    )));
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Icon(
+                              Icons.event_available,
+                              size: 25.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'Done',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ]),
+            Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
+            Padding(
+              padding: EdgeInsets.only(top: 25.0),
+              child: Center(
+                child: Text(
+                  "My Lists",
+                  style: TextStyle(
+                    fontSize: 25.0,
+                  ),
+                ),
+              ),
+            ),
+            Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
+            Column(
+              children: tasklist.map((lst) {
+                return Row(children: <Widget>[
+                  Expanded(
+                    child: ButtonTheme(
+                      child: FlatButton(
+                        color: Colors.grey[400],
+                        padding: const EdgeInsets.all(8.0),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => tasklistpage(
+                                        listname: lst.listname,
+                                        uid: uid,
+                                      )));
+                        },
+                        onLongPress: () async {
+                          var uid = await AuthService().userID();
+                          showBottomSheet(
                               context: context,
-                              builder: (BuildContext context) {
-                                // return object of type Dialog
-                                return AlertDialog(
-                                  title: Text("Rename $l ?"),
-                                  content: TextField(
-                                    decoration: InputDecoration(
-                                        labelText: 'Rename this list to?'),
-                                    controller: renamelist,
-                                  ),
-                                  actions: <Widget>[
-                                    // usually buttons at the bottom of the dialog
-                                    FlatButton(
-                                      child: Text("Cancel"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
+                              builder: (context) => Container(
+                                    height: 100,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[600],
+                                          borderRadius: BorderRadius.only(
+                                              topLeft:
+                                                  const Radius.circular(10.0),
+                                              topRight:
+                                                  const Radius.circular(10.0))),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            RaisedButton(
+                                              child: Text("rename"),
+                                              color: Colors.blue[100],
+                                              disabledColor: Colors.blue[100],
+                                              onPressed: () async {
+                                                var l = lst.listname;
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      // return object of type Dialog
+                                                      return AlertDialog(
+                                                        title:
+                                                            Text("Rename $l ?"),
+                                                        content: TextField(
+                                                          decoration:
+                                                              InputDecoration(
+                                                                  labelText:
+                                                                      'Rename this list to?'),
+                                                          controller:
+                                                              renamelist,
+                                                        ),
+                                                        actions: <Widget>[
+                                                          // usually buttons at the bottom of the dialog
+                                                          FlatButton(
+                                                            child:
+                                                                Text("Cancel"),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                          FlatButton(
+                                                            child:
+                                                                Text("rename"),
+                                                            onPressed:
+                                                                () async {
+                                                              await ListMethod()
+                                                                  .rename_list(
+                                                                      uid,
+                                                                      lst
+                                                                          .listname,
+                                                                      renamelist
+                                                                          .text);
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                            RaisedButton(
+                                              color: Colors.red,
+                                              disabledColor: Colors.red,
+                                              child: Text("Delete"),
+                                              onPressed: () async {
+                                                var l = lst.listname;
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    // return object of type Dialog
+                                                    return AlertDialog(
+                                                      title: Text("Delete $l?"),
+                                                      content: Text(
+                                                          "Deleting this list will remove all tasks in the list."),
+                                                      actions: <Widget>[
+                                                        // usually buttons at the bottom of the dialog
+                                                        FlatButton(
+                                                          child: Text("Cancel"),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                        FlatButton(
+                                                          child: Text("Delete"),
+                                                          onPressed: () async {
+                                                            await ListMethod()
+                                                                .delete_list(
+                                                                    uid,
+                                                                    lst.listname);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ]),
                                     ),
-                                    FlatButton(
-                                      child: Text("rename"),
-                                      onPressed: () async{
-                                        await ListMethod().rename_list(uid, lst.listname, renamelist.text);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                        }
-                      })
+                                  ));
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Icon(
+                                Icons.folder,
+                                size: 25.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              lst.listname,
+                              style: TextStyle(fontSize: 25.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ]);
               }).toList(),
             ),
@@ -362,16 +439,15 @@ class _TaskPageState extends State<TaskPage> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    // return object of type Dialog
+// return object of type Dialog
                     return AlertDialog(
                       title: Text("Create New User List"),
                       content: TextField(
-                        decoration:
-                            InputDecoration(labelText: 'list name'),
+                        decoration: InputDecoration(labelText: 'list name'),
                         controller: newlist,
                       ),
                       actions: <Widget>[
-                        // usually buttons at the bottom of the dialog
+// usually buttons at the bottom of the dialog
                         FlatButton(
                           child: Text("Cancel"),
                           onPressed: () {
@@ -380,8 +456,7 @@ class _TaskPageState extends State<TaskPage> {
                         ),
                         FlatButton(
                           child: Text("create list"),
-                          onPressed: () 
-                            async {
+                          onPressed: () async {
                             await _addtomylist(newlist.text);
                             Navigator.of(context).pop();
                           },

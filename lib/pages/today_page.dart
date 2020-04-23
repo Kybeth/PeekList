@@ -15,14 +15,6 @@ class BuildToday extends StatelessWidget {
       body:TodayTask(
         uid:"$uid"
       ).build(context),
-
-      floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        // Code to create new task
-      },
-      child: Icon(Icons.create),
-      backgroundColor: Colors.green,
-    ),
     );
   }
 }
