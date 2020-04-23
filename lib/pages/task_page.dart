@@ -165,7 +165,7 @@ class _TaskPageState extends State<TaskPage> {
                             child: Icon(
                               Icons.star,
                               size: 25.0,
-                              color: Colors.yellow[600],
+                              color: Colors.yellow[900],
                             ),
                           ),
                           Text(
@@ -249,7 +249,6 @@ class _TaskPageState extends State<TaskPage> {
                   )
                 ]),
             Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
-
             Padding(
               padding: EdgeInsets.only(top: 25.0),
               child: Center(
@@ -285,11 +284,10 @@ class _TaskPageState extends State<TaskPage> {
                           showBottomSheet(
                               context: context,
                               builder: (context) => Container(
-                                    color: Colors.grey[400],
                                     height: 100,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Colors.grey[600],
                                           borderRadius: BorderRadius.only(
                                               topLeft:
                                                   const Radius.circular(10.0),
