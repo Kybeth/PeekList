@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peeklist/pages/friends_page.dart';
 import 'package:peeklist/pages/my_profile.dart';
 import 'package:peeklist/pages/notifications_page.dart';
 import 'package:peeklist/pages/root.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         '/myprofile': (context) => MyProfile(),
         '/createtask':(context) => CreateTask(),
         '/notifications': (context) => NotificationsPage(),
+        '/friends': (context) => FriendsPage(),
       },
     );
   }

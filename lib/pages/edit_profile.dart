@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
+import 'package:google_fonts/google_fonts.dart';
 import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/utils/user.dart';
@@ -113,12 +114,16 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).primaryColorLight,
+        centerTitle: true,
         title: Text(
           "Edit Profile",
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          style: GoogleFonts.raleway(
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20.0,
+            ),
+          )
         ),
         actions: <Widget>[
           IconButton(
@@ -153,11 +158,12 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
                 RaisedButton(
+                  color: Theme.of(context).accentColor,
                   onPressed: updateProfileData,
                   child: Text(
                     "Update Profile",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                    style: GoogleFonts.raleway(
+                      color: Colors.white,
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),

@@ -52,7 +52,7 @@ class _MyProfileState extends State<MyProfile> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
               ),
-              onPressed: () => Navigator.pushNamed(context, '/notifications', arguments: uid),
+              onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
               color: Theme.of(context).accentColor,
               icon: Icon(Icons.group),
               label: Text("Friends"),
