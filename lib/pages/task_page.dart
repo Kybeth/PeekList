@@ -425,7 +425,7 @@ class _TaskPageState extends State<TaskPage> {
         ],
       ),
       floatingActionButton: SpeedDial(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.cyan[200],
         animatedIcon: AnimatedIcons.view_list,
         children: [
           SpeedDialChild(
@@ -434,7 +434,7 @@ class _TaskPageState extends State<TaskPage> {
             ),
             backgroundColor: Colors.orange[900],
             child: Icon(Icons.create),
-            label: "Create new list",
+            label: "Create New List",
             onTap: () {
               showDialog(
                   context: context,
@@ -455,7 +455,7 @@ class _TaskPageState extends State<TaskPage> {
                           },
                         ),
                         FlatButton(
-                          child: Text("create list"),
+                          child: Text("Create List"),
                           onPressed: () async {
                             await _addtomylist(newlist.text);
                             Navigator.of(context).pop();
@@ -472,7 +472,7 @@ class _TaskPageState extends State<TaskPage> {
             ),
             backgroundColor: Colors.green,
             child: Icon(Icons.add),
-            label: "add task",
+            label: "Add Task",
             onTap: () async {
               var uid = await AuthService().userID();
               Navigator.push(

@@ -2,31 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peeklist/pages/task_page.dart';
 import 'package:peeklist/pages/timeline.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:peeklist/utils/user.dart';
 import '../utils/auth.dart';
 
 class Root extends StatefulWidget {
   final String title;
-
   Root({Key key, this.title}) : super(key: key);
-
   @override
   _RootState createState() => _RootState();
 }
 
 class _RootState extends State<Root>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   TabController _tabController;
   Map<String, dynamic> _profile;
   bool _loading = false;
-
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     authService.profile.listen((state) => setState(() => _profile = state));
     authService.loading.listen((state) => setState(() => _loading = state));
     super.initState();
-  }
+}
 
   Scaffold loginButton() {
     return Scaffold(
@@ -166,6 +165,7 @@ class _RootState extends State<Root>
       stream: authService.user,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          updateToken();
           return buildAuthScreen();
         } else {
           return buildUnAuthScreen();
@@ -178,5 +178,12 @@ class _RootState extends State<Root>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void updateToken() async {
+    var uid = await authService.userID();
+    _firebaseMessaging.getToken().then((token){
+        UserService().updateToken(uid, token);
+    });
   }
 }
