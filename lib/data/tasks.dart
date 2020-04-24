@@ -29,10 +29,12 @@ class Showlist extends State<StatefulWidget> {
 
   Widget buildList(BuildContext context, List<DocumentSnapshot> list) {
     return ListView.builder(
+
         itemCount: list.length,
         itemBuilder: (context, idx) {
           DocumentSnapshot doc = list[idx];
           return Container(
+            color: Colors.white,
             child: Slidable(
               actionPane: SlidableDrawerActionPane(),
               actionExtentRatio: 0.25,
@@ -40,11 +42,12 @@ class Showlist extends State<StatefulWidget> {
                 decoration: BoxDecoration(
                     border: Border(
                         left: BorderSide(
-                  width: 10,
+                  width: 6.5,
                   color: hasprivate(doc),
                 ))),
                 height: 80,
                 child: ListTile(
+
                   leading:
                   IconButton(
                     icon: changeicon_com(doc['iscompleted']),
@@ -120,7 +123,7 @@ class Showlist extends State<StatefulWidget> {
   hasprivate(DocumentSnapshot document) {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
-      return Colors.green;
+      return Colors.blue[200];
     } else {
       return Colors.white;
     }
@@ -179,7 +182,7 @@ class Showlist extends State<StatefulWidget> {
   }
 
   changeicon_star(bool completed) {
-    return completed ? Icon(Icons.star) : Icon(Icons.star_border);
+    return completed ? Icon(Icons.star,color: Colors.yellow[900],) : Icon(Icons.star_border,color: Colors.yellow[900],);
   }
 
   priColor(DocumentSnapshot document) {

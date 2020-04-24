@@ -16,6 +16,7 @@ class BuildInbox extends StatelessWidget {
         uid:"$uid",
         list: 'inbox',
       ).build(context),
+      backgroundColor: Colors.grey[200],
     );
   }
 }

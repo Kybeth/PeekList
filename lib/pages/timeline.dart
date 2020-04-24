@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peeklist/models/social_model.dart';
@@ -170,7 +171,7 @@ class _TimelineState extends State<Timeline> {
  shownotification(DocumentSnapshot dsp){
     if(dsp.data['newnoti']==true){
       return  new IconButton(
-                  icon: Icon(Icons.notifications),
+                  icon: Icon(Icons.notifications_none,color:Color.fromRGBO(255, 11, 267, 100),),
                   onPressed: (){
                    // await dsp.reference.updateData({'newnoti':false});
                     Navigator.pushNamed(context, '/notifications', arguments: uid);
