@@ -92,6 +92,7 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       body: ListView(
         children: <Widget>[
           Container(
@@ -100,7 +101,7 @@ class _TaskPageState extends State<TaskPage> {
               padding: EdgeInsets.only(top: 25.0),
               child: Center(
                 child: Text(
-                  "Task Page",
+                  "",
                   style: TextStyle(
                     fontSize: 25.0,
                   ),
@@ -114,7 +115,11 @@ class _TaskPageState extends State<TaskPage> {
                     minWidth: 150.0,
                     height: 82.0,
                     child: RaisedButton(
-                      color: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25.0),
+                          bottomLeft: Radius.circular(25.0),),),
+                      color: Colors.white,
                       padding: const EdgeInsets.all(8.0),
                       onPressed: () async {
                         var uid = await AuthService().userID();
@@ -131,7 +136,7 @@ class _TaskPageState extends State<TaskPage> {
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
                               Icons.today,
-                              size: 25.0,
+                              size: 35.0,
                               color: Colors.blue,
                             ),
                           ),
@@ -147,8 +152,11 @@ class _TaskPageState extends State<TaskPage> {
                     minWidth: 150.0,
                     height: 82.0,
                     child: RaisedButton(
-                      color: Colors.grey[300],
-                      padding: const EdgeInsets.all(8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25.0),
+                          bottomLeft: Radius.circular(25.0),),),
+                      color: Colors.white,
                       onPressed: () async {
                         var uid = await AuthService().userID();
                         Navigator.push(
@@ -164,7 +172,7 @@ class _TaskPageState extends State<TaskPage> {
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
                               Icons.star,
-                              size: 25.0,
+                              size: 35.0,
                               color: Colors.yellow[900],
                             ),
                           ),
@@ -177,15 +185,29 @@ class _TaskPageState extends State<TaskPage> {
                     ),
                   )
                 ]),
-            Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
+            Row(children: <Widget>[
+              Spacer(),
+              Text(
+                "",
+                style: TextStyle(
+                  fontSize: 25.0,
+                ),
+              ),
+              Spacer()
+            ]),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ButtonTheme(
+
                     minWidth: 150.0,
                     height: 82.0,
                     child: RaisedButton(
-                      color: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25.0),
+                          bottomLeft: Radius.circular(25.0),),),
+                      color: Colors.white,
                       padding: const EdgeInsets.all(8.0),
                       onPressed: () async {
                         var uid = await AuthService().userID();
@@ -202,8 +224,8 @@ class _TaskPageState extends State<TaskPage> {
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
                               Icons.list,
-                              size: 25.0,
-                              color: Colors.green[800],
+                              size: 35.0,
+                              color: Color(0xFF27AE60),
                             ),
                           ),
                           Text(
@@ -218,7 +240,13 @@ class _TaskPageState extends State<TaskPage> {
                     minWidth: 151.0,
                     height: 82.0,
                     child: RaisedButton(
-                      color: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25.0),
+                          bottomLeft: Radius.circular(25.0),
+                        ),
+                      ),
+                      color: Colors.white,
                       padding: const EdgeInsets.all(8.0),
                       onPressed: () async {
                         var uid = await AuthService().userID();
@@ -234,8 +262,8 @@ class _TaskPageState extends State<TaskPage> {
                           Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
-                              Icons.event_available,
-                              size: 25.0,
+                              Icons.check,
+                              size: 35.0,
                               color: Colors.black,
                             ),
                           ),
@@ -248,125 +276,108 @@ class _TaskPageState extends State<TaskPage> {
                     ),
                   )
                 ]),
-            Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
             Padding(
               padding: EdgeInsets.only(top: 25.0),
               child: Center(
-                child: Text(
-                  "My Lists",
-                  style: TextStyle(
-                    fontSize: 25.0,
-                  ),
-                ),
+                child: Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
               ),
             ),
-            Row(children: <Widget>[Spacer(), Text(""), Spacer()]),
+            Row(children: <Widget>[
+              Spacer(),
+              Text("My Lists",
+                  style: TextStyle(
+                    fontSize: 36.0,
+                  )),
+              Spacer(),
+              Spacer(),
+              Spacer(),
+              Spacer(),
+              Spacer(),
+              Spacer()
+            ]),
+            Row(children: <Widget>[
+              Text("",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  )),
+              Spacer(),
+              Spacer()
+            ]),
             Column(
               children: tasklist.map((lst) {
                 return Row(children: <Widget>[
-                  Expanded(
-                    child: ButtonTheme(
-                      child: FlatButton(
-                        color: Colors.grey[400],
-                        padding: const EdgeInsets.all(8.0),
-                        onPressed: () async {
-                          var uid = await AuthService().userID();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => tasklistpage(
-                                        listname: lst.listname,
-                                        uid: uid,
-                                      )));
-                        },
-                        onLongPress: () async {
-                          var uid = await AuthService().userID();
-                          showBottomSheet(
-                              context: context,
-                              builder: (context) => Container(
-                                    height: 100,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[600],
-                                          borderRadius: BorderRadius.only(
-                                              topLeft:
-                                                  const Radius.circular(10.0),
-                                              topRight:
-                                                  const Radius.circular(10.0))),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: <Widget>[
-                                            RaisedButton(
-                                              child: Text("rename"),
-                                              color: Colors.blue[100],
-                                              disabledColor: Colors.blue[100],
-                                              onPressed: () async {
-                                                var l = lst.listname;
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      // return object of type Dialog
-                                                      return AlertDialog(
-                                                        title:
-                                                            Text("Rename $l ?"),
-                                                        content: TextField(
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  labelText:
-                                                                      'Rename this list to?'),
-                                                          controller:
-                                                              renamelist,
-                                                        ),
-                                                        actions: <Widget>[
-                                                          // usually buttons at the bottom of the dialog
-                                                          FlatButton(
-                                                            child:
-                                                                Text("Cancel"),
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                          ),
-                                                          FlatButton(
-                                                            child:
-                                                                Text("rename"),
-                                                            onPressed:
-                                                                () async {
-                                                              await ListMethod()
-                                                                  .rename_list(
-                                                                      uid,
-                                                                      lst
-                                                                          .listname,
-                                                                      renamelist
-                                                                          .text);
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                          ),
-                                                        ],
-                                                      );
-                                                    });
-                                              },
-                                            ),
-                                            RaisedButton(
-                                              color: Colors.red,
-                                              disabledColor: Colors.red,
-                                              child: Text("Delete"),
-                                              onPressed: () async {
-                                                var l = lst.listname;
-                                                showDialog(
+                  Spacer(),
+                  ButtonTheme(
+                    
+                    minWidth: 339.0,
+                    child: FlatButton(
+                      child: Row(
+                        
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Icon(
+                              Icons.folder,
+                              size: 25.0,
+                              color: Colors.blue[200],
+                            ),
+                          ),
+                          Text(
+                            lst.listname,
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                        ],
+                      ),
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(8.0),
+                      onPressed: () async {
+                        var uid = await AuthService().userID();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => tasklistpage(
+                                      listname: lst.listname,
+                                      uid: uid,
+                                    )));
+                      },
+                      onLongPress: () async {
+                        var uid = await AuthService().userID();
+                        showBottomSheet(
+                            context: context,
+                            builder: (context) => Container(
+                                  height: 100,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[600],
+                                        borderRadius: BorderRadius.only(
+                                            topLeft:
+                                                const Radius.circular(10.0),
+                                            topRight:
+                                                const Radius.circular(10.0))),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          RaisedButton(
+                                            child: Text("rename"),
+                                            color: Colors.blue[100],
+                                            disabledColor: Colors.blue[100],
+                                            onPressed: () async {
+                                              var l = lst.listname;
+                                              showDialog(
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) {
                                                     // return object of type Dialog
                                                     return AlertDialog(
-                                                      title: Text("Delete $l?"),
-                                                      content: Text(
-                                                          "Deleting this list will remove all tasks in the list."),
+                                                      title:
+                                                          Text("Rename $l ?"),
+                                                      content: TextField(
+                                                        decoration: InputDecoration(
+                                                            labelText:
+                                                                'Rename this list to?'),
+                                                        controller: renamelist,
+                                                      ),
                                                       actions: <Widget>[
                                                         // usually buttons at the bottom of the dialog
                                                         FlatButton(
@@ -378,12 +389,15 @@ class _TaskPageState extends State<TaskPage> {
                                                           },
                                                         ),
                                                         FlatButton(
-                                                          child: Text("Delete"),
+                                                          child: Text("rename"),
                                                           onPressed: () async {
                                                             await ListMethod()
-                                                                .delete_list(
+                                                                .rename_list(
                                                                     uid,
-                                                                    lst.listname);
+                                                                    lst
+                                                                        .listname,
+                                                                    renamelist
+                                                                        .text);
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
@@ -391,33 +405,57 @@ class _TaskPageState extends State<TaskPage> {
                                                         ),
                                                       ],
                                                     );
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          ]),
-                                    ),
-                                  ));
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(right: 12.0),
-                              child: Icon(
-                                Icons.folder,
-                                size: 25.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              lst.listname,
-                              style: TextStyle(fontSize: 25.0),
-                            ),
-                          ],
-                        ),
-                      ),
+                                                  });
+                                            },
+                                          ),
+                                          RaisedButton(
+                                            color: Colors.red[200],
+                                            disabledColor: Colors.red[200],
+                                            child: Text("Delete"),
+                                            onPressed: () async {
+                                              var l = lst.listname;
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  // return object of type Dialog
+                                                  return AlertDialog(
+                                                    title: Text("Delete $l?"),
+                                                    content: Text(
+                                                        "Deleting this list will remove all tasks in the list."),
+                                                    actions: <Widget>[
+                                                      // usually buttons at the bottom of the dialog
+                                                      FlatButton(
+                                                        child: Text("Cancel"),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                      FlatButton(
+                                                        child: Text("Delete"),
+                                                        onPressed: () async {
+                                                          await ListMethod()
+                                                              .delete_list(uid,
+                                                                  lst.listname);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ]),
+                                  ),
+                                ));
+                      },
+                      
                     ),
                   ),
+                  Spacer(),
                 ]);
               }).toList(),
             ),
@@ -432,7 +470,7 @@ class _TaskPageState extends State<TaskPage> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.orange[900],
+            backgroundColor: Colors.orange[500],
             child: Icon(Icons.create),
             label: "Create New List",
             onTap: () {
@@ -470,7 +508,7 @@ class _TaskPageState extends State<TaskPage> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.green[300],
             child: Icon(Icons.add),
             label: "Add Task",
             onTap: () async {
