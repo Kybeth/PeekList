@@ -358,3 +358,33 @@ exports.onComment = functions.firestore
     });
 
 //FCM
+
+exports.notificationFCM = functions.firestore
+    .document('/users/{userId}/followRequests/{interactionID}')
+    .onCreate(async (snapshot, context) => {
+        console.log(snapshot.data());
+        const interaction = snapshot.data();
+        admin.firestore().collection('users').doc(context.params.userId).get().then((doc) => {
+          const deviceToken = doc.get('deviceToken');
+            var payload = {
+              notification: {
+                title: interaction.title,
+              },
+              data: {
+                click_action: 'FLUTTER_NOTIFICATION_CLICK'
+              },
+              token: deviceToken
+            };
+
+            // Send a message to the device corresponding to the provided
+            // registration token.
+            admin.messaging().send(payload)
+              .then((response) => {
+                // Response is a message ID string.
+                console.log('Successfully sent message:', response);
+              })
+              .catch((error) => {
+                console.log('Error sending message:', error);
+              });
+        });
+    });
