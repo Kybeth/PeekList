@@ -127,11 +127,7 @@ class UserService {
   }
 
  void updateIntertions(uid)async{
-    await _db.document(uid).collection('interactions').snapshots().forEach((element) {
-      element.documents.forEach((doc) {
-        doc.reference.updateData({'readed':true});
-      });
-    });
+    await _db.document(uid).updateData({'newnoti':false});
   }
 }
 

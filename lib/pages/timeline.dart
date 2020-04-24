@@ -83,6 +83,7 @@ class _TimelineState extends State<Timeline> {
             child: Icon(Icons.notifications),
             label: "Notification Center",
             onTap: () {
+             // await Firestore.instance.collection('users').document(this.uid).updateData({'newnoti':false});
               Navigator.pushNamed(context, '/notifications', arguments: uid);
             },
           ),
@@ -94,6 +95,7 @@ class _TimelineState extends State<Timeline> {
             child: Icon(Icons.person_add),
             label: "Add Friends",
             onTap: () {
+
               Navigator.pushNamed(context, '/search', arguments: uid);
             },
           ),
@@ -149,8 +151,8 @@ class _TimelineState extends State<Timeline> {
           AsyncSnapshot dsp=snapshots;
           return new ListTile(
             title: Text(dsp.data['displayName']),
-            //trailing:
-            //shownotification(),
+            trailing:
+            shownotification(dsp.data),
             leading:
             InkWell(
               onTap: (){
@@ -165,7 +167,18 @@ class _TimelineState extends State<Timeline> {
   }
 
 
-//  shownotification(){
+ shownotification(DocumentSnapshot dsp){
+    if(dsp.data['newnoti']==true){
+      return  new IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: (){
+                   // await dsp.reference.updateData({'newnoti':false});
+                    Navigator.pushNamed(context, '/notifications', arguments: uid);
+                  });
+    }
+    else{
+      return Text('');
+    }
 //    getnotification();
 //    for(int i=0; i<notificationlist.length;i++){
 //      if (notificationlist[i]['readed']!=true){
@@ -203,6 +216,6 @@ class _TimelineState extends State<Timeline> {
 //        }
 //      },
 //    );
-//  }
+ }
 
 }
