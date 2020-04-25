@@ -108,7 +108,7 @@ class _TaskPageState extends State<TaskPage> {
                   ButtonTheme(
                     minWidth: 150.0,
                     height: 82.0,
-                    child: RaisedButton(
+                    child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
@@ -138,7 +138,7 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Text(
                             'Today',
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(fontSize: 19.0),
                           ),
                         ],
                       ),
@@ -147,7 +147,7 @@ class _TaskPageState extends State<TaskPage> {
                   ButtonTheme(
                     minWidth: 150.0,
                     height: 82.0,
-                    child: RaisedButton(
+                    child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
@@ -169,14 +169,14 @@ class _TaskPageState extends State<TaskPage> {
                           Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
-                              Icons.star,
+                              Icons.star_border,
                               size: 35.0,
                               color: Colors.yellow[900],
                             ),
                           ),
                           Text(
-                            'Starred',
-                            style: TextStyle(fontSize: 25.0),
+                            'Star',
+                            style: TextStyle(fontSize: 19.0),
                           ),
                         ],
                       ),
@@ -199,7 +199,7 @@ class _TaskPageState extends State<TaskPage> {
                   ButtonTheme(
                     minWidth: 150.0,
                     height: 82.0,
-                    child: RaisedButton(
+                    child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
@@ -229,7 +229,7 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Text(
                             'All',
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(fontSize: 19.0),
                           ),
                         ],
                       ),
@@ -238,7 +238,7 @@ class _TaskPageState extends State<TaskPage> {
                   ButtonTheme(
                     minWidth: 151.0,
                     height: 82.0,
-                    child: RaisedButton(
+                    child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
@@ -261,14 +261,14 @@ class _TaskPageState extends State<TaskPage> {
                           Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
-                              Icons.check,
+                              Icons.done_all,
                               size: 35.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                           Text(
                             'Done',
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(fontSize: 19.0),
                           ),
                         ],
                       ),
