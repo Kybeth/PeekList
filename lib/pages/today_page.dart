@@ -15,6 +15,7 @@ class BuildToday extends StatelessWidget {
       body:TodayTask(
         uid:"$uid"
       ).build(context),
+      backgroundColor: Colors.grey[200],
     );
   }
 }

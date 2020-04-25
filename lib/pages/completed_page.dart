@@ -15,6 +15,7 @@ class BuildCompleted extends StatelessWidget {
       body:CompletedTask(
         uid:"$uid"
       ).build(context),
+      backgroundColor: Colors.grey[200],
     );
   }
 }

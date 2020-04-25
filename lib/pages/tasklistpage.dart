@@ -17,7 +17,9 @@ class tasklistpage extends StatelessWidget {
         uid:"$uid",
         list: "$listname",
       ).build(context),
+      backgroundColor: Colors.grey[200],
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.cyan[200],
         onPressed: () async{
           Navigator.push(
             context,
@@ -26,7 +28,7 @@ class tasklistpage extends StatelessWidget {
             )),
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: Colors.black,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
