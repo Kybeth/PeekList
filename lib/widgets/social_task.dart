@@ -56,6 +56,7 @@ class _SocialTaskState extends State<SocialTask> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 25.0,

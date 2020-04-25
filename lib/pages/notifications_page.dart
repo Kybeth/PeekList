@@ -8,14 +8,13 @@ import 'package:peeklist/models/requests.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 
-
 class NotificationsPage extends StatefulWidget {
-
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
 }
 
-class _NotificationsPageState extends State<NotificationsPage> with SingleTickerProviderStateMixin {
+class _NotificationsPageState extends State<NotificationsPage>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
   bool isLoading = false;
   var notifications = [];
@@ -28,7 +27,6 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   }
 
   buildRequest(uid, Requests req) {
-
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
@@ -56,30 +54,27 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
     return Text("No requests");
   }
 
-
   buildFriendRequests(uid) {
     return StreamBuilder(
-      stream: UserService().getRequests(uid),
-      builder: (context, asyncSnap) {
-        if (asyncSnap.hasError) {
-          return Text("Error ${asyncSnap.error}");
-        } else if (asyncSnap.data == null) {
-          return circularProgress();
-        } else if (asyncSnap.data.length == 0) {
-          return noRequestsCard();
-        } else {
-          return new ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: asyncSnap.data.length,
-            itemBuilder: (context, int index) {
-              Requests req = asyncSnap.data[index];
-              return buildRequest(uid, req);
-            }
-          );
-        }
-      }
-    );
+        stream: UserService().getRequests(uid),
+        builder: (context, asyncSnap) {
+          if (asyncSnap.hasError) {
+            return Text("Error ${asyncSnap.error}");
+          } else if (asyncSnap.data == null) {
+            return circularProgress();
+          } else if (asyncSnap.data.length == 0) {
+            return noRequestsCard();
+          } else {
+            return new ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: asyncSnap.data.length,
+                itemBuilder: (context, int index) {
+                  Requests req = asyncSnap.data[index];
+                  return buildRequest(uid, req);
+                });
+          }
+        });
   }
 
   buildInteractions() {
@@ -95,15 +90,14 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
         } else {
           userService.updateIntertions(uid);
           return new ListView.builder(
-            shrinkWrap: true,
+              shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemCount: asyncSnap.data.length,
               itemBuilder: (context, int index) {
                 //allintertnumber=asyncSnap.data.length;
                 Interactions inter = asyncSnap.data[index];
                 return buildInter(inter);
-              }
-          );
+              });
         }
       },
     );
@@ -114,45 +108,43 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
-       appBar: AppBar(
-         centerTitle: true,
-         backgroundColor: Theme.of(context).primaryColorLight,
-         title: Text(
-             'Notifications',
-           style: GoogleFonts.raleway(
-             textStyle: TextStyle(
-               color: Colors.black,
-               fontSize: 20.0,
-             ),
-           ),
-         ),
-         bottom: TabBar(
-           indicatorColor: Theme.of(context).accentColor,
-           labelStyle: GoogleFonts.raleway(
-             textStyle: TextStyle(
-               fontSize: 15.0
-             ),
-           ),
-           tabs: [
-             Tab(
-               icon: Icon(Icons.notifications),
-               text: "Interactions",
-             ),
-             Tab(
-               icon: Icon(Icons.person_add),
-               text: "Friend Requests",
-             ),
-           ],
-           controller: _tabController,
-         ),
-       ),
-       body: TabBarView(
-         children: <Widget>[
-           buildInteractions(),
-           buildFriendRequests(uid),
-         ],
-         controller: _tabController,
-       ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text(
+          'Notifications',
+          style: GoogleFonts.raleway(
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20.0,
+            ),
+          ),
+        ),
+        bottom: TabBar(
+          indicatorColor: Theme.of(context).accentColor,
+          labelStyle: GoogleFonts.raleway(
+            textStyle: TextStyle(fontSize: 15.0),
+          ),
+          tabs: [
+            Tab(
+              icon: Icon(Icons.notifications),
+              text: "Interactions",
+            ),
+            Tab(
+              icon: Icon(Icons.person_add),
+              text: "Friend Requests",
+            ),
+          ],
+          controller: _tabController,
+        ),
+      ),
+      body: TabBarView(
+        children: <Widget>[
+          buildInteractions(),
+          buildFriendRequests(uid),
+        ],
+        controller: _tabController,
+      ),
     );
   }
 
@@ -163,7 +155,6 @@ class _NotificationsPageState extends State<NotificationsPage> with SingleTicker
   }
 
   buildInter(Interactions inter) {
-
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.grey,

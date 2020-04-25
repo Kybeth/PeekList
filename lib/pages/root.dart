@@ -29,6 +29,7 @@ class _RootState extends State<Root>
 
   Scaffold loginButton() {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       body: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -71,6 +72,7 @@ class _RootState extends State<Root>
 
   Scaffold buildUnAuthScreen() {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
@@ -116,6 +118,7 @@ class _RootState extends State<Root>
 
   Scaffold buildAuthScreen() {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
