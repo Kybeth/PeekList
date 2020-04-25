@@ -51,7 +51,7 @@ class _CreateTaskState extends State<CreateTask> {
             );
             alllist.add(listchoose);
           }
-          alllist.add(new DropdownMenuItem(value: "inbox", child: Text("inbox")));
+          
           return alllist;
         }
         return DropdownButton(
