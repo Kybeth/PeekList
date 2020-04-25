@@ -10,12 +10,12 @@ class CreateTask extends StatefulWidget {
   final choose_list;
   final uid;
   final isPrivate;
-  CreateTask({Key key, this.choose_list,this.uid, this.isPrivate = true}): super(key:key);
+  CreateTask({Key key, this.choose_list, this.uid, this.isPrivate = true})
+      : super(key: key);
   @override
-
-  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list, uid: uid, isPrivate: isPrivate);
+  State<StatefulWidget> createState() => _CreateTaskState(
+      choose_list: choose_list, uid: uid, isPrivate: isPrivate);
 }
-
 
 class _CreateTaskState extends State<CreateTask> {
   var _taskname = TextEditingController();
@@ -51,9 +51,11 @@ class _CreateTaskState extends State<CreateTask> {
             );
             alllist.add(listchoose);
           }
-          alllist.add(new DropdownMenuItem(value: "inbox", child: Text("inbox")));
+          alllist
+              .add(new DropdownMenuItem(value: "inbox", child: Text("inbox")));
           return alllist;
         }
+
         return DropdownButton(
             items: getlist(),
             hint: Text(choose_list),
@@ -92,16 +94,17 @@ class _CreateTaskState extends State<CreateTask> {
       onConfirm: (dateTime, List<int> index) {
         setState(() {
           _dateTime = dateTime;
-          _duedate.text = '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}';
+          _duedate.text =
+              '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}';
         });
-
       },
     );
   }
 
   changeicon_com(bool isprivated) {
-    return isprivated ? Icon(Icons.check_box_outline_blank) : Icon(
-        Icons.check_box);
+    return isprivated
+        ? Icon(Icons.check_box_outline_blank)
+        : Icon(Icons.check_box);
   }
 
   @override
@@ -130,8 +133,10 @@ class _CreateTaskState extends State<CreateTask> {
     });
 
     return new Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       appBar: new AppBar(
         title: new Text("Add Task"),
+        backgroundColor: Theme.of(context).primaryColorLight,
       ),
       body: new Column(
         children: <Widget>[
@@ -139,48 +144,72 @@ class _CreateTaskState extends State<CreateTask> {
             autofocus: true,
             controller: _taskname,
             decoration: InputDecoration(
-                hintText: "Task Name", prefixIcon: Icon(Icons.person)),
+              hintText: "Task Name",
+              prefixIcon: Icon(Icons.person),
+              enabledBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor),
+              ),
+            ),
           ),
           TextField(
             controller: _tasknote,
-            decoration:
-                InputDecoration(hintText: "Note", prefixIcon: Icon(Icons.note)),
+            decoration: InputDecoration(
+              hintText: "Note",
+              prefixIcon: Icon(Icons.note),
+              enabledBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor),
+              ),
+            ),
           ),
           TextField(
             controller: _duedate,
             onTap: _showDateTimePicker,
             decoration: InputDecoration(
-              hintText: "DateTime",
+              hintText: "Due Date",
               prefixIcon: Icon(Icons.timer),
+              enabledBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor),
+              ),
             ),
             readOnly: true,
           ),
           Row(
             children: <Widget>[
-              Text('choose list or not: '),
+              Spacer(),
+              Text('Choose a list  '),
               buildList(uid),
+              Spacer(),
             ],
           ),
-
           Row(
-
             children: <Widget>[
-
-              Text('Do you want to share this tasks?'),
+              Spacer(),
+              Text('Share with friends?'),
               IconButton(
+                color: Colors.cyan,
                 icon: changeicon_com(isPrivate),
-                onPressed: (){
+                onPressed: () {
                   setState(() {
-                    isPrivate= isPrivate? false:true;
+                    isPrivate = isPrivate ? false : true;
                   });
-              },
-              )
+                },
+              ),
+              Spacer(),
             ],
           ),
           RaisedButton(
             onPressed: () async {
-              if(listName!=null){
-                choose_list=listName;
+              if (listName != null) {
+                choose_list = listName;
               }
               Tasks ntask = new Tasks(
                   name: _taskname.text,
@@ -189,9 +218,8 @@ class _CreateTaskState extends State<CreateTask> {
                   list: choose_list,
                   iscompleted: false,
                   isstarred: false,
-                  time:_dateTime,
-                  isprivate:isPrivate
-              );
+                  time: _dateTime,
+                  isprivate: isPrivate);
 
               ntask.addtask();
               Navigator.of(context).pop();
