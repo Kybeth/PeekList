@@ -65,9 +65,9 @@ class _SocialTaskState extends State<SocialTask> {
         child: Column(
           children: <Widget>[
             Card(
-              elevation: 5,
+              elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(10.0),
               ),
               child: Column(
                 children: <Widget>[
@@ -83,13 +83,20 @@ class _SocialTaskState extends State<SocialTask> {
                       title: Text(
                         "${widget.task.user['displayName']}",
                         style: TextStyle(
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Colors.cyan[900],
                         ),
                       ),
                       onTap: () => Navigator.pushNamed(context, '/myprofile',
                           arguments: widget.task.user['uid']),
                       trailing: Text(
-                          "${timeago.format(widget.task.create.toDate())}"),
+                          "${timeago.format(widget.task.create.toDate())}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -102,10 +109,16 @@ class _SocialTaskState extends State<SocialTask> {
                       title: Text(
                         "${widget.task.name}",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
-                      subtitle: Text("${widget.task.comment}"),
+                      subtitle: Text(
+                          "${widget.task.comment}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                      ),
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -119,11 +132,12 @@ class _SocialTaskState extends State<SocialTask> {
                           Text("${this.likeCount}"),
                           IconButton(
                             icon: Icon(Icons.thumb_up),
-                            color: isLiked == true ? Colors.blue : Colors.black,
+                            color: isLiked == true ? Colors.cyan[700] : Colors.grey[500],
                             onPressed: isLiked == true ? unlike : handleLike,
                           ),
                           IconButton(
                             icon: Icon(Icons.comment),
+                            color: Colors.grey[500],
                             onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -120,8 +120,9 @@ class _TimelineState extends State<Timeline> {
             return new
               Column(
               children: <Widget>[
+                // Spacer(flex: 1),
                 shownewmessage(),
-                Divider(),
+                // Divider(color: Color(0xEBEBEB)), // make the divider invisible by setting to same color as backgroud
                 Expanded(
                   child:  ListView.builder(
                       shrinkWrap: true,
@@ -152,7 +153,14 @@ class _TimelineState extends State<Timeline> {
         else{
           AsyncSnapshot dsp=snapshots;
           return new ListTile(
-            title: Text(dsp.data['displayName']),
+            title: Text(
+                dsp.data['displayName'],
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.cyan[900]
+                ),
+            ),
             trailing:
             shownotification(dsp.data),
             leading:
