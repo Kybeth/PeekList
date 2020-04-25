@@ -213,7 +213,7 @@ class _TaskPageState extends State<TaskPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => BuildInbox(
+                                builder: (context) => Buildall(
                                       uid: uid,
                                     )));
                       },
