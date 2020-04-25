@@ -470,8 +470,8 @@ class _TaskPageState extends State<TaskPage> {
               color: Colors.black,
             ),
             backgroundColor: Colors.cyan[100],
-            child: Icon(Icons.create),
-            label: "Create New List",
+            child: Icon(Icons.create_new_folder),
+            label: "New List",
             onTap: () {
               showDialog(
                   context: context,
@@ -509,7 +509,7 @@ class _TaskPageState extends State<TaskPage> {
             ),
             backgroundColor: Colors.cyan[100],
             child: Icon(Icons.add),
-            label: "Add Task",
+            label: "New Task",
             onTap: () async {
               var uid = await AuthService().userID();
               Navigator.push(

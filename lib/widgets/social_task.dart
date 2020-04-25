@@ -78,6 +78,7 @@ class _SocialTaskState extends State<SocialTask> {
                         backgroundImage: CachedNetworkImageProvider(
                             widget.task.user['photoURL']),
                         backgroundColor: Colors.grey,
+                        radius: 18,
                       ),
                       contentPadding: EdgeInsets.all(2),
                       title: Text(
@@ -110,6 +111,7 @@ class _SocialTaskState extends State<SocialTask> {
                         "${widget.task.name}",
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       subtitle: Text(
@@ -153,7 +155,7 @@ class _SocialTaskState extends State<SocialTask> {
                 ],
               ),
             ),
-            Divider(),
+            Divider(color: Color(0xEBEBEB)),
           ],
         ),
       ),

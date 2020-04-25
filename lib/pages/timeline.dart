@@ -53,9 +53,9 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.cyan[300],
+            backgroundColor: Colors.cyan[100],
             child: Icon(Icons.add),
-            label: "Add",
+            label: "New Task",
             onTap: () async {
               var uid = await AuthService().userID();
               Navigator.push(
@@ -70,7 +70,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.cyan[300],
+            backgroundColor: Colors.cyan[100],
             child: Icon(Icons.person),
             label: "My Profile",
             onTap: () {
@@ -81,9 +81,9 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.cyan[300],
+            backgroundColor: Colors.cyan[100],
             child: Icon(Icons.notifications),
-            label: "Notification Center",
+            label: "Notifications",
             onTap: () {
              // await Firestore.instance.collection('users').document(this.uid).updateData({'newnoti':false});
               Navigator.pushNamed(context, '/notifications', arguments: uid);
@@ -93,7 +93,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.cyan[300],
+            backgroundColor: Colors.cyan[100],
             child: Icon(Icons.person_add),
             label: "Add Friends",
             onTap: () {
@@ -120,9 +120,7 @@ class _TimelineState extends State<Timeline> {
             return new
               Column(
               children: <Widget>[
-                // Spacer(flex: 1),
                 shownewmessage(),
-                // Divider(color: Color(0xEBEBEB)), // make the divider invisible by setting to same color as backgroud
                 Expanded(
                   child:  ListView.builder(
                       shrinkWrap: true,
@@ -153,6 +151,7 @@ class _TimelineState extends State<Timeline> {
         else{
           AsyncSnapshot dsp=snapshots;
           return new ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 33.0, vertical: 12),
             title: Text(
                 dsp.data['displayName'],
                 style: TextStyle(
@@ -172,6 +171,7 @@ class _TimelineState extends State<Timeline> {
               CircleAvatar(
                 backgroundImage: CachedNetworkImageProvider(dsp.data['photoURL']),
                 backgroundColor: Colors.white,
+                radius: 25,
               ),));
         }},);
   }
