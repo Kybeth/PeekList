@@ -62,7 +62,7 @@ class _TimelineState extends State<Timeline> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        CreateTask(choose_list: 'Inbox', uid: uid, isPrivate: false)),
+                        CreateTask(choose_list: 'inbox', uid: uid, isPrivate: false)),
               );
             },
           ),
