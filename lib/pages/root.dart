@@ -28,6 +28,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
 
   Scaffold loginButton() {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       body: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -67,6 +68,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
 
   Scaffold buildUnAuthScreen() {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
@@ -117,6 +119,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
 
   Scaffold buildAuthScreen() {
     return Scaffold(
+      backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
