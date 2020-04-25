@@ -10,11 +10,8 @@ class BuildStarred extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title:
-        Text("starred"),
-
-
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text("starred"),
       ),
       body:Showstar(
         uid:"$uid"

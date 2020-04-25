@@ -10,6 +10,7 @@ class BuildCompleted extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
         title: Text("Completed"),
       ),
       body:CompletedTask(

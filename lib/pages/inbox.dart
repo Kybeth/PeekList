@@ -10,6 +10,7 @@ class BuildInbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
         title: Text("inbox"),
       ),
       body:Showlist(
