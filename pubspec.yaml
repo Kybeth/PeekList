@@ -63,6 +63,7 @@ flutter:
         - asset: assets/fonts/Signatra.ttf
   assets:
     - assets/images/google_signin_button.png
+    - assets/images/Done_postmark.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
