@@ -85,7 +85,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
         bottom: TabBar(
           indicatorColor: Theme.of(context).accentColor,
           labelStyle: GoogleFonts.raleway(
-            textStyle: TextStyle(fontSize: 15.0),
+            textStyle: TextStyle(fontSize: 14.0),
           ),
           tabs: [
             Tab(
@@ -134,7 +134,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
         bottom: TabBar(
           indicatorColor: Theme.of(context).accentColor,
           labelStyle: GoogleFonts.raleway(
-            textStyle: TextStyle(fontSize: 15.0),
+            textStyle: TextStyle(fontSize: 14.0),
           ),
           tabs: [
             Tab(

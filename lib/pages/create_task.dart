@@ -51,7 +51,7 @@ class _CreateTaskState extends State<CreateTask> {
             );
             alllist.add(listchoose);
           }
-          
+
           return alllist;
         }
         return DropdownButton(
