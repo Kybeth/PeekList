@@ -74,13 +74,7 @@ class _TaskPageState extends State<TaskPage> {
     });
 
     authService.profile.listen((state) => setState(() => _profile = state));
-//_getdata();
   }
-
-// void addTask() {
-//   List inbox = _profile['tasks']['inbox'];
-
-// }
 
   Future _addtomylist(String Listname) async {
     var uid = await AuthService().userID();
@@ -118,7 +112,9 @@ class _TaskPageState extends State<TaskPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
-                          bottomLeft: Radius.circular(25.0),),),
+                          bottomLeft: Radius.circular(25.0),
+                        ),
+                      ),
                       color: Colors.white,
                       padding: const EdgeInsets.all(8.0),
                       onPressed: () async {
@@ -155,7 +151,9 @@ class _TaskPageState extends State<TaskPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
-                          bottomLeft: Radius.circular(25.0),),),
+                          bottomLeft: Radius.circular(25.0),
+                        ),
+                      ),
                       color: Colors.white,
                       onPressed: () async {
                         var uid = await AuthService().userID();
@@ -199,14 +197,15 @@ class _TaskPageState extends State<TaskPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ButtonTheme(
-
                     minWidth: 150.0,
                     height: 82.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25.0),
-                          bottomLeft: Radius.circular(25.0),),),
+                          bottomLeft: Radius.circular(25.0),
+                        ),
+                      ),
                       color: Colors.white,
                       padding: const EdgeInsets.all(8.0),
                       onPressed: () async {
@@ -304,15 +303,17 @@ class _TaskPageState extends State<TaskPage> {
               Spacer()
             ]),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: tasklist.map((lst) {
-                return Row(children: <Widget>[
+                return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                   Spacer(),
                   ButtonTheme(
-                    
                     minWidth: 339.0,
                     child: FlatButton(
                       child: Row(
-                        
+
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(right: 12.0),
@@ -325,6 +326,7 @@ class _TaskPageState extends State<TaskPage> {
                           Text(
                             lst.listname,
                             style: TextStyle(fontSize: 25.0),
+                            textAlign: TextAlign.left,
                           ),
                         ],
                       ),
@@ -398,10 +400,8 @@ class _TaskPageState extends State<TaskPage> {
                                                                         .listname,
                                                                     renamelist
                                                                         .text);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
+                                                            Navigator.of(context).pop();
+                                                            },
                                                         ),
                                                       ],
                                                     );
@@ -452,7 +452,6 @@ class _TaskPageState extends State<TaskPage> {
                                   ),
                                 ));
                       },
-                      
                     ),
                   ),
                   Spacer(),
@@ -463,14 +462,14 @@ class _TaskPageState extends State<TaskPage> {
         ],
       ),
       floatingActionButton: SpeedDial(
-        backgroundColor: Colors.cyan[200],
-        animatedIcon: AnimatedIcons.view_list,
+        backgroundColor: Theme.of(context).accentColor,
+        animatedIcon: AnimatedIcons.menu_close,
         children: [
           SpeedDialChild(
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.orange[500],
+            backgroundColor: Colors.cyan[100],
             child: Icon(Icons.create),
             label: "Create New List",
             onTap: () {
@@ -508,7 +507,7 @@ class _TaskPageState extends State<TaskPage> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Colors.green[300],
+            backgroundColor: Colors.cyan[100],
             child: Icon(Icons.add),
             label: "Add Task",
             onTap: () async {

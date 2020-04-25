@@ -52,7 +52,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Colors.cyan[300],
             child: Icon(Icons.add),
             label: "Add",
             onTap: () async {
@@ -61,7 +61,7 @@ class _TimelineState extends State<Timeline> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        CreateTask(choose_list: 'inbox', uid: uid, isPrivate: false)),
+                        CreateTask(choose_list: 'Inbox', uid: uid, isPrivate: false)),
               );
             },
           ),
@@ -69,7 +69,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Colors.cyan[300],
             child: Icon(Icons.person),
             label: "My Profile",
             onTap: () {
@@ -80,7 +80,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Colors.cyan[300],
             child: Icon(Icons.notifications),
             label: "Notification Center",
             onTap: () {
@@ -92,7 +92,7 @@ class _TimelineState extends State<Timeline> {
             labelStyle: TextStyle(
               color: Colors.black,
             ),
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Colors.cyan[300],
             child: Icon(Icons.person_add),
             label: "Add Friends",
             onTap: () {

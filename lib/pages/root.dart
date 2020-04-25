@@ -13,8 +13,7 @@ class Root extends StatefulWidget {
   _RootState createState() => _RootState();
 }
 
-class _RootState extends State<Root>
-  with SingleTickerProviderStateMixin {
+class _RootState extends State<Root> with SingleTickerProviderStateMixin {
   TabController _tabController;
   Map<String, dynamic> _profile;
   bool _loading = false;
@@ -25,49 +24,46 @@ class _RootState extends State<Root>
     authService.profile.listen((state) => setState(() => _profile = state));
     authService.loading.listen((state) => setState(() => _loading = state));
     super.initState();
-}
+  }
 
   Scaffold loginButton() {
     return Scaffold(
       body: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.of(context).accentColor.withOpacity(0.8),
-              Theme.of(context).primaryColor,
-            ]
-          )
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Peek List',
-              style: TextStyle(
-                fontFamily: "Signatra",
-                fontSize: 90.0,
-                color: Colors.white
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                Theme.of(context).accentColor.withOpacity(0.8),
+                Theme.of(context).primaryColor,
+              ])),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Peek List',
+                style: TextStyle(
+                    fontFamily: "Signatra",
+                    fontSize: 90.0,
+                    color: Colors.white),
               ),
-            ),
-            RaisedButton(
-              child: Text("Login with Google"),
-              padding: EdgeInsets.all(15.0),
-              onPressed: () => authService.googleSignIn(),
-              elevation: 5.0,
-              color: Theme.of(context).primaryColorDark,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.black),
+              RaisedButton(
+                child: Text("Login with Google"),
+                padding: EdgeInsets.all(15.0),
+                onPressed: () => authService.googleSignIn(),
+                elevation: 5.0,
+                color: Theme.of(context).primaryColorDark,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black),
+                ),
               ),
-            ),
-      ],)
-    ),);
+            ],
+          )),
+    );
   }
-
 
   Scaffold buildUnAuthScreen() {
     return Scaffold(
@@ -75,33 +71,39 @@ class _RootState extends State<Root>
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
-            'Peek List',
+          'Peek List',
           style: GoogleFonts.raleway(
             textStyle: TextStyle(
               color: Colors.black,
-              fontSize: 20.0,
+              fontSize: 19.0,
             ),
           ),
+          textAlign: TextAlign.left,
         ),
         bottom: TabBar(
           indicatorColor: Theme.of(context).accentColor,
           labelStyle: GoogleFonts.raleway(
-            textStyle: TextStyle(
-                fontSize: 15.0
-            ),
+            textStyle: TextStyle(fontSize: 15.0),
           ),
           tabs: [
             Tab(
-              icon: Icon(Icons.home, color: Colors.black,),
+              icon: Icon(
+                Icons.home,
+                color: Colors.black,
+              ),
               text: "Home",
             ),
             Tab(
-              icon: Icon(Icons.person, color: Colors.black,),
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
               text: "Login",
             ),
           ],
           controller: _tabController,
         ),
+
       ),
       body: TabBarView(
         children: <Widget>[
@@ -111,42 +113,37 @@ class _RootState extends State<Root>
         controller: _tabController,
       ),
     );
-
   }
 
   Scaffold buildAuthScreen() {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
-            'Peek List',
+          'PeekList',
           style: GoogleFonts.raleway(
             textStyle: TextStyle(
               color: Colors.black,
-              fontSize: 25.0,
+              fontSize: 19.0,
             ),
           ),
         ),
         bottom: TabBar(
           indicatorColor: Theme.of(context).accentColor,
           labelStyle: GoogleFonts.raleway(
-            textStyle: TextStyle(
-              fontSize: 15.0
-            ),
+            textStyle: TextStyle(fontSize: 15.0),
           ),
           tabs: [
             Tab(
-              icon: Icon(Icons.home, color: Colors.black,),
-              text: "Home",
+              text: "TASKS",
             ),
             Tab(
-              icon: Icon(Icons.group, color: Colors.black,),
-              text: "Social",
+              text: "FRIENDS",
             ),
           ],
           controller: _tabController,
         ),
+        elevation: 0.0,
       ),
       body: TabBarView(
         children: <Widget>[
@@ -182,8 +179,8 @@ class _RootState extends State<Root>
 
   void updateToken() async {
     var uid = await authService.userID();
-    _firebaseMessaging.getToken().then((token){
-        UserService().updateToken(uid, token);
+    _firebaseMessaging.getToken().then((token) {
+      UserService().updateToken(uid, token);
     });
   }
 }
