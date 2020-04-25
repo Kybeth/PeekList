@@ -292,7 +292,7 @@ class IncompleteTask extends StatelessWidget {
       stream: Firestore.instance
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
-          .where('iscompleted', isEqualTo: false)
+          .where('iscompleted', isEqualTo: false).orderBy('create',descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
