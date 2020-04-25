@@ -18,7 +18,7 @@ class Showlist extends State<StatefulWidget> {
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('list', isEqualTo: "$list")
-          .where('iscompleted', isEqualTo: false)
+          .where('iscompleted', isEqualTo: false).orderBy('create',descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -224,7 +224,7 @@ class Showstar extends StatelessWidget {
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('isstarred', isEqualTo: true)
-          .where('iscompleted', isEqualTo: false)
+          .where('iscompleted', isEqualTo: false).orderBy('create',descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -244,7 +244,7 @@ class CompletedTask extends StatelessWidget {
       stream: Firestore.instance
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
-          .where('iscompleted', isEqualTo: true)
+          .where('iscompleted', isEqualTo: true).orderBy('complete',descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
