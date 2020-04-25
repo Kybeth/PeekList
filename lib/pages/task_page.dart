@@ -285,7 +285,7 @@ class _TaskPageState extends State<TaskPage> {
               Spacer(),
               Text("My Lists",
                   style: TextStyle(
-                    fontSize: 36.0,
+                    fontSize: 34.0,
                   )),
               Spacer(),
               Spacer(),
@@ -318,14 +318,14 @@ class _TaskPageState extends State<TaskPage> {
                           Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
-                              Icons.folder,
+                              Icons.folder_open,
                               size: 25.0,
-                              color: Colors.blue[200],
+                              color: Colors.cyan[200],
                             ),
                           ),
                           Text(
                             lst.listname,
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(fontSize: 19.0),
                             textAlign: TextAlign.left,
                           ),
                         ],
