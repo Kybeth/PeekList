@@ -205,10 +205,19 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(likes.userMeta['displayName']),
+          dense: true,
+          title: Text(
+              likes.userMeta['displayName'],
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.cyan[900],
+            ),
+          ),
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(likes.userMeta['photoURL']),
             backgroundColor: Colors.grey,
+            radius: 15,
           ),
         ),
         Divider(),
@@ -220,11 +229,12 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(comment.message),
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(comment.userMeta['photoURL']),
             backgroundColor: Colors.grey,
+            radius: 15,
           ),
+          title: Text(comment.message),
           subtitle: Text(
             timeago.format(comment.posted.toDate()),
             style: TextStyle(

@@ -8,6 +8,7 @@ import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/widgets/social_task.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyProfile extends StatefulWidget {
 
@@ -76,15 +77,14 @@ class _MyProfileState extends State<MyProfile> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(top: 5.0),
-            child: FlatButton.icon(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
-            ),
-            onPressed: () => addFriend(currentUser, currentProfile),
-            icon: Icon(Icons.person_add),
-            label: Text("Add Friend"),
-            color: Theme.of(context).primaryColorLight,
-            colorBrightness: Brightness.dark,
+            child: RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () => addFriend(currentUser, currentProfile),
+              icon: Icon(Icons.person_add),
+              label: Text("Add Friend"),
+
         ),
       ),
     ],
@@ -146,7 +146,20 @@ class _MyProfileState extends State<MyProfile> {
     uid = settings.arguments;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: header(context, titleText: "Profile"),
+      appBar: AppBar(
+          centerTitle: false,
+          backgroundColor: Theme.of(context).primaryColorLight,
+          title: Text(
+            'Profile',
+            style: GoogleFonts.raleway(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 19.0,
+                  fontWeight: FontWeight.w500
+              ),
+            ),
+          ),
+      ),
       body: Container(
         padding: EdgeInsets.all(15.0),
         child: Column(

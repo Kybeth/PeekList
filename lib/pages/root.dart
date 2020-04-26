@@ -73,7 +73,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
-          'Peek List',
+          'PeekList',
           style: GoogleFonts.raleway(
             textStyle: TextStyle(
               color: Colors.black,
@@ -128,6 +128,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
             textStyle: TextStyle(
               color: Colors.black,
               fontSize: 19.0,
+                fontWeight: FontWeight.w500
             ),
           ),
         ),
