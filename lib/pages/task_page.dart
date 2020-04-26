@@ -303,36 +303,31 @@ class _TaskPageState extends State<TaskPage> {
               Spacer()
             ]),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: tasklist.map((lst) {
-                return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                  Spacer(),
-                  ButtonTheme(
-                    minWidth: 339.0,
-                    child: FlatButton(
-                      child: Row(
-
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: Icon(
-                              Icons.folder_open,
-                              size: 25.0,
-                              color: Colors.cyan[200],
-                            ),
-                          ),
-                          Text(
-                            lst.listname,
-                            style: TextStyle(fontSize: 19.0),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 25.0,
+                  ),
+                  child: Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0.0),
+                    ),
+                    child: ListTile(
+                      leading: Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: Icon(
+                          Icons.folder_open,
+                          size: 25.0,
+                          color: Colors.cyan[200],
+                        ),
                       ),
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(8.0),
-                      onPressed: () async {
+                      title: Text(
+                        lst.listname,
+                        style: TextStyle(fontSize: 19.0),
+                        
+                      ),
+                      onTap: () async {
                         var uid = await AuthService().userID();
                         Navigator.push(
                             context,
@@ -340,8 +335,7 @@ class _TaskPageState extends State<TaskPage> {
                                 builder: (context) => tasklistpage(
                                       listname: lst.listname,
                                       uid: uid,
-                                    )));
-                      },
+                                    )));},
                       onLongPress: () async {
                         var uid = await AuthService().userID();
                         showBottomSheet(
@@ -454,8 +448,7 @@ class _TaskPageState extends State<TaskPage> {
                       },
                     ),
                   ),
-                  Spacer(),
-                ]);
+                );
               }).toList(),
             ),
           ])),
