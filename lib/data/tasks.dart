@@ -47,24 +47,24 @@ class Showlist extends State<StatefulWidget> {
                 ))),
                 height: 80,
                 child: ListTile(
-
-                  leading:
-                  IconButton(
+                  leading: IconButton(
                     icon: changeicon_com(doc['iscompleted']),
                     onPressed: () => completed(doc),
                   ),
-                  trailing: IconButton(
-                      icon: changeicon_star(doc['isstarred']),
-                      onPressed: () => starred(doc)),
                   title: Text(
                     doc['name'],
                     style: returnstyle(doc['iscompleted']),
                   ),
                   subtitle: Text(doc['comment'],
                       style: returnstyle(doc['iscompleted'])),
+                   trailing: IconButton(
+                       icon: changeicon_star(doc['isstarred']),
+                       onPressed: () => starred(doc)),
+
                 ),
               ),
               secondaryActions: <Widget>[
+                /**
                 IconSlideAction(
                   caption: pritext(doc),
                   color: priColor(doc),
@@ -78,10 +78,10 @@ class Showlist extends State<StatefulWidget> {
 //                      hasprivate(doc);
 //                    });
                   },
-                ),
+                ), **/
                 IconSlideAction(
                   caption: 'Delete',
-                  color: Colors.red[900],
+                  color: Colors.red[400],
                   icon: Icons.delete,
                   onTap: () {
                     //deleted(doc);
@@ -123,7 +123,7 @@ class Showlist extends State<StatefulWidget> {
   hasprivate(DocumentSnapshot document) {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
-      return Colors.blue[200];
+      return Colors.cyan[200];
     } else {
       return Colors.white;
     }
@@ -182,24 +182,24 @@ class Showlist extends State<StatefulWidget> {
   }
 
   changeicon_star(bool completed) {
-    return completed ? Icon(Icons.star,color: Colors.yellow[900],) : Icon(Icons.star_border,color: Colors.yellow[900],);
+    return completed ? Icon(Icons.star,color: Colors.orange,) : Icon(Icons.star_border,color: Colors.orange[200],);
   }
 
   priColor(DocumentSnapshot document) {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
-      return Colors.green;
+      return Colors.orange[300];
     } else {
-      return Colors.red;
+      return Colors.orange[300];
     }
   }
 
   pritext(DocumentSnapshot document) {
     if (document.data.containsKey('isprivate') &&
         document['isprivate'] == false) {
-      return "open";
+      return "Make Private";
     } else {
-      return "privated";
+      return "Make Public";
     }
   }
 
@@ -208,7 +208,7 @@ class Showlist extends State<StatefulWidget> {
         document['isprivate'] == false) {
       return Icons.remove_red_eye;
     } else {
-      return Icons.block;
+      return Icons.remove_red_eye;
     }
   }
 
