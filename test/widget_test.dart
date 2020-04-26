@@ -19,10 +19,10 @@ void main() {
         home: child,
     );
   }
-  testWidgets('finds a Text Widget', (WidgetTester tester) async {
-    // Find a Widget that displays the letter 'H'
-    await tester.pumpWidget(testWidget(child: new CreateTask(choose_list: 'mylist')));
-    final titleFinder = find.text('mylist');
+  testWidgets('verify the title of create task page', (WidgetTester tester) async {
+    // Find a Widget that displays the title "Add Task"
+    await tester.pumpWidget(testWidget(child: new CreateTask()));
+    final titleFinder = find.text('Add Task');
     expect(titleFinder, findsOneWidget);
   });
 }

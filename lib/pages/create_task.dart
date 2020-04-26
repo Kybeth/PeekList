@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/utils/auth.dart';
 import 'package:peeklist/data/tasks.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
@@ -8,17 +6,16 @@ import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 
-
 class CreateTask extends StatefulWidget {
   final choose_list;
   final uid;
-  CreateTask({Key key, this.choose_list,this.uid}): super(key:key);
+  final isPrivate;
+  CreateTask({Key key, this.choose_list, this.uid, this.isPrivate = true})
+      : super(key: key);
   @override
-
-  State<StatefulWidget> createState() => _CreateTaskState(choose_list: choose_list,uid: uid);
+  State<StatefulWidget> createState() => _CreateTaskState(
+      choose_list: choose_list, uid: uid, isPrivate: isPrivate);
 }
-
-//const String INIT_DATETIME = '2019-05-16 09:00';
 
 class _CreateTaskState extends State<CreateTask> {
   var _taskname = TextEditingController();
@@ -26,17 +23,16 @@ class _CreateTaskState extends State<CreateTask> {
   var _duedate = TextEditingController();
   var choose_list;
   var listName;
-  var isprivate=true;
+  var isPrivate;
   var uid;
-  _CreateTaskState({Key key, this.choose_list,this.uid});
+
+  _CreateTaskState({Key key, this.choose_list, this.uid, this.isPrivate});
 
   String _format = 'yyyy - MM - dd    EEE,H:m'; //DateTimePicker
   TextEditingController _formatCtrl = TextEditingController();
   DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
   List<DateTimePickerLocale> _locales = DateTimePickerLocale.values;
   DateTime _dateTime;
-
-
 
   buildList(uid) {
     return FutureBuilder(
@@ -57,6 +53,7 @@ class _CreateTaskState extends State<CreateTask> {
           }
           return alllist;
         }
+
         return DropdownButton(
             items: getlist(),
             hint: Text(choose_list),
@@ -70,9 +67,6 @@ class _CreateTaskState extends State<CreateTask> {
       },
     );
   }
-
-
-
 
   @override
   void initState() {
@@ -98,16 +92,17 @@ class _CreateTaskState extends State<CreateTask> {
       onConfirm: (dateTime, List<int> index) {
         setState(() {
           _dateTime = dateTime;
-          _duedate.text = '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}';
+          _duedate.text =
+          '${_dateTime.year}-${_dateTime.month.toString().padLeft(2, '0')}-${_dateTime.day.toString().padLeft(2, '0')} ${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}';
         });
-
       },
     );
   }
 
   changeicon_com(bool isprivated) {
-    return isprivated ? Icon(Icons.check_box_outline_blank) : Icon(
-        Icons.check_box);
+    return isprivated
+        ? Icon(Icons.check_box_outline_blank)
+        : Icon(Icons.check_box);
   }
 
   @override
@@ -136,8 +131,10 @@ class _CreateTaskState extends State<CreateTask> {
     });
 
     return new Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       appBar: new AppBar(
-        title: new Text(choose_list),
+        title: new Text("Add Task"),
+        backgroundColor: Theme.of(context).primaryColorLight,
       ),
       body: new Column(
         children: <Widget>[
@@ -145,48 +142,78 @@ class _CreateTaskState extends State<CreateTask> {
             autofocus: true,
             controller: _taskname,
             decoration: InputDecoration(
-                hintText: "Task Name", prefixIcon: Icon(Icons.person)),
+              hintText: "Task Name",
+              prefixIcon: Icon(Icons.person),
+              enabledBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Theme.of(context).accentColor,
+                  width: 3
+                ),
+              ),
+            ),
           ),
           TextField(
             controller: _tasknote,
-            decoration:
-                InputDecoration(hintText: "Note", prefixIcon: Icon(Icons.note)),
+            decoration: InputDecoration(
+              hintText: "Note",
+              prefixIcon: Icon(Icons.note),
+              enabledBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor, width: 3),
+              ),
+            ),
           ),
           TextField(
             controller: _duedate,
             onTap: _showDateTimePicker,
             decoration: InputDecoration(
-              hintText: "DateTime",
+              hintText: "Due Date",
               prefixIcon: Icon(Icons.timer),
+              enabledBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: new UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor, width: 3),
+              ),
             ),
             readOnly: true,
           ),
           Row(
             children: <Widget>[
-              Text('choose list or not: '),
+              Spacer(),
+              Text('Choose a list  ', style: TextStyle(fontSize: 16),),
               buildList(uid),
+              Spacer(),
             ],
           ),
-
           Row(
-
             children: <Widget>[
-
-              Text('Do you want to share this tasks?'),
-              IconButton(
-                icon: changeicon_com(isprivate),
-                onPressed: (){
+              Spacer(),
+              Text('Share with friends?', style: TextStyle(fontSize: 16),),
+              Switch(
+                value: !isPrivate,
+                onChanged: (value) {
                   setState(() {
-                    isprivate= isprivate? false:true;
+                    isPrivate = !value;
+
                   });
-              },
-              )
+                },
+                activeTrackColor: Colors.cyan[100],
+                activeColor: Colors.cyan[700],
+              ),
+              Spacer(),
             ],
           ),
           RaisedButton(
+
             onPressed: () async {
-              if(listName!=null){
-                choose_list=listName;
+              if (listName != null) {
+                choose_list = listName;
               }
               Tasks ntask = new Tasks(
                   name: _taskname.text,
@@ -195,9 +222,8 @@ class _CreateTaskState extends State<CreateTask> {
                   list: choose_list,
                   iscompleted: false,
                   isstarred: false,
-                  time:_dateTime,
-                  isprivate:isprivate
-              );
+                  time: _dateTime,
+                  isprivate: isPrivate);
 
               ntask.addtask();
               Navigator.of(context).pop();
@@ -208,5 +234,4 @@ class _CreateTaskState extends State<CreateTask> {
       ),
     );
   }
-
 }

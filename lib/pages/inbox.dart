@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:peeklist/data/tasks.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class BuildInbox extends StatelessWidget {
+class Buildall extends StatelessWidget {
   final String uid;
 
-  const BuildInbox({Key key, this.uid}):super(key:key);
+  const Buildall({Key key, this.uid}):super(key:key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text("inbox"),
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text(
+          'All',
+          style: GoogleFonts.raleway(
+            textStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 19.0,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
       ),
-      body:Showlist(
-        uid:"$uid",
-        list: 'inbox',
-      ).build(context),
+      body:IncompleteTask(uid: uid,).build(context),
     );
   }
 }

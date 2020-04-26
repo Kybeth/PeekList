@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peeklist/models/friends.dart';
+import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
+import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/models/user.dart';
+
+import '../models/friends.dart';
 
 class UserService {
   var _db = Firestore.instance.collection('users');
@@ -87,10 +90,45 @@ class UserService {
     });
   }
 
+  updateToken(profileId, deviceToken) async {
+    return await _db.document(profileId).updateData({
+      "deviceToken": deviceToken,
+    });
+  }
+
   Stream<List<Requests>> getRequests(uid) {
-    return Firestore.instance.collection('users').document(uid).collection('followRequests').snapshots().map((snap) => snap.documents.map((doc) {
+    return _db.document(uid).collection('followRequests').orderBy("received").snapshots().map((snap) => snap.documents.map((doc) {
       return Requests.fromDocument(doc);
     }).toList());
   }
 
+  Stream<List<SocialModel>> getTimeline(uid) {
+    return _db.document(uid).collection('timeline').orderBy("create", descending: true).snapshots().map((snap) => snap.documents.map((doc) {
+      return SocialModel.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<SocialModel>> getUserTimeline(uid) {
+    return _db.document(uid).collection('timeline').where('uid', isEqualTo: uid).snapshots().map((snap) => snap.documents.map((doc) {
+      return SocialModel.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<Interactions>> getInteractions(uid) {
+    return _db.document(uid).collection('interactions').snapshots().map((snap) => snap.documents.map((doc) {
+      return Interactions.fromDocument(doc);
+    }).toList());
+  }
+
+  Stream<List<Friends>> getFriends(uid) {
+    return _db.document(uid).collection('friends').snapshots().map((snap) => snap.documents.map((doc) {
+      return Friends.fromDocument(doc);
+    }).toList());
+  }
+
+ void updateIntertions(uid)async{
+    await _db.document(uid).updateData({'newnoti':false});
+  }
 }
+
+final UserService userService = UserService();

@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:peeklist/models/user.dart';
 import 'package:peeklist/utils/search.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
@@ -79,6 +77,7 @@ class _SearchState extends State<Search> {
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
         children: <Widget>[
           Padding(
