@@ -17,14 +17,11 @@ class Timeline extends StatefulWidget {
 
 class _TimelineState extends State<Timeline> {
   String uid;
- // List notificationlist;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-
-    //getnotification();
   }
 
   getCurrentUser() async {
@@ -33,12 +30,6 @@ class _TimelineState extends State<Timeline> {
       uid = userId;
     });
   }
-//  getnotification()async{
-//    await Firestore.instance.collection('users').document(uid).collection('interactions').snapshots().forEach((element) {
-//        notificationlist=element.documents;
-//    });
-//
-//  }
 
   @override
   Widget build(context) {
@@ -85,7 +76,6 @@ class _TimelineState extends State<Timeline> {
             child: Icon(Icons.notifications),
             label: "Notifications",
             onTap: () {
-             // await Firestore.instance.collection('users').document(this.uid).updateData({'newnoti':false});
               Navigator.pushNamed(context, '/notifications', arguments: uid);
             },
           ),
@@ -97,7 +87,6 @@ class _TimelineState extends State<Timeline> {
             child: Icon(Icons.person_add),
             label: "Add Friends",
             onTap: () {
-
               Navigator.pushNamed(context, '/search', arguments: uid);
             },
           ),
@@ -128,11 +117,9 @@ class _TimelineState extends State<Timeline> {
                       itemCount: asyncSnap.data.length,
                       itemBuilder: (context, int index) {
                         SocialModel tasks = asyncSnap.data[index];
-
                         return SocialTask(task: tasks, uid: this.uid,);
                       }
                   ),)
-
               ],
             );
 
