@@ -70,6 +70,14 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              child: Icon(Icons.more_vert),
+            ),
+          ),
+        ],
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
@@ -121,6 +129,14 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Color(0xFFE5E5E5),
       appBar: AppBar(
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              child: Icon(Icons.more_vert),
+            ),
+          ),
+        ],
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'PeekList',
