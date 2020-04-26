@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/models/social_model.dart';
 import 'package:peeklist/models/user.dart';
@@ -18,11 +19,13 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   String uid;
   String currentUser;
+  List friends=[];
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+    //getfriends();
   }
 
   getCurrentUser() async {
@@ -31,6 +34,18 @@ class _MyProfileState extends State<MyProfile> {
       currentUser = userId;
     });
   }
+
+//  getfriends()async{
+//   // var friendlist;
+//    await Firestore.instance.collection('users').document(currentUser).collection('friends').snapshots().forEach((element) {
+//      element.documents.forEach((doc) {
+//        friends.add(doc['user']);
+//      });
+//    });
+//    setState(() {
+//      friends;
+//    });
+//  }
 
 
   addFriend(currUser, recUser) async {
@@ -41,53 +56,103 @@ class _MyProfileState extends State<MyProfile> {
 
 
   buildProfileButton(User currentProfile) {
-    bool isProfileOwner = currentUser == currentProfile.uid;
-    if (isProfileOwner) {
-      return Container(
-        child: ButtonBar(
-          alignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            RaisedButton.icon(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
+    return StreamBuilder(
+      stream: Firestore.instance.collection('users').document(currentUser).collection('friends').snapshots(),
+      builder: (context,snapshots){
+        if(!snapshots.hasData){
+          return Container();
+        }
+        else{
+          bool isProfileOwner = currentUser == currentProfile.uid;
+          bool isFriends=false;
+          List<DocumentSnapshot> doc =snapshots.data.documents;
+          for (int i=0;i<doc.length;i++){
+            if(uid==doc[i]['user']){
+              isFriends=true;
+            }
+          }
+          if (isProfileOwner) {
+            return Container(
+              child: ButtonBar(
+                alignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  RaisedButton.icon(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
+                    color: Theme.of(context).accentColor,
+                    icon: Icon(Icons.group),
+                    label: Text("Friends"),
+                  ),
+                  FlatButton.icon(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
+                    icon: Icon(Icons.edit),
+                    label: Text("Edit Profile"),
+                    color: Theme.of(context).primaryColorLight,
+                  ),
+                ],
               ),
-              onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
-              color: Theme.of(context).accentColor,
-              icon: Icon(Icons.group),
-              label: Text("Friends"),
-            ),
-            FlatButton.icon(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
-                icon: Icon(Icons.edit),
-              label: Text("Edit Profile"),
-              color: Theme.of(context).primaryColorLight,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(top: 5.0),
-            child: FlatButton.icon(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)
-            ),
-            onPressed: () => addFriend(currentUser, currentProfile),
-            icon: Icon(Icons.person_add),
-            label: Text("Add Friend"),
-            color: Theme.of(context).primaryColorLight,
-            colorBrightness: Brightness.dark,
-        ),
-      ),
-    ],
-  );
-    }
+            );
+          }
+          else {
+
+            return Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 5.0),
+                  child: showaddfriends(isFriends),
+                ),
+              ],
+            );
+          }
+        }
+      },
+    );
+//    bool isProfileOwner = currentUser == currentProfile.uid;
+//    bool isFriends= friends.contains(currentProfile.uid);
+//    if (isProfileOwner) {
+//      return Container(
+//        child: ButtonBar(
+//          alignment: MainAxisAlignment.center,
+//          mainAxisSize: MainAxisSize.max,
+//          children: <Widget>[
+//            RaisedButton.icon(
+//              shape: RoundedRectangleBorder(
+//                borderRadius: BorderRadius.circular(16.0),
+//              ),
+//              onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
+//              color: Theme.of(context).accentColor,
+//              icon: Icon(Icons.group),
+//              label: Text("Friends"),
+//            ),
+//            FlatButton.icon(
+//              shape: RoundedRectangleBorder(
+//                borderRadius: BorderRadius.circular(16.0),
+//              ),
+//                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
+//                icon: Icon(Icons.edit),
+//              label: Text("Edit Profile"),
+//              color: Theme.of(context).primaryColorLight,
+//            ),
+//          ],
+//        ),
+//      );
+//    } else {
+//
+//      return Column(
+//        children: <Widget>[
+//          Container(
+//            padding: EdgeInsets.only(top: 5.0),
+//            child: showaddfriends(isFriends,currentProfile),
+//      ),
+//    ],
+//  );
+//    }
   }
 
   buildProfileHeader(uid) {
@@ -98,6 +163,9 @@ class _MyProfileState extends State<MyProfile> {
           return circularProgress();
         }
         User currentProfile = User.fromDocument(snapshot.data);
+        //getCurrentUser();
+        //getfriends();
+
         return Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(
@@ -182,5 +250,23 @@ class _MyProfileState extends State<MyProfile> {
           }
         }
     );
+  }
+
+  showaddfriends(bool friend){
+    if(!friend){
+      return FlatButton.icon(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)
+        ),
+        onPressed: () => addFriend(currentUser,uid),
+        icon: Icon(Icons.person_add),
+        label: Text("Add Friend"),
+        color: Theme.of(context).primaryColorLight,
+        colorBrightness: Brightness.dark,
+      );
+    }
+    else{
+      return Container();
+    }
   }
 }
