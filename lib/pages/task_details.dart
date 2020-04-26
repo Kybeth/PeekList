@@ -33,9 +33,11 @@ class _TaskDetailsState extends State<TaskDetails> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           buildTaskHeader(),
-          Divider(),
+          Divider(
+            thickness: 1,
+            color: Colors.grey[300],
+          ),
           buildToggle(),
-          Divider(),
           buildLikesComments(),
         ],
       ),
@@ -47,30 +49,64 @@ class _TaskDetailsState extends State<TaskDetails> {
         padding: EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              CircleAvatar(
-                radius: 40.0,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(
+                    widget.task.user['photoURL']),
                 backgroundColor: Colors.grey,
-                backgroundImage: CachedNetworkImageProvider(widget.task.user['photoURL']),
+                radius: 18,
               ),
-              Expanded(
-                flex: 1,
-                child: Card(
-                  child: Text(widget.task.name),
+              contentPadding: EdgeInsets.all(2),
+              title: Text(
+                "${widget.task.user['displayName']}",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.cyan[900],
                 ),
               ),
-            ],
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(top: 12.0),
-            child: Text(
-              "${widget.task.user['displayName']}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
+              onTap: () => Navigator.pushNamed(context, '/myprofile',
+                  arguments: widget.task.user['uid']),
+              trailing: Text(
+                "${timeago.format(widget.task.create.toDate())}",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
               ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: ListTile(
+              contentPadding: EdgeInsets.all(2),
+              //leading: widget.task.iscompleted == true
+              //? Icon(Icons.check_box)
+              //: Icon(Icons.check_box_outline_blank),
+              title: Text(
+                "${widget.task.name}",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              subtitle: Text(
+                "${widget.task.comment}",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TaskDetails(
+                        task: widget.task,
+                        uid: widget.uid,
+                      ))),
+
             ),
           ),
         ],
@@ -82,18 +118,33 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        IconButton(
-            icon: Icon(Icons.thumb_up),
-            color: toggleListener == 'likes' ? Theme.of(context).primaryColor : Colors.grey,
+        FlatButton(
+            //icon: Icon(Icons.thumb_up),
+            child: Text(
+              "Likes",
+              style: TextStyle(
+                  color: toggleListener == 'likes' ? Colors.cyan[500] : Colors.grey[400],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+              ),
+            ),
+            //color: toggleListener == 'likes' ? Theme.of(context).primaryColor : Colors.grey,
             onPressed: () {
               setState(() {
                 toggleListener = 'likes';
               });
             }
         ),
-        IconButton(
-            icon: Icon(Icons.comment),
-            color: toggleListener != 'likes' ? Theme.of(context).primaryColor : Colors.grey,
+        FlatButton(
+            //icon: Icon(Icons.comment),
+            child: Text(
+              "Comments",
+              style: TextStyle(
+                  color: toggleListener == 'comments' ? Colors.cyan[500] : Colors.grey[400],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+              ),
+            ),
             onPressed: () {
               setState(() {
                 toggleListener = 'comments';
@@ -174,7 +225,12 @@ class _TaskDetailsState extends State<TaskDetails> {
             backgroundImage: CachedNetworkImageProvider(comment.userMeta['photoURL']),
             backgroundColor: Colors.grey,
           ),
-          subtitle: Text(timeago.format(comment.posted.toDate())),
+          subtitle: Text(
+            timeago.format(comment.posted.toDate()),
+            style: TextStyle(
+              fontSize: 12
+            ),
+          ),
         ),
         Divider(),
       ],
