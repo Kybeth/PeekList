@@ -296,28 +296,32 @@ exports.onLike = functions.firestore
         console.log(res);
         const taskId = context.params.taskId;
         const friendId = context.params.friendId;
-        admin.firestore()
-            .collection('users')
-            .doc(friendId)
-            .collection('interactions')
-            .doc()
-            .set({
-                'type': 'like',
-                'time': Date.now(),
-                                //4/20/2020
-                                'readed': false,
-                                //
-                'title': `${res.userMeta.displayName} liked your task`,
-                'userMeta': {
-                    'uid': res.userMeta.uid,
-                    'displayName': res.userMeta.displayName,
-                    'photoURL': res.userMeta.photoURL,
-                },
-                'metaData': {
-                    'taskId': taskId,
-                    'taskTitle': res.metaData.taskTitle,
-                }
-            });
+
+        if (res.userMeta.uid !== res.metaData.user) {
+                admin.firestore()
+                    .collection('users')
+                    .doc(friendId)
+                    .collection('interactions')
+                    .doc()
+                    .set({
+                        'type': 'like',
+                        'time': Date.now(),
+                                        //4/20/2020
+                                        'readed': false,
+                                        //
+                        'title': `${res.userMeta.displayName} liked your task`,
+                        'userMeta': {
+                            'uid': res.userMeta.uid,
+                            'displayName': res.userMeta.displayName,
+                            'photoURL': res.userMeta.photoURL,
+                        },
+                        'metaData': {
+                            'taskId': taskId,
+                            'taskTitle': res.metaData.taskTitle,
+                        }
+                    });
+        }
+
     });
 
 exports.onComment = functions.firestore
