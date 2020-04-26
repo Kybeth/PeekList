@@ -53,18 +53,20 @@ class _MyProfileState extends State<MyProfile> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
               onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
-              color: Theme.of(context).accentColor,
+              color: Colors.lightGreen[200],
               icon: Icon(Icons.group),
-              label: Text("Friends"),
+              label: Text(
+                  "Friends"),
             ),
-            FlatButton.icon(
+            RaisedButton.icon(
+              color: Colors.orange[200],
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
               ),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
                 icon: Icon(Icons.edit),
               label: Text("Edit Profile"),
-              color: Theme.of(context).primaryColorLight,
+
             ),
           ],
         ),
@@ -143,6 +145,7 @@ class _MyProfileState extends State<MyProfile> {
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: header(context, titleText: "Profile"),
       body: Container(
         padding: EdgeInsets.all(15.0),

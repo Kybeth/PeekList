@@ -9,14 +9,15 @@ class BuildCompleted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorLight,
-        title: Text("Completed"),
+        title: Text("Done"),
       ),
       body:CompletedTask(
         uid:"$uid"
       ).build(context),
-      backgroundColor: Colors.grey[200],
+
     );
   }
 }

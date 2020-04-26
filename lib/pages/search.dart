@@ -77,7 +77,7 @@ class _SearchState extends State<Search> {
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
-      backgroundColor: Color(0xFFE5E5E5),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
         children: <Widget>[
           Padding(

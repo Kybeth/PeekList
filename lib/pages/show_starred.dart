@@ -9,14 +9,14 @@ class BuildStarred extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorLight,
-        title: Text("starred"),
+        title: Text("Star"),
       ),
       body:Showstar(
         uid:"$uid"
       ).build(context),
-      backgroundColor: Colors.grey[200],
     );
   }
 }

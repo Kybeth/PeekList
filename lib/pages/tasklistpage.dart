@@ -10,6 +10,7 @@ class tasklistpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(this.listname),
@@ -18,7 +19,7 @@ class tasklistpage extends StatelessWidget {
         uid:"$uid",
         list: "$listname",
       ).build(context),
-      backgroundColor: Colors.grey[200],
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.cyan[200],
         onPressed: () async{

@@ -19,8 +19,8 @@ class _FriendsPageState extends State<FriendsPage> {
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
-      backgroundColor: Color(0xFFE5E5E5),
-      appBar: header(context, titleText: "Friends"),
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: header(context, titleText: "My Friends"),
       body: Column(
         children: <Widget>[
           Expanded(

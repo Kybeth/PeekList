@@ -108,6 +108,7 @@ class _NotificationsPageState extends State<NotificationsPage>
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
