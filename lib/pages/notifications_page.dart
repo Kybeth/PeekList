@@ -108,15 +108,17 @@ class _NotificationsPageState extends State<NotificationsPage>
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'Notifications',
           style: GoogleFonts.raleway(
             textStyle: TextStyle(
               color: Colors.black,
-              fontSize: 20.0,
+              fontSize: 19.0,
+                fontWeight: FontWeight.w500
             ),
           ),
         ),

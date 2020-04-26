@@ -27,10 +27,23 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
         accentColor: Colors.cyan[200],
         primaryColorLight: Colors.grey[100],
+        backgroundColor: Colors.blueGrey[50],
+        indicatorColor: Colors.cyan[200],
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: Colors.grey[100],
+        ),
+        buttonTheme: ButtonThemeData(
+            buttonColor: Colors.cyan[200],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+        ),
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: Colors.black.withOpacity(0),
         ),
       ),
+
       darkTheme: ThemeData(
         textTheme: GoogleFonts.ralewayTextTheme(
           Theme.of(context).textTheme,

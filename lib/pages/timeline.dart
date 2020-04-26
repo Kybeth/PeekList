@@ -43,7 +43,7 @@ class _TimelineState extends State<Timeline> {
   @override
   Widget build(context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE5E5E5),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: buildTimeline(),
       floatingActionButton: SpeedDial(
         backgroundColor: Theme.of(context).accentColor,

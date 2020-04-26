@@ -148,7 +148,10 @@ class _CreateTaskState extends State<CreateTask> {
                 borderSide: BorderSide(color: Theme.of(context).primaryColor),
               ),
               focusedBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
+                borderSide: BorderSide(
+                    color: Theme.of(context).accentColor,
+                  width: 3
+                ),
               ),
             ),
           ),
@@ -161,7 +164,7 @@ class _CreateTaskState extends State<CreateTask> {
                 borderSide: BorderSide(color: Theme.of(context).primaryColor),
               ),
               focusedBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
+                borderSide: BorderSide(color: Theme.of(context).accentColor, width: 3),
               ),
             ),
           ),
@@ -175,7 +178,7 @@ class _CreateTaskState extends State<CreateTask> {
                 borderSide: BorderSide(color: Theme.of(context).primaryColor),
               ),
               focusedBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
+                borderSide: BorderSide(color: Theme.of(context).accentColor, width: 3),
               ),
             ),
             readOnly: true,
@@ -183,7 +186,7 @@ class _CreateTaskState extends State<CreateTask> {
           Row(
             children: <Widget>[
               Spacer(),
-              Text('Choose a list  '),
+              Text('Choose a list  ', style: TextStyle(fontSize: 16),),
               buildList(uid),
               Spacer(),
             ],
@@ -191,21 +194,23 @@ class _CreateTaskState extends State<CreateTask> {
           Row(
             children: <Widget>[
               Spacer(),
-              Text('Share with friends?'),
-              IconButton(
-                color: Colors.cyan[300],
-                icon: changeicon_com(isPrivate),
-                onPressed: () {
+              Text('Share with friends?', style: TextStyle(fontSize: 16),),
+              Switch(
+                value: !isPrivate,
+                onChanged: (value) {
                   setState(() {
-                    isPrivate = isPrivate ? false : true;
+                    isPrivate = !value;
+
                   });
                 },
+                activeTrackColor: Colors.cyan[100],
+                activeColor: Colors.cyan[700],
               ),
               Spacer(),
             ],
           ),
-          FlatButton(
-            color: Colors.cyan[200],
+          RaisedButton(
+
             onPressed: () async {
               if (listName != null) {
                 choose_list = listName;

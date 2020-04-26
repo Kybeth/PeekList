@@ -86,8 +86,9 @@ class _SocialTaskState extends State<SocialTask> {
                   Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0),
                         child: ListTile(
+                          dense: true,
                           leading: CircleAvatar(
                             backgroundImage: CachedNetworkImageProvider(
                                 widget.task.user['photoURL']),
@@ -117,10 +118,8 @@ class _SocialTaskState extends State<SocialTask> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(2),
-                          //leading: widget.task.iscompleted == true
-                          //? Icon(Icons.check_box)
-                          //: Icon(Icons.check_box_outline_blank),
+                          dense: true,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 2),
                           title: Text(
                             "${widget.task.name}",
                             style: TextStyle(
@@ -147,12 +146,12 @@ class _SocialTaskState extends State<SocialTask> {
                             children: <Widget>[
                               Text("${this.likeCount}"),
                               IconButton(
-                                icon: Icon(Icons.thumb_up),
+                                icon: Icon(Icons.thumb_up, size: 20,),
                                 color: isLiked == true ? Colors.cyan[700] : Colors.grey[500],
                                 onPressed: isLiked == true ? unlike : handleLike,
                               ),
                               IconButton(
-                                icon: Icon(Icons.comment),
+                                icon: Icon(Icons.comment, size: 20,),
                                 color: Colors.grey[500],
                                 onPressed: () => Navigator.push(
                                     context,

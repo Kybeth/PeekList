@@ -9,6 +9,7 @@ import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/header.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/widgets/social_task.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyProfile extends StatefulWidget {
 
@@ -19,13 +20,11 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   String uid;
   String currentUser;
-  List friends=[];
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-    //getfriends();
   }
 
   getCurrentUser() async {
@@ -34,18 +33,6 @@ class _MyProfileState extends State<MyProfile> {
       currentUser = userId;
     });
   }
-
-//  getfriends()async{
-//   // var friendlist;
-//    await Firestore.instance.collection('users').document(currentUser).collection('friends').snapshots().forEach((element) {
-//      element.documents.forEach((doc) {
-//        friends.add(doc['user']);
-//      });
-//    });
-//    setState(() {
-//      friends;
-//    });
-//  }
 
 
   addFriend(currUser, recUser) async {
@@ -153,6 +140,54 @@ class _MyProfileState extends State<MyProfile> {
 //    ],
 //  );
 //    }
+    bool isProfileOwner = currentUser == currentProfile.uid;
+    if (isProfileOwner) {
+      return Container(
+        child: ButtonBar(
+          alignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
+              color: Colors.lightGreen[200],
+              icon: Icon(Icons.group),
+              label: Text(
+                  "Friends"),
+            ),
+            RaisedButton.icon(
+              color: Colors.orange[200],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
+                icon: Icon(Icons.edit),
+              label: Text("Edit Profile"),
+
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 5.0),
+            child: RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+              ),
+              onPressed: () => addFriend(currentUser, currentProfile),
+              icon: Icon(Icons.person_add),
+              label: Text("Add Friend"),
+
+        ),
+      ),
+    ],
+  );
+    }
   }
 
   buildProfileHeader(uid) {
@@ -163,9 +198,6 @@ class _MyProfileState extends State<MyProfile> {
           return circularProgress();
         }
         User currentProfile = User.fromDocument(snapshot.data);
-        //getCurrentUser();
-        //getfriends();
-
         return Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(
@@ -211,7 +243,21 @@ class _MyProfileState extends State<MyProfile> {
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
-      appBar: header(context, titleText: "Profile"),
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBar(
+          centerTitle: false,
+          backgroundColor: Theme.of(context).primaryColorLight,
+          title: Text(
+            'Profile',
+            style: GoogleFonts.raleway(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 19.0,
+                  fontWeight: FontWeight.w500
+              ),
+            ),
+          ),
+      ),
       body: Container(
         padding: EdgeInsets.all(15.0),
         child: Column(

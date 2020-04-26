@@ -19,8 +19,8 @@ class _FriendsPageState extends State<FriendsPage> {
     RouteSettings settings = ModalRoute.of(context).settings;
     uid = settings.arguments;
     return Scaffold(
-      backgroundColor: Color(0xFFE5E5E5),
-      appBar: header(context, titleText: "Friends"),
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: header(context, titleText: "My Friends"),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -62,7 +62,13 @@ class _FriendsPageState extends State<FriendsPage> {
         backgroundColor: Colors.grey,
         backgroundImage: CachedNetworkImageProvider(friends.photoURL),
       ),
-      title: Text(friends.displayName),
+      title: Text(friends.displayName,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.cyan[900],
+        ),
+      ),
       subtitle: Text(friends.email),
       trailing: Text("${timeago.format(friends.friendSince.toDate())}"),
       onTap: () => Navigator.pushNamed(context, '/myprofile', arguments: friends.user),

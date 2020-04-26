@@ -35,8 +35,9 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       key: _scaffoldKey,
-      appBar: header(context, titleText: "Comments"),
+      appBar: header(context, titleText: "Leave a Comment"),
       body: Column(
         children: <Widget>[
           Expanded(
