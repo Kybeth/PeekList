@@ -364,12 +364,13 @@ exports.onComment = functions.firestore
 //FCM
 
 exports.notificationFCM = functions.firestore
-    .document('/users/{userId}/followRequests/{interactionID}')
+    .document('/users/{userId}/interactions/{interactionID}')
     .onCreate(async (snapshot, context) => {
         console.log(snapshot.data());
         const interaction = snapshot.data();
         admin.firestore().collection('users').doc(context.params.userId).get().then((doc) => {
           const deviceToken = doc.get('deviceToken');
+          console.log(deviceToken);
             var payload = {
               notification: {
                 title: interaction.title,
