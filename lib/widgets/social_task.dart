@@ -12,16 +12,14 @@ import '../pages/comments_page.dart';
 class SocialTask extends StatefulWidget {
   SocialModel task;
   String uid;
-
   SocialTask({this.task, this.uid});
-
   @override
   _SocialTaskState createState() => _SocialTaskState();
 }
 
 class _SocialTaskState extends State<SocialTask> {
-  bool isLiked;
-  int likeCount;
+  bool isLiked = false;
+  int likeCount = 0;
   Map likes;
 
   @override
