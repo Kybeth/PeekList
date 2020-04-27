@@ -120,6 +120,7 @@ class _SocialTaskState extends State<SocialTask> {
                         child: ListTile(
                           dense: true,
                           contentPadding: EdgeInsets.symmetric(horizontal: 2),
+
                           title: Text(
                             "${widget.task.name}",
                             style: TextStyle(
@@ -144,12 +145,13 @@ class _SocialTaskState extends State<SocialTask> {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Text("${this.likeCount}"),
+
                               IconButton(
                                 icon: Icon(Icons.thumb_up, size: 20,),
                                 color: isLiked == true ? Colors.cyan[700] : Colors.grey[500],
                                 onPressed: isLiked == true ? unlike : handleLike,
                               ),
+                              Text("${this.likeCount}"),
                               IconButton(
                                 icon: Icon(Icons.comment, size: 20,),
                                 color: Colors.grey[500],

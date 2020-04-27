@@ -355,7 +355,7 @@ class _TaskPageState extends State<TaskPage> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
                                           RaisedButton(
-                                            child: Text("rename"),
+                                            child: Text("Rename"),
                                             color: Colors.blue[100],
                                             disabledColor: Colors.blue[100],
                                             onPressed: () async {

@@ -69,18 +69,18 @@ class _MyProfileState extends State<MyProfile> {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
-                    color: Theme.of(context).accentColor,
+                    color: Colors.green[200],
                     icon: Icon(Icons.group),
-                    label: Text("Friends"),
+                    label: Text("My Friends"),
                   ),
-                  FlatButton.icon(
+                  RaisedButton.icon(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
                     icon: Icon(Icons.edit),
                     label: Text("Edit Profile"),
-                    color: Theme.of(context).primaryColorLight,
+                    color: Colors.orange[200],
                   ),
                 ],
               ),
@@ -201,7 +201,8 @@ class _MyProfileState extends State<MyProfile> {
                         shrinkWrap: true,
                         itemCount: asyncSnap.data.length,
                         itemBuilder: (context, int index) {
-                          SocialModel tasks = asyncSnap.data[index];
+                          // SocialModel tasks = asyncSnap.data[index];
+                          SocialModel tasks = asyncSnap.data[asyncSnap.data.length - 1 - index]; // a primitive way to reverse order
                           return SocialTask(task: tasks, uid: uid,);
                         }
                     ),
