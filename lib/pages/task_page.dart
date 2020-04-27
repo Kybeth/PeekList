@@ -360,6 +360,7 @@ class _TaskPageState extends State<TaskPage> {
                                             disabledColor: Colors.blue[100],
                                             onPressed: () async {
                                               var l = lst.listname;
+                                              Navigator.of(context).pop();
                                               showDialog(
                                                   context: context,
                                                   builder:
@@ -408,6 +409,7 @@ class _TaskPageState extends State<TaskPage> {
                                             child: Text("Delete"),
                                             onPressed: () async {
                                               var l = lst.listname;
+                                              Navigator.of(context).pop();
                                               showDialog(
                                                 context: context,
                                                 builder:

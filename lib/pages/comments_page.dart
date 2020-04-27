@@ -28,8 +28,6 @@ class _CommentsPageState extends State<CommentsPage> {
     });
     if (commentValid) {
       await taskService.uploadComment(widget.task.taskId, widget.uid, commentController.text);
-      SnackBar snackBar = SnackBar(content: Text("Comment Posted"),);
-      _scaffoldKey.currentState.showSnackBar(snackBar);
     }
   }
   @override
