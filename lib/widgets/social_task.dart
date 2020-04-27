@@ -25,7 +25,7 @@ class _SocialTaskState extends State<SocialTask> {
   @override
   void initState() {
     super.initState();
-    isLiked = widget.task.likes[widget.uid];
+    widget.task.likes[widget.uid] != null ? isLiked = widget.task.likes[widget.uid] : isLiked = false;
     likeCount = widget.task.likes.length;
     likes = widget.task.likes;
   }
