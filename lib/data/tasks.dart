@@ -55,7 +55,8 @@ class Showlist extends State<StatefulWidget> {
                     doc['name'],
                     style: returnstyle(doc['iscompleted']),
                   ),
-                  subtitle: Text(doc['comment'],
+                  subtitle: doc['comment'].length == 0 ? null : Text(
+                      doc['comment'],
                       style: returnstyle(doc['iscompleted'])),
                    trailing: IconButton(
                        icon: changeicon_star(doc['isstarred']),

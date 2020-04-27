@@ -6,7 +6,7 @@ import 'package:peeklist/pages/comments_page.dart';
 import 'package:peeklist/pages/task_details.dart';
 import 'package:peeklist/utils/tasks.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
+import 'package:peeklist/utils/auth.dart';
 import '../pages/comments_page.dart';
 
 class SocialTask extends StatefulWidget {
@@ -21,6 +21,7 @@ class _SocialTaskState extends State<SocialTask> {
   bool isLiked = false;
   int likeCount = 0;
   Map likes;
+  String currentUser;
 
   @override
   void initState() {
@@ -28,6 +29,14 @@ class _SocialTaskState extends State<SocialTask> {
     widget.task.likes[widget.uid] != null ? isLiked = widget.task.likes[widget.uid] : isLiked = false;
     likeCount = widget.task.likes.length;
     likes = widget.task.likes;
+    getCurrentUser();
+  }
+
+  getCurrentUser() async {
+    String userId = await authService.userID();
+    setState(() {
+      currentUser = userId;
+    });
   }
 
   handleLike() async {
@@ -116,7 +125,7 @@ class _SocialTaskState extends State<SocialTask> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
-                          dense: true,
+                          dense: false,
                           contentPadding: EdgeInsets.symmetric(horizontal: 2),
 
                           title: Text(
@@ -126,10 +135,10 @@ class _SocialTaskState extends State<SocialTask> {
                               color: Colors.black,
                             ),
                           ),
-                          subtitle: Text(
+                          subtitle: widget.task.comment.length == 0 ? null : Text(
                             "${widget.task.comment}",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 13,
                               color: Colors.grey[600],
                             ),
                           ),
@@ -143,15 +152,16 @@ class _SocialTaskState extends State<SocialTask> {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-
+                              Text("${this.likeCount}"),
                               IconButton(
-                                icon: Icon(Icons.thumb_up, size: 20,),
+                                padding: EdgeInsets.all(0.0),
+                                icon: Icon(Icons.thumb_up, size: 18,),
                                 color: isLiked == true ? Colors.cyan[700] : Colors.grey[500],
                                 onPressed: isLiked == true ? unlike : handleLike,
                               ),
-                              Text("${this.likeCount}"),
                               IconButton(
-                                icon: Icon(Icons.comment, size: 20,),
+                                padding: EdgeInsets.all(0.0),
+                                icon: Icon(Icons.comment, size: 18,),
                                 color: Colors.grey[500],
                                 onPressed: () => Navigator.push(
                                     context,
@@ -163,6 +173,39 @@ class _SocialTaskState extends State<SocialTask> {
                               ),
                             ],
                           ),
+
+                          onLongPress: () => showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              if (widget.uid == widget.task.user['uid']) return // this is not right!!
+                                 AlertDialog(
+                                    title:  Text("Delete From Timeline?"),
+                                    content:  Text(
+                                    "This will delete task from Timeline but keep it as a private task"),
+                                    actions: <Widget>[
+                                      // usually buttons at the bottom of the dialog
+                                      FlatButton(
+                                        child:Text("Cancel"),
+                                        onPressed: () {
+                                        Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child:  Text("Delete"),
+                                        onPressed: () {
+                                        // delete this task
+                                        Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                else return AlertDialog(
+                                title:  Text(
+                                  "Sorry, you cannot delete other's public task",
+                                  style: TextStyle(fontSize: 16, color: Colors.deepOrange[800]),
+                                ),);
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -171,7 +214,7 @@ class _SocialTaskState extends State<SocialTask> {
               )
 
             ),
-            Divider(color: Color(0xEBEBEB)),
+            Divider(color: Theme.of(context).backgroundColor),
           ],
         ),
       ),

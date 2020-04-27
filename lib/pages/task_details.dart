@@ -219,6 +219,8 @@ class _TaskDetailsState extends State<TaskDetails> {
             backgroundColor: Colors.grey,
             radius: 15,
           ),
+          onTap: () => Navigator.pushNamed(context, '/myprofile',
+              arguments: likes.userMeta['uid']),
         ),
         Divider(),
       ],
@@ -229,10 +231,15 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Column(
       children: <Widget>[
         ListTile(
-          leading: CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(comment.userMeta['photoURL']),
-            backgroundColor: Colors.grey,
-            radius: 15,
+
+          leading: InkWell(
+            child: CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(comment.userMeta['photoURL']),
+              backgroundColor: Colors.grey,
+              radius: 15,
+              ),
+            onTap: () => Navigator.pushNamed(context, '/myprofile',
+                arguments: comment.userMeta['uid']),
           ),
           title: Text(comment.message),
           subtitle: Text(
