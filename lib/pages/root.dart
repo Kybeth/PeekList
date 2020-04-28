@@ -50,25 +50,38 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const ListTile(
-                  title:  Text(
-                  'Like our design?',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    height: 2,
-                    color: Colors.black,
+                 ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage:  AssetImage('assets/images/PeekListLogo.png'),
+                    //backgroundColor: Colors.grey,
+                    radius: 18,
                   ),
-                ),
-                  subtitle: Text(
-                    'Login to enjoy our full function!',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      height: 2,
-                      color: Colors.black,
+                  title: Text(
+                    'PeekList',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.cyan[900],
+                      ),
                     ),
-                  ),
+                   trailing: Text(
+                     "a moment ago",
+                     style: TextStyle(
+                       fontSize: 12,
+                       color: Colors.grey[600],
+                     ),
+                   ),
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    child:
+                      Text(
+                        "Like our design? Login to enjoy full function!",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
                 ),
                 ButtonBar(
                     children: <Widget>[

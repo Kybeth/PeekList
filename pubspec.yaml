@@ -64,6 +64,7 @@ flutter:
   assets:
     - assets/images/google_signin_button.png
     - assets/images/Done_postmark.png
+    - assets/images/PeekListLogo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
