@@ -5,7 +5,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/mockito.dart';
 import 'package:peeklist/models/user.dart';
 
-
 /* Firebase Mock */
 class AuthMock extends Mock implements AuthService {}
 class FirebaseAuthMock extends Mock implements FirebaseAuth {}

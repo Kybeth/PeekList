@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/pages/task_page.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -19,10 +20,16 @@ void main() {
         home: child,
     );
   }
-  testWidgets('verify the title of create task page', (WidgetTester tester) async {
-    // Find a Widget that displays the title "Add Task"
-    await tester.pumpWidget(testWidget(child: new CreateTask()));
-    final titleFinder = find.text('Add Task');
-    expect(titleFinder, findsOneWidget);
-  });
+
+  testWidgets('create task page', (WidgetTester tester) async {
+      // Find a Widget that displays the title "Add Task"
+      await tester.pumpWidget(testWidget(child: new CreateTask()));
+      final titleFinder = find.text('Add Task');
+      final inputFinder = find.text('Task Name');
+      final shareFinder = find.text('Share with friends?');
+      expect(titleFinder, findsOneWidget);
+      expect(inputFinder, findsOneWidget);
+      expect(shareFinder, findsOneWidget);
+    });
+
 }
