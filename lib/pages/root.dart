@@ -30,6 +30,9 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Color(0xFFE5E5E5),
       body: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 25.0,
+        ),
           alignment: Alignment.center,
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -37,83 +40,94 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
                   end: Alignment.bottomLeft,
                   colors: [
                 Theme.of(context).accentColor.withOpacity(0.8),
-                Theme.of(context).primaryColor,
+                Theme.of(context).backgroundColor,
               ])),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Peek List',
-                style: TextStyle(
-                    fontFamily: "Signatra",
-                    fontSize: 90.0,
-                    color: Colors.white),
-              ),
-              RaisedButton(
-                child: Text("Login with Google"),
-                padding: EdgeInsets.all(15.0),
-                onPressed: () => authService.googleSignIn(),
-                elevation: 5.0,
-                color: Theme.of(context).primaryColorDark,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.black),
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  title:  Text(
+                  'Like our design?',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    height: 2,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-            ],
-          )),
+                  subtitle: Text(
+                    'Login to enjoy our full function!',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      height: 2,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                ButtonBar(
+                    children: <Widget>[
+                      FlatButton(
+                        child: const Text(
+                            'Login with Google',
+                          style: TextStyle(color: Colors.cyan, fontSize: 15,),
+                        ),
+
+                        onPressed: () => authService.googleSignIn(),
+                      ),
+                      ]
+                ),
+              ]
+            ),
+          ),
+      ),
     );
   }
 
   Scaffold buildUnAuthScreen() {
     return Scaffold(
-      backgroundColor: Color(0xFFE5E5E5),
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               child: Icon(Icons.more_vert),
             ),
           ),
         ],
-        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'PeekList',
           style: GoogleFonts.raleway(
             textStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 19.0,
+                color: Colors.black,
+                fontSize: 19.0,
+                fontWeight: FontWeight.w500
             ),
           ),
-          textAlign: TextAlign.left,
         ),
         bottom: TabBar(
           indicatorColor: Theme.of(context).accentColor,
           labelStyle: GoogleFonts.raleway(
-            textStyle: TextStyle(fontSize: 14.0),
+            textStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
           ),
           tabs: [
             Tab(
-              icon: Icon(
-                Icons.home,
-                color: Colors.black,
-              ),
-              text: "Home",
+              text: "TASKS",
             ),
             Tab(
-              icon: Icon(
-                Icons.person,
-                color: Colors.black,
-              ),
-              text: "Login",
+              text: "FRIENDS",
             ),
           ],
           controller: _tabController,
         ),
-
+        elevation: 0.0,
       ),
       body: TabBarView(
         children: <Widget>[
@@ -127,7 +141,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
 
   Scaffold buildAuthScreen() {
     return Scaffold(
-      backgroundColor: Color(0xFFE5E5E5),
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         actions: <Widget>[
           Padding(
@@ -151,7 +165,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
         bottom: TabBar(
           indicatorColor: Theme.of(context).accentColor,
           labelStyle: GoogleFonts.raleway(
-            textStyle: TextStyle(fontSize: 14.0),
+            textStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
           ),
           tabs: [
             Tab(

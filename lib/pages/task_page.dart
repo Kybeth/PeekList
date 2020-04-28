@@ -285,7 +285,7 @@ class _TaskPageState extends State<TaskPage> {
               Spacer(),
               Text("My Lists",
                   style: TextStyle(
-                    fontSize: 34.0,
+                    fontSize: 28.0,
                   )),
               Spacer(),
               Spacer(),
