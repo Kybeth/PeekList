@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peeklist/models/social_model.dart';
@@ -22,6 +23,7 @@ class _SocialTaskState extends State<SocialTask> {
   int likeCount = 0;
   Map likes;
   String currentUser;
+
 
   @override
   void initState() {
@@ -177,7 +179,7 @@ class _SocialTaskState extends State<SocialTask> {
                           onLongPress: () => showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              if (widget.uid == widget.task.user['uid']) return // this is not right!!
+                              if (currentUser == widget.task.user['uid']) return // this is not right!!
                                  AlertDialog(
                                     title:  Text("Delete From Timeline?"),
                                     content:  Text(
@@ -192,8 +194,8 @@ class _SocialTaskState extends State<SocialTask> {
                                       ),
                                       FlatButton(
                                         child:  Text("Delete"),
-                                        onPressed: () {
-                                        // delete this task
+                                        onPressed: () async{
+                                        await deletetask(widget.task.taskId);
                                         Navigator.of(context).pop();
                                         },
                                       ),
@@ -219,5 +221,9 @@ class _SocialTaskState extends State<SocialTask> {
         ),
       ),
     );
+  }
+
+  deletetask(String taskid)async{
+    await Firestore.instance.collection('pubTasks').document(taskid).updateData({'isprivate':true});
   }
 }
