@@ -115,7 +115,7 @@ class UserService {
   }
 
   Stream<List<Interactions>> getInteractions(uid) {
-    return _db.document(uid).collection('interactions').snapshots().map((snap) => snap.documents.map((doc) {
+    return _db.document(uid).collection('interactions').orderBy('time',descending: true).snapshots().map((snap) => snap.documents.map((doc) {
       return Interactions.fromDocument(doc);
     }).toList());
   }
