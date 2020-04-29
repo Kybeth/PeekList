@@ -89,7 +89,8 @@ class _SocialTaskState extends State<SocialTask> {
                         'assets/images/Done_postmark.png',
                         width: 110,
                       )
-                  ),),
+                  ),
+                  ),
 
 
                   Column(

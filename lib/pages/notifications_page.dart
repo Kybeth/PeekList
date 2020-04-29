@@ -40,10 +40,12 @@ class _NotificationsPageState extends State<NotificationsPage>
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
+            color: Colors.lightGreen,
             onPressed: () => userService.acceptFriendRequest(uid, req),
           ),
           IconButton(
             icon: Icon(Icons.clear),
+            color: Colors.red[400],
             onPressed: () => userService.declineFriendRequest(uid, req),
           ),
         ],
@@ -281,13 +283,42 @@ class _NotificationsPageState extends State<NotificationsPage>
   }
 
   buildInter(Interactions inter) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.grey,
-        backgroundImage: CachedNetworkImageProvider(inter.userMeta['photoURL']),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Stack(
+                children: <Widget>[
+                CircleAvatar(
+                //backgroundColor: Colors.white,
+                radius: 20,
+                backgroundImage: CachedNetworkImageProvider(inter.userMeta['photoURL']),
+              ),
+              Positioned(
+                top: 22,
+                left:22,
+                child:
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    inter.type == 'like'? Icons.thumb_up : (inter.type == 'comment' ? Icons.comment : Icons.people),
+                    color: Colors.cyan,
+                    size: 14,
+                  ),
+                ),
+              ),
+            ]
+            ),
+              title: Text(inter.title),
+            //subtitle: Text('Type: ${inter.type}'),
+            ),
+          Divider(),
+        ],
       ),
-      title: Text(inter.title),
-      subtitle: Text('Type: ${inter.type}'),
     );
+
+
   }
 }
