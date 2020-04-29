@@ -55,10 +55,9 @@ class _SearchTileState extends State<SearchTile> with SingleTickerProviderStateM
       trailing: RaisedButton(
         child: reqSent == true || friendReqSent == true ? Text("Request Sent") : Text("Add Friend"),
         onPressed: reqSent == true || friendReqSent == true ? null : () => addFriend(),
-        color: Theme.of(context).primaryColorLight,
-        elevation: 5.0,
-        disabledColor: Colors.green,
-        disabledElevation: 5.0,
+        // color: Theme.of(context).primaryColorLight,
+        disabledColor: Colors.green[400],
+        //disabledElevation: 5.0,
         disabledTextColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),

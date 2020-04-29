@@ -68,19 +68,58 @@ class _MyProfileState extends State<MyProfile> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
-                    onPressed: () => Navigator.pushNamed(context, '/friends', arguments: uid),
-                    color: Colors.green[200],
-                    icon: Icon(Icons.group),
-                    label: Text("My Friends"),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
+                    icon: Icon(Icons.edit),
+                    label: Text("Edit Profile"),
+                    color: Colors.orange[200],
                   ),
                   RaisedButton.icon(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(uid: uid))),
-                    icon: Icon(Icons.edit),
-                    label: Text("Edit Profile"),
-                    color: Colors.orange[200],
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return // this is not right!!
+                            AlertDialog(
+                              title:  Text(
+                                  "Are you sure you want to logout?",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              actions: <Widget>[
+                                // usually buttons at the bottom of the dialog
+                                FlatButton(
+                                  highlightColor: Colors.grey[400],
+                                  textColor: Colors.cyan[600],
+                                  child: Text(
+                                    "No, keep me here",
+                                  ),
+                                  onPressed: () {Navigator.of(context).pop();},
+                                ),
+                                FlatButton(
+                                  textColor: Colors.red[400],
+                                  highlightColor: Colors.grey[400],
+                                  child:  Text(
+                                    "Yes, log out",
+                                    // style: TextStyle(color: Colors.red[400]),
+                                  ),
+                                  onPressed: (){
+                                    authService.signOut();
+                                    Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+                                  },
+                                ),
+                              ],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            );
+                        },
+                      );
+                    },
+                    color: Colors.red[400],
+                    icon: Icon(Icons.exit_to_app),
+                    label: Text("Logout"),
                   ),
                 ],
               ),
@@ -176,9 +215,37 @@ class _MyProfileState extends State<MyProfile> {
         child: Column(
           children: <Widget>[
             buildProfileHeader(uid),
-            Divider(),
+            Divider(color: Theme.of(context).backgroundColor,),
             buildSocialTasks(uid),
           ],
+        ),
+      ),
+    );
+  }
+
+  buildNoSocialTasks() {
+    return Center(
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 25.0,),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                child:
+                Text(
+                  "Oops. This user has no public tasks yet.",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ]
         ),
       ),
     );
@@ -193,7 +260,7 @@ class _MyProfileState extends State<MyProfile> {
           } else if (asyncSnap.data == null) {
             return circularProgress();
           } else if (asyncSnap.data.length == 0) {
-            return Text("No Social Tasks");
+            return buildNoSocialTasks();
           } else {
             return Expanded(
                 child: ListView.builder(
@@ -214,15 +281,14 @@ class _MyProfileState extends State<MyProfile> {
 
   showaddfriends(bool friend){
     if(!friend){
-      return FlatButton.icon(
+      return RaisedButton.icon(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)
         ),
         onPressed: () => addFriend(currentUser,uid),
         icon: Icon(Icons.person_add),
         label: Text("Add Friend"),
-        color: Theme.of(context).primaryColorLight,
-        colorBrightness: Brightness.dark,
+        disabledColor: Colors.green[400],
       );
     }
     else{

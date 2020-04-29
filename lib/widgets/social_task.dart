@@ -140,7 +140,7 @@ class _SocialTaskState extends State<SocialTask> {
                                       highlightColor: Colors.grey[400],
                                       textColor: Colors.cyan[600],
                                       child: Text(
-                                        "Keep Public",
+                                        "No, keep Public",
                                       ),
                                       onPressed: () {Navigator.of(context).pop();},
                                     ),
@@ -148,7 +148,7 @@ class _SocialTaskState extends State<SocialTask> {
                                       textColor: Colors.red[400],
                                       highlightColor: Colors.grey[400],
                                       child:  Text(
-                                        "Make Private",
+                                        "Yes, delete",
                                         // style: TextStyle(color: Colors.red[400]),
                                       ),
                                       onPressed: () async{

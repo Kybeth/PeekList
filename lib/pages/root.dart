@@ -54,7 +54,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
                   leading: CircleAvatar(
                     backgroundImage:  AssetImage('assets/images/PeekListLogo.png'),
                     //backgroundColor: Colors.grey,
-                    radius: 18,
+                    radius: 13,
                   ),
                   title: Text(
                     'PeekList',
@@ -73,7 +73,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
                    ),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child:
                       Text(
                         "Like our design? Login to enjoy full function!",

@@ -73,10 +73,10 @@ class _TimelineState extends State<Timeline> {
               color: Colors.black,
             ),
             backgroundColor: Colors.cyan[100],
-            child: Icon(Icons.notifications),
-            label: "Notifications",
+            child: Icon(Icons.people),
+            label: "My Friends",
             onTap: () {
-              Navigator.pushNamed(context, '/notifications', arguments: uid);
+              Navigator.pushNamed(context, '/search', arguments: uid);
             },
           ),
           SpeedDialChild(
@@ -84,10 +84,10 @@ class _TimelineState extends State<Timeline> {
               color: Colors.black,
             ),
             backgroundColor: Colors.cyan[100],
-            child: Icon(Icons.person_add),
-            label: "Add Friends",
+            child: Icon(Icons.notifications),
+            label: "Notifications",
             onTap: () {
-              Navigator.pushNamed(context, '/search', arguments: uid);
+              Navigator.pushNamed(context, '/notifications', arguments: uid);
             },
           ),
         ],
@@ -95,6 +95,75 @@ class _TimelineState extends State<Timeline> {
     );
   }
 
+  buildNoTasks() {
+    return Center(
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 25.0,),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage:  AssetImage('assets/images/PeekListLogo.png'),
+                  //backgroundColor: Colors.grey,
+                  radius: 13,
+                ),
+                title: Text(
+                  'PeekList',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.cyan[900],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child:
+                Text(
+                  "You have no social notifications. Here's something you can do",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text(
+                        'Add public task',
+                        style: TextStyle(color: Colors.cyan, fontSize: 15,),
+                      ),
+                      onPressed: () async {
+                        var uid = await AuthService().userID();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateTask(choose_list: 'inbox', uid: uid, isPrivate: false)),
+                        );
+                      },
+                    ),
+                    FlatButton(
+                        child: const Text(
+                          'Add new friends',
+                          style: TextStyle(color: Colors.orange, fontSize: 15,),
+                        ),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/search', arguments: uid)
+                    ),
+                  ]
+              ),
+            ]
+        ),
+      ),
+    );
+  }
   buildTimeline() {
     return StreamBuilder(
       stream: userService.getTimeline(this.uid),
@@ -104,7 +173,7 @@ class _TimelineState extends State<Timeline> {
           } else if (asyncSnap.data == null) {
             return circularProgress();
           } else if (asyncSnap.data.length == 0) {
-            return Text("No tasks in timeline");
+            return buildNoTasks();
           } else {
             return new
               Column(

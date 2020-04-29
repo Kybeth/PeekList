@@ -7,7 +7,8 @@ import 'package:peeklist/models/interactions.dart';
 import 'package:peeklist/models/requests.dart';
 import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
-
+import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/utils/auth.dart';
 class NotificationsPage extends StatefulWidget {
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
@@ -50,8 +51,129 @@ class _NotificationsPageState extends State<NotificationsPage>
     );
   }
 
-  noRequestsCard() {
-    return Text("No requests");
+  buildNoFriendRequests() {
+    return Center(
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 25.0,),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage:  AssetImage('assets/images/PeekListLogo.png'),
+                  //backgroundColor: Colors.grey,
+                  radius: 13,
+                ),
+                title: Text(
+                  'PeekList',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.cyan[900],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child:
+                Text(
+                  "You have no pending friend requests. Here's something you can do",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text(
+                        'Add new friends',
+                        style: TextStyle(color: Colors.orange, fontSize: 15,),
+                      ),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/search', arguments: uid)
+                    ),
+                  ]
+              ),
+            ]
+        ),
+      ),
+    );
+  }
+
+  buildNoInteractions() {
+    return Center(
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 25.0,),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage:  AssetImage('assets/images/PeekListLogo.png'),
+                  //backgroundColor: Colors.grey,
+                  radius: 13,
+                ),
+                title: Text(
+                  'PeekList',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.cyan[900],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child:
+                Text(
+                  "You have no social notifications. Here's something you can do",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                        child: const Text(
+                          'Add public task',
+                          style: TextStyle(color: Colors.cyan, fontSize: 15,),
+                        ),
+                        onPressed: () async {
+                          var uid = await AuthService().userID();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CreateTask(choose_list: 'inbox', uid: uid, isPrivate: false)),
+                          );
+                        },
+                    ),
+                    FlatButton(
+                        child: const Text(
+                          'Add new friends',
+                          style: TextStyle(color: Colors.orange, fontSize: 15,),
+                        ),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/search', arguments: uid)
+                    ),
+                  ]
+              ),
+            ]
+        ),
+      ),
+    );
   }
 
   buildFriendRequests(uid) {
@@ -63,7 +185,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           } else if (asyncSnap.data == null) {
             return circularProgress();
           } else if (asyncSnap.data.length == 0) {
-            return noRequestsCard();
+            return buildNoFriendRequests();
           } else {
             return new ListView.builder(
                 shrinkWrap: true,
@@ -86,7 +208,7 @@ class _NotificationsPageState extends State<NotificationsPage>
         } else if (asyncSnap.data == null) {
           return circularProgress();
         } else if (asyncSnap.data.length == 0) {
-          return Text('No interactions');
+          return buildNoInteractions();
         } else {
           userService.updateIntertions(uid);
           return new ListView.builder(

@@ -128,7 +128,7 @@ class _EditProfileState extends State<EditProfile> {
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: updateProfileData,//() => Navigator.pop(context),
             icon: Icon(
               Icons.done,
               size: 30.0,
@@ -158,38 +158,15 @@ class _EditProfileState extends State<EditProfile> {
                     ],
                   ),
                 ),
-                RaisedButton(
-                  color: Theme.of(context).accentColor,
+                RaisedButton.icon(
+                  //color: Theme.of(context).accentColor,
                   onPressed: updateProfileData,
-                  child: Text(
-                    "Update Profile",
-                    style: GoogleFonts.raleway(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  icon: Icon(Icons.check),
+                  label: Text(
+                    "Looks good",
                   ),
+                  elevation: 1,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: FlatButton.icon(
-                    onPressed: () {
-                      authService.signOut();
-                      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-                    },
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                    ),
-                    label: Text(
-                      "Logout",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 20.0
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           )
