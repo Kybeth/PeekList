@@ -124,92 +124,103 @@ class _SocialTaskState extends State<SocialTask> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: ListTile(
-                          dense: false,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 2),
-
-                          title: Text(
-                            "${widget.task.name}",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                          subtitle: widget.task.comment.length == 0 ? null : Text(
-                            "${widget.task.comment}",
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TaskDetails(
-                                    task: widget.task,
-                                    uid: widget.uid,
-                                  ))),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("${this.likeCount}"),
-                              IconButton(
-                                padding: EdgeInsets.all(0.0),
-                                icon: Icon(Icons.thumb_up, size: 18,),
-                                color: isLiked == true ? Colors.cyan[700] : Colors.grey[500],
-                                onPressed: isLiked == true ? unlike : handleLike,
-                              ),
-                              IconButton(
-                                padding: EdgeInsets.all(0.0),
-                                icon: Icon(Icons.comment, size: 18,),
-                                color: Colors.grey[500],
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CommentsPage(
-                                          task: widget.task,
-                                          uid: widget.uid,
-                                        ))),
-                              ),
-                            ],
-                          ),
-
-                          onLongPress: () => showDialog(
+                      GestureDetector(
+                        onLongPress: (currentUser == widget.task.user['uid']) ? () {
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              if (currentUser == widget.task.user['uid']) return // this is not right!!
-                                 AlertDialog(
-                                    title:  Text("Delete From Timeline?"),
-                                    content:  Text(
-                                    "This will delete task from Timeline but keep it as a private task"),
-                                    actions: <Widget>[
-                                      // usually buttons at the bottom of the dialog
-                                      FlatButton(
-                                        child:Text("Cancel"),
-                                        onPressed: () {
-                                        Navigator.of(context).pop();
-                                        },
+                             return // this is not right!!
+                                AlertDialog(
+                                  title:  Text("Delete From Timeline?"),
+                                  content:  Text(
+                                      "This will delete task from Timeline but keep it as a private task"),
+                                  actions: <Widget>[
+                                    // usually buttons at the bottom of the dialog
+                                    FlatButton(
+                                      highlightColor: Colors.grey[400],
+                                      textColor: Colors.cyan[600],
+                                      child: Text(
+                                        "Keep Public",
                                       ),
-                                      FlatButton(
-                                        child:  Text("Delete"),
-                                        onPressed: () async{
+                                      onPressed: () {Navigator.of(context).pop();},
+                                    ),
+                                    FlatButton(
+                                      textColor: Colors.red[400],
+                                      highlightColor: Colors.grey[400],
+                                      child:  Text(
+                                        "Make Private",
+                                        // style: TextStyle(color: Colors.red[400]),
+                                      ),
+                                      onPressed: () async{
                                         await deletetask(widget.task.taskId);
                                         Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                else return AlertDialog(
-                                title:  Text(
-                                  "Sorry, you cannot delete other's public task",
-                                  style: TextStyle(fontSize: 16, color: Colors.deepOrange[800]),
-                                ),);
+                                      },
+                                    ),
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                );
                             },
+                          );
+                        } : null,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: ListTile(
+                            dense: false,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 2),
+
+                            title: Text(
+                              "${widget.task.name}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            subtitle: widget.task.comment.length == 0 ? null : Text(
+                              "${widget.task.comment}",
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TaskDetails(
+                                      task: widget.task,
+                                      uid: widget.uid,
+                                    ))),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text("${this.likeCount}"),
+                                IconButton(
+                                  padding: EdgeInsets.all(0.0),
+                                  icon: Icon(Icons.thumb_up, size: 18,),
+                                  color: isLiked == true ? Colors.cyan[700] : Colors.grey[500],
+                                  onPressed: isLiked == true ? unlike : handleLike,
+                                ),
+                                IconButton(
+                                  padding: EdgeInsets.all(0.0),
+                                  icon: Icon(Icons.comment, size: 18,),
+                                  color: Colors.grey[500],
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CommentsPage(
+                                            task: widget.task,
+                                            uid: widget.uid,
+                                          ))),
+                                ),
+                              ],
+                            ),
+                            //
                           ),
                         ),
                       ),
+
+
                     ],
                   ),
                 ],

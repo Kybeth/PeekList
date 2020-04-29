@@ -130,6 +130,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
           labelStyle: GoogleFonts.raleway(
             textStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
           ),
+          unselectedLabelColor: Colors.grey[500],
           tabs: [
             Tab(
               text: "TASKS",
@@ -180,6 +181,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
           labelStyle: GoogleFonts.raleway(
             textStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
           ),
+          unselectedLabelColor: Colors.grey[500],
           tabs: [
             Tab(
               text: "TASKS",

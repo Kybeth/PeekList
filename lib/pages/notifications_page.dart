@@ -127,14 +127,16 @@ class _NotificationsPageState extends State<NotificationsPage>
           labelStyle: GoogleFonts.raleway(
             textStyle: TextStyle(fontSize: 15.0),
           ),
+          labelColor: Colors.cyan[700],
+          unselectedLabelColor: Colors.grey[500],
           tabs: [
             Tab(
-              icon: Icon(Icons.notifications),
-              text: "Interactions",
+              icon: Icon(Icons.notifications_none),
+              //text: "Interactions",
             ),
             Tab(
               icon: Icon(Icons.person_add),
-              text: "Friend Requests",
+              //text: "Friend Requests",
             ),
           ],
           controller: _tabController,
