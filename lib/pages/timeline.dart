@@ -125,7 +125,7 @@ class _TimelineState extends State<Timeline> {
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child:
                 Text(
-                  "You have no social notifications. Here's something you can do",
+                  "You have no public tasks. Here's something you can do",
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,

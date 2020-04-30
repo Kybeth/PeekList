@@ -45,7 +45,7 @@ class Showlist extends State<StatefulWidget> {
                   width: 6.5,
                   color: hasprivate(doc),
                 ))),
-                height: 80,
+                height: 60,
                 child: ListTile(
                   leading: IconButton(
                     icon: changeicon_com(doc['iscompleted']),
