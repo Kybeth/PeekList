@@ -44,14 +44,14 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      darkTheme: ThemeData(
-        textTheme: GoogleFonts.ralewayTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        brightness: Brightness.dark,
-        primarySwatch: Colors.grey,
-        accentColor: Colors.black,
-      ),
+//      darkTheme: ThemeData(
+//        textTheme: GoogleFonts.ralewayTextTheme(
+//          Theme.of(context).textTheme,
+//        ),
+//        brightness: Brightness.dark,
+//        primarySwatch: Colors.grey,
+//        accentColor: Colors.black,
+//      ),
       home: new Root(),
       routes: <String, WidgetBuilder>{
         '/search': (context) => Search(),
