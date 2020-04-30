@@ -229,27 +229,46 @@ class _TaskDetailsState extends State<TaskDetails> {
 
   buildComment(Comments comment) {
     return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         ListTile(
-
           leading: InkWell(
             child: CircleAvatar(
               backgroundImage: CachedNetworkImageProvider(comment.userMeta['photoURL']),
               backgroundColor: Colors.grey,
               radius: 15,
               ),
-            onTap: () => Navigator.pushNamed(context, '/myprofile',
-                arguments: comment.userMeta['uid']),
+
           ),
-          title: Text(comment.message),
-          subtitle: Text(
+          title: Text(comment.userMeta['name'],
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.cyan[900],
+            ),
+          ),
+          trailing: Text(
             timeago.format(comment.posted.toDate()),
             style: TextStyle(
-              fontSize: 12
+                fontSize: 12
+            ),
+          ),
+          onTap: () => Navigator.pushNamed(context, '/myprofile',
+              arguments: comment.userMeta['uid']),
+
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child:  Text(
+            comment.message,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
             ),
           ),
         ),
-        Divider(),
+
+        Divider( thickness: 0.5, color: Theme.of(context).backgroundColor,),
       ],
     );
   }
