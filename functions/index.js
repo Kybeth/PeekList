@@ -297,10 +297,10 @@ exports.onLike = functions.firestore
         const taskId = context.params.taskId;
         const friendId = context.params.friendId;
 
-        if (res.userMeta.uid !== res.metaData.user) {
+        if (res.userMeta.uid !== res.metaData.user.uid) {
                 admin.firestore()
                     .collection('users')
-                    .doc(friendId)
+                    .doc(res.metaData.user.uid)
                     .collection('interactions')
                     .doc()
                     .set({

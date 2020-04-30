@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:package_info/package_info.dart';
 import 'package:peeklist/pages/task_page.dart';
 import 'package:peeklist/pages/timeline.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:peeklist/utils/user.dart';
 import '../utils/auth.dart';
+
 
 class Root extends StatefulWidget {
   final String title;
@@ -24,6 +26,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     authService.profile.listen((state) => setState(() => _profile = state));
     authService.loading.listen((state) => setState(() => _loading = state));
     super.initState();
+
   }
 
   Scaffold loginButton() {
@@ -106,14 +109,6 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: Icon(Icons.more_vert),
-            ),
-          ),
-        ],
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'PeekList',
@@ -157,14 +152,6 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: Icon(Icons.more_vert),
-            ),
-          ),
-        ],
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'PeekList',
