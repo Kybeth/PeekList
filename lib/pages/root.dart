@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:package_info/package_info.dart';
 import 'package:peeklist/pages/task_page.dart';
 import 'package:peeklist/pages/timeline.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
