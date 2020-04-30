@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +8,10 @@ import 'package:peeklist/utils/user.dart';
 import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/pages/create_task.dart';
 import 'package:peeklist/utils/auth.dart';
+
+import '../models/requests.dart';
+import '../utils/user.dart';
+
 class NotificationsPage extends StatefulWidget {
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
@@ -26,6 +29,48 @@ class _NotificationsPageState extends State<NotificationsPage>
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
+  
+  acceptFriendRequest(uid, Requests req) async {
+    await userService.acceptFriendRequest(uid, req);
+    showDialog(
+        context: context,
+      builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("You are now friends with ${req.displayName}"),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Close"),
+              ),
+            ],
+          );
+      }
+    );
+    
+  }
+
+  declineFriendRequest(uid, Requests req) async {
+    await userService.declineFriendRequest(uid, req);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Friend Request from ${req.displayName} declined"),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Close"),
+              ),
+            ],
+          );
+        }
+    );
+
+  }
 
   buildRequest(uid, Requests req) {
     return ListTile(
@@ -41,12 +86,12 @@ class _NotificationsPageState extends State<NotificationsPage>
           IconButton(
             icon: Icon(Icons.check),
             color: Colors.lightGreen,
-            onPressed: () => userService.acceptFriendRequest(uid, req),
+            onPressed: () => acceptFriendRequest(uid, req),
           ),
           IconButton(
             icon: Icon(Icons.clear),
             color: Colors.red[400],
-            onPressed: () => userService.declineFriendRequest(uid, req),
+            onPressed: () => declineFriendRequest(uid, req),
           ),
         ],
       ),

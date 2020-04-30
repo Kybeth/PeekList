@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:peeklist/utils/user.dart';
 import '../utils/auth.dart';
 
+
 class Root extends StatefulWidget {
   final String title;
   Root({Key key, this.title}) : super(key: key);
@@ -24,6 +25,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     authService.profile.listen((state) => setState(() => _profile = state));
     authService.loading.listen((state) => setState(() => _loading = state));
     super.initState();
+
   }
 
   Scaffold loginButton() {
@@ -106,14 +108,6 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: Icon(Icons.more_vert),
-            ),
-          ),
-        ],
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'PeekList',
@@ -157,14 +151,6 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: Icon(Icons.more_vert),
-            ),
-          ),
-        ],
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           'PeekList',
