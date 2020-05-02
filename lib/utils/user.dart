@@ -92,7 +92,7 @@ class UserService {
 
   updateToken(profileId, deviceToken) async {
     return await _db.document(profileId).updateData({
-      "deviceToken": deviceToken,
+      "deviceToken": FieldValue.arrayUnion([deviceToken])
     });
   }
 

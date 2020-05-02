@@ -378,17 +378,12 @@ exports.notificationFCM = functions.firestore
               data: {
                 click_action: 'FLUTTER_NOTIFICATION_CLICK'
               },
-              token: deviceToken
+              tokens: deviceToken
             };
             // Send a message to the device corresponding to the provided
             // registration token.
-            admin.messaging().send(payload)
+            admin.messaging().sendMulticast(payload)
               .then((response) => {
                 // Response is a message ID string.
                 console.log('Successfully sent message:', response);
               })
-              .catch((error) => {
-                console.log('Error sending message:', error);
-              });
-        });
-    });
