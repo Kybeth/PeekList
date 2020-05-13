@@ -153,8 +153,14 @@ class _SocialTaskState extends State<SocialTask> {
                                         // style: TextStyle(color: Colors.red[400]),
                                       ),
                                       onPressed: () async{
-                                        await deletetask(widget.task.taskId);
-                                        Navigator.of(context).pop();
+                                        try{
+                                        await deletetask(widget.task.taskId);}
+                                        catch(e){
+                                          Navigator.of(context).pop();
+                                          await deletetimeline(widget.task.taskId,currentUser);
+                                        }
+                                        finally{
+                                        Navigator.of(context).pop();}
                                       },
                                     ),
                                   ],
@@ -237,5 +243,15 @@ class _SocialTaskState extends State<SocialTask> {
 
   deletetask(String taskid)async{
     await Firestore.instance.collection('pubTasks').document(taskid).updateData({'isprivate':true});
+  }
+  deletetimeline(String taskid,String userid )async{
+    Firestore db=Firestore.instance;
+    await db.collection('users').document(userid).collection('friends').snapshots().forEach((element) {
+      db.collection('users').document(userid).collection('timeline').document(taskid).delete();
+      element.documents.forEach((doc) {
+        db.collection('users').document(doc.documentID).collection('timeline').document(taskid).delete();
+      });
+    });
+
   }
 }
