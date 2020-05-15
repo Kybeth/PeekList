@@ -6,6 +6,7 @@ import 'package:peeklist/pages/my_profile.dart';
 import 'package:peeklist/pages/notifications_page.dart';
 import 'package:peeklist/pages/root.dart';
 import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/pages/task_page.dart';
 import 'pages/search.dart';
 
 
