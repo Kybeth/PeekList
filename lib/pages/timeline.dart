@@ -9,6 +9,7 @@ import 'package:peeklist/widgets/progress.dart';
 import 'package:peeklist/widgets/social_task.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:peeklist/pages/create_task.dart';
+import 'package:peeklist/pages/notifications_page.dart';
 
 class Timeline extends StatefulWidget {
   @override
@@ -234,12 +235,13 @@ class _TimelineState extends State<Timeline> {
 
 
  shownotification(DocumentSnapshot dsp){
-    if(dsp.data['newnoti']==true){
+    if(dsp.data['newnoti']==true || dsp.data['newfriends']==true){
       return  new IconButton(
                   icon: Icon(Icons.notifications_none,color:Color.fromRGBO(255, 11, 267, 100),),
                   onPressed: (){
                    // await dsp.reference.updateData({'newnoti':false});
-                    Navigator.pushNamed(context, '/notifications', arguments: uid);
+                      Navigator.pushNamed(context, '/notifications', arguments: uid);
+
                   });
     }
     else{

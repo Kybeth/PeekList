@@ -126,8 +126,12 @@ class UserService {
     }).toList());
   }
 
- void updateIntertions(uid)async{
-    await _db.document(uid).updateData({'newnoti':false});
+ void updateIntertions(uid,bool friends,bool notications)async{
+    if(friends==true){
+      await _db.document(uid).updateData({'newfriends':false});
+    }
+    else if(notications==true){
+    await _db.document(uid).updateData({'newnoti':false});}
   }
 }
 

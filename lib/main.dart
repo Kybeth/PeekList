@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/createtask':(context) => CreateTask(),
         '/notifications': (context) => NotificationsPage(),
         '/friends': (context) => FriendsPage(),
+
       },
     );
   }

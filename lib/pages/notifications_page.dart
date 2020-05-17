@@ -234,6 +234,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           } else if (asyncSnap.data.length == 0) {
             return buildNoFriendRequests();
           } else {
+            userService.updateIntertions(uid,true,false);
             return new ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
@@ -257,7 +258,7 @@ class _NotificationsPageState extends State<NotificationsPage>
         } else if (asyncSnap.data.length == 0) {
           return buildNoInteractions();
         } else {
-          userService.updateIntertions(uid);
+          userService.updateIntertions(uid,false,true);
           return new ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
