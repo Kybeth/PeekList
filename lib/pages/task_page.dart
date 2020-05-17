@@ -336,15 +336,15 @@ class _TaskPageState extends State<TaskPage> {
                                       listname: lst.listname,
                                       uid: uid,
                                     )));},
-                      onLongPress: () async {
+                      onLongPress: (lst.listname != 'inbox') ? () async {
                         var uid = await AuthService().userID();
-                        showBottomSheet(
+                        showModalBottomSheet(
                             context: context,
                             builder: (context) => Container(
                                   height: 100,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.grey[600],
+                                        color: Colors.grey[200],
                                         borderRadius: BorderRadius.only(
                                             topLeft:
                                                 const Radius.circular(10.0),
@@ -355,9 +355,12 @@ class _TaskPageState extends State<TaskPage> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
                                           RaisedButton(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(16.0),
+                                            ),
                                             child: Text("Rename"),
-                                            color: Colors.blue[100],
-                                            disabledColor: Colors.blue[100],
+                                            color: Colors.orange[200],
+                                            disabledColor: Colors.grey[300],
                                             onPressed: () async {
                                               var l = lst.listname;
                                               Navigator.of(context).pop();
@@ -368,7 +371,7 @@ class _TaskPageState extends State<TaskPage> {
                                                     // return object of type Dialog
                                                     return AlertDialog(
                                                       title:
-                                                          Text("Rename $l ?"),
+                                                          Text("Rename $l?"),
                                                       content: TextField(
                                                         decoration: InputDecoration(
                                                             labelText:
@@ -404,8 +407,9 @@ class _TaskPageState extends State<TaskPage> {
                                             },
                                           ),
                                           RaisedButton(
-                                            color: Colors.red[200],
-                                            disabledColor: Colors.red[200],
+                                            color: Colors.red[400],
+                                            disabledColor: Colors.grey[300],
+                                            textColor: Colors.white,
                                             child: Text("Delete"),
                                             onPressed: () async {
                                               var l = lst.listname;
@@ -447,7 +451,7 @@ class _TaskPageState extends State<TaskPage> {
                                         ]),
                                   ),
                                 ));
-                      },
+                      } : null,
                     ),
                   ),
                 );
