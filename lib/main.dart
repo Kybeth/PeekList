@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Peek List',
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         textTheme: GoogleFonts.ralewayTextTheme(
           Theme.of(context).textTheme,
@@ -45,14 +46,17 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-//      darkTheme: ThemeData(
-//        textTheme: GoogleFonts.ralewayTextTheme(
-//          Theme.of(context).textTheme,
-//        ),
-//        brightness: Brightness.dark,
-//        primarySwatch: Colors.grey,
-//        accentColor: Colors.black,
-//      ),
+
+      darkTheme: ThemeData(
+        textTheme: GoogleFonts.ralewayTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        brightness: Brightness.dark,
+        primarySwatch: Colors.grey,
+        accentColor: Colors.black,
+      ),
+
+
       home: new Root(),
       routes: <String, WidgetBuilder>{
         '/search': (context) => Search(),

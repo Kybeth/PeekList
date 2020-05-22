@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:peeklist/pages/edit_task.dart';
 
 class Showlist extends State<StatefulWidget> {
   // you could use this to show a new list data with give it a list name
@@ -10,7 +11,6 @@ class Showlist extends State<StatefulWidget> {
   final String list;
   Showlist({Key key, this.uid, this.list});
 
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -18,7 +18,8 @@ class Showlist extends State<StatefulWidget> {
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('list', isEqualTo: "$list")
-          .where('iscompleted', isEqualTo: false).orderBy('create',descending: true)
+          .where('iscompleted', isEqualTo: false)
+          .orderBy('create', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -29,7 +30,6 @@ class Showlist extends State<StatefulWidget> {
 
   Widget buildList(BuildContext context, List<DocumentSnapshot> list) {
     return ListView.builder(
-
         itemCount: list.length,
         itemBuilder: (context, idx) {
           DocumentSnapshot doc = list[idx];
@@ -55,31 +55,23 @@ class Showlist extends State<StatefulWidget> {
                     doc['name'],
                     style: returnstyle(doc['iscompleted']),
                   ),
-                  subtitle: doc['comment'].length == 0 ? null : Text(
-                      doc['comment'],
-                      style: returnstyle(doc['iscompleted'])),
-                   trailing: IconButton(
-                       icon: changeicon_star(doc['isstarred']),
-                       onPressed: () => starred(doc)),
-
+                  subtitle: doc['comment'].length == 0
+                      ? null
+                      : Text(doc['comment'],
+                          style: returnstyle(doc['iscompleted'])),
+                  trailing: IconButton(
+                      icon: changeicon_star(doc['isstarred']),
+                      onPressed: () => starred(doc)),
                 ),
               ),
               secondaryActions: <Widget>[
-                /**
                 IconSlideAction(
-                  caption: pritext(doc),
-                  color: priColor(doc),
-                  icon: priIcon(doc),
-                  onTap: () {
-                    privated(doc);
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: changetext(doc) ,
-                    ));
-//                    setState(() {
-//                      hasprivate(doc);
-//                    });
-                  },
-                ), **/
+                  caption: 'Edit',
+                  color: Colors.yellow,
+                  icon: Icons.edit,
+                  onTap: () => Navigator.push(context,MaterialPageRoute(
+                            builder: (context) => EditTask( uid: uid,))),
+                ),
                 IconSlideAction(
                   caption: 'Delete',
                   color: Colors.red[400],
@@ -91,19 +83,19 @@ class Showlist extends State<StatefulWidget> {
                       builder: (BuildContext context) {
                         // return object of type Dialog
                         return AlertDialog(
-                          title:  Text("Delete task?"),
-                          content:  Text(
+                          title: Text("Delete task?"),
+                          content: Text(
                               "Deleting with remove all data associated with the task"),
                           actions: <Widget>[
                             // usually buttons at the bottom of the dialog
                             FlatButton(
-                              child:Text("Cancel"),
+                              child: Text("Cancel"),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                             ),
                             FlatButton(
-                              child:  Text("Delete"),
+                              child: Text("Delete"),
                               onPressed: () {
                                 deleted(doc);
                                 Navigator.of(context).pop();
@@ -144,75 +136,82 @@ class Showlist extends State<StatefulWidget> {
     document.reference.delete();
   }
 
-
-    Future completed(DocumentSnapshot document) {
-      if (!document['iscompleted']) {
-        document.reference.updateData({"iscompleted": true,'complete':Timestamp.now()});
-      }
+  Future completed(DocumentSnapshot document) {
+    if (!document['iscompleted']) {
+      document.reference
+          .updateData({"iscompleted": true, 'complete': Timestamp.now()});
     }
   }
-  changetext(DocumentSnapshot document){
-      if(document['isprivate']){
-        return Text('Private Task Status Can Not Change');
-      }
-      else{
-        return Text('Task Status Changed');
-      }
-  }
+}
 
-  Future starred(DocumentSnapshot document) {
-    if (document['isstarred']) {
-      document.reference.updateData({"isstarred": false});
-    } else {
-      document.reference.updateData({"isstarred": true});
-    }
+changetext(DocumentSnapshot document) {
+  if (document['isprivate']) {
+    return Text('Private Task Status Can Not Change');
+  } else {
+    return Text('Task Status Changed');
   }
+}
 
-  returnstyle(bool completed) {
-    if (completed) {
-      return TextStyle(fontWeight: FontWeight.w200);
-    } else {
-      return TextStyle(fontWeight: FontWeight.normal);
-    }
+Future starred(DocumentSnapshot document) {
+  if (document['isstarred']) {
+    document.reference.updateData({"isstarred": false});
+  } else {
+    document.reference.updateData({"isstarred": true});
   }
+}
 
-  changeicon_com(bool completed) {
-    return completed
-        ? Icon(Icons.check_box)
-        : Icon(Icons.check_box_outline_blank);
+returnstyle(bool completed) {
+  if (completed) {
+    return TextStyle(fontWeight: FontWeight.w200);
+  } else {
+    return TextStyle(fontWeight: FontWeight.normal);
   }
+}
 
-  changeicon_star(bool completed) {
-    return completed ? Icon(Icons.star,color: Colors.orange,) : Icon(Icons.star_border,color: Colors.orange[200],);
+changeicon_com(bool completed) {
+  return completed
+      ? Icon(Icons.check_box)
+      : Icon(Icons.check_box_outline_blank);
+}
+
+changeicon_star(bool completed) {
+  return completed
+      ? Icon(
+          Icons.star,
+          color: Colors.orange,
+        )
+      : Icon(
+          Icons.star_border,
+          color: Colors.orange[200],
+        );
+}
+
+priColor(DocumentSnapshot document) {
+  if (document.data.containsKey('isprivate') &&
+      document['isprivate'] == false) {
+    return Colors.orange[300];
+  } else {
+    return Colors.orange[300];
   }
+}
 
-  priColor(DocumentSnapshot document) {
-    if (document.data.containsKey('isprivate') &&
-        document['isprivate'] == false) {
-      return Colors.orange[300];
-    } else {
-      return Colors.orange[300];
-    }
+pritext(DocumentSnapshot document) {
+  if (document.data.containsKey('isprivate') &&
+      document['isprivate'] == false) {
+    return "Make Private";
+  } else {
+    return "Make Public";
   }
+}
 
-  pritext(DocumentSnapshot document) {
-    if (document.data.containsKey('isprivate') &&
-        document['isprivate'] == false) {
-      return "Make Private";
-    } else {
-      return "Make Public";
-    }
+priIcon(DocumentSnapshot document) {
+  if (document.data.containsKey('isprivate') &&
+      document['isprivate'] == false) {
+    return Icons.remove_red_eye;
+  } else {
+    return Icons.remove_red_eye;
   }
-
-  priIcon(DocumentSnapshot document) {
-    if (document.data.containsKey('isprivate') &&
-        document['isprivate'] == false) {
-      return Icons.remove_red_eye;
-    } else {
-      return Icons.remove_red_eye;
-    }
-  }
-
+}
 
 class Showstar extends StatelessWidget {
   final String uid;
@@ -225,7 +224,8 @@ class Showstar extends StatelessWidget {
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
           .where('isstarred', isEqualTo: true)
-          .where('iscompleted', isEqualTo: false).orderBy('create',descending: true)
+          .where('iscompleted', isEqualTo: false)
+          .orderBy('create', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -245,7 +245,8 @@ class CompletedTask extends StatelessWidget {
       stream: Firestore.instance
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
-          .where('iscompleted', isEqualTo: true).orderBy('complete',descending: true)
+          .where('iscompleted', isEqualTo: true)
+          .orderBy('complete', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -293,7 +294,8 @@ class IncompleteTask extends StatelessWidget {
       stream: Firestore.instance
           .collection('pubTasks')
           .where('uid', isEqualTo: "$uid")
-          .where('iscompleted', isEqualTo: false).orderBy('create',descending: true)
+          .where('iscompleted', isEqualTo: false)
+          .orderBy('create', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -314,7 +316,7 @@ class Tasks {
   final create;
   final bool isprivate;
   final Map<dynamic, dynamic> likes;
-  final List message;//friend's comment
+  final List message; //friend's comment
   final String taskId;
 
 //final Integer likes;
@@ -352,72 +354,84 @@ class Tasks {
   }
 
   Future<DocumentReference> addtask() async {
-    var tasksid=await Firestore.instance
-        .collection('pubTasks')
-        .add(<String, dynamic>{
+    var tasksid =
+        await Firestore.instance.collection('pubTasks').add(<String, dynamic>{
       'uid': uid,
       'name': name,
       'comment': comment,
       'list': list != null ? list : 'inbox',
       'time': time,
       'iscompleted': iscompleted,
-      'isstarred' : isstarred,
-      'isprivate' :isprivate,
-      'likes':{},
-      'create':Timestamp.now(),
-      'complete':null,
+      'isstarred': isstarred,
+      'isprivate': isprivate,
+      'likes': {},
+      'create': Timestamp.now(),
+      'complete': null,
     });
     return tasksid;
   }
 }
 
 //this class is all functions of tasks
-class TaskMethod{
+class TaskMethod {
   // 2020/4/7 return the list of documents likes and messages
-  Future all_like(String taskid)async{
-   QuerySnapshot likes= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
-   List<DocumentSnapshot> all_likes=await likes.documents;
-   return all_likes;
-
+  Future all_like(String taskid) async {
+    QuerySnapshot likes = await Firestore.instance
+        .collection('likes')
+        .where('taskid', isEqualTo: '$taskid')
+        .getDocuments();
+    List<DocumentSnapshot> all_likes = await likes.documents;
+    return all_likes;
   }
 
-  Future all_message(String taskid)async{
-    QuerySnapshot message= await Firestore.instance.collection('likes').where('taskid',isEqualTo: '$taskid').getDocuments();
-    List<DocumentSnapshot> all_message=await message.documents;
+  Future all_message(String taskid) async {
+    QuerySnapshot message = await Firestore.instance
+        .collection('likes')
+        .where('taskid', isEqualTo: '$taskid')
+        .getDocuments();
+    List<DocumentSnapshot> all_message = await message.documents;
     return all_message;
   }
 }
 
 //this class is all functions of list
-class ListMethod{
-
+class ListMethod {
   //rename a list
-  Future rename_list(String uid, String old_name, String new_name) async{
+  Future rename_list(String uid, String old_name, String new_name) async {
     int index;
     QuerySnapshot changedata;
-    await Firestore.instance.collection('users').document(uid).get().then((value){
-      List lists=value['tasks'];
-      index=lists.indexOf(old_name);
-      lists[index]=new_name;
-      value.reference.updateData({
-        'tasks': lists
-      });
+    await Firestore.instance
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((value) {
+      List lists = value['tasks'];
+      index = lists.indexOf(old_name);
+      lists[index] = new_name;
+      value.reference.updateData({'tasks': lists});
     });
-   changedata= await Firestore.instance.collection('pubTasks').where('uid',isEqualTo: uid).where('list',isEqualTo: old_name).getDocuments();
-   await changedata.documents.forEach((element) {
-     element.reference.updateData({'list':new_name});
-   });
+    changedata = await Firestore.instance
+        .collection('pubTasks')
+        .where('uid', isEqualTo: uid)
+        .where('list', isEqualTo: old_name)
+        .getDocuments();
+    await changedata.documents.forEach((element) {
+      element.reference.updateData({'list': new_name});
+    });
   }
 
-  Future delete_list(String uid,String list_name)async{
+  Future delete_list(String uid, String list_name) async {
     QuerySnapshot changedata;
     await Firestore.instance.collection('users').document(uid).updateData({
-      'tasks':FieldValue.arrayRemove([list_name])
+      'tasks': FieldValue.arrayRemove([list_name])
     });
-    changedata=await Firestore.instance.collection('pubTasks').where('uid',isEqualTo: uid).where('list',isEqualTo: list_name).getDocuments();
+    changedata = await Firestore.instance
+        .collection('pubTasks')
+        .where('uid', isEqualTo: uid)
+        .where('list', isEqualTo: list_name)
+        .getDocuments();
     await changedata.documents.forEach((element) {
       element.reference.delete();
     });
-
   }
 }

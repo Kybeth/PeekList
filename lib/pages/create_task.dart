@@ -224,7 +224,6 @@ class _CreateTaskState extends State<CreateTask> {
                   isstarred: false,
                   time: _dateTime,
                   isprivate: isPrivate);
-
               ntask.addtask();
               Navigator.of(context).pop();
             },
